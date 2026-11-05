@@ -3,17 +3,8 @@ package main
 import "github.com/Tend-Stack/GothUI/v2026/components"
 
 templ showcase(name, version string) {
-	<header>
-		<nav aria-label="Main navigation">
-			<a href="/" aria-label="GothUI home"><strong>◈ GothUI</strong></a>
-			<ul>
-				<li><a href="#components">Components</a></li>
-				<li><a href="#forms">Forms</a></li>
-				<li>@components.ThemeToggle()</li>
-			</ul>
-		</nav>
-	</header>
-	<main>
+	@demoHeader("/")
+	<main id="main">
 		<section aria-labelledby="intro">
 			<p class="muted">GO · TEMPL · SEMANTIC CSS</p>
 			<h1 id="intro">HTML, beautifully enough.</h1>
@@ -23,6 +14,7 @@ templ showcase(name, version string) {
 				@components.Link(components.LinkProps{Text: "Try a form", Href: "#forms", Outline: true})
 			</div>
 		</section>
+		@demoDirectory()
 		<section id="components" aria-labelledby="components-title">
 			<h2 id="components-title">Less setup. More building.</h2>
 			@components.Grid(components.GridProps{}) {

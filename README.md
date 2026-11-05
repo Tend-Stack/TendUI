@@ -56,13 +56,16 @@ func main() {
 }
 ```
 
-Run the complete local showcase, including a working form and theme endpoint:
+Run the local demos, including a component playground, form lab, dashboard,
+and theme endpoint:
 
 ```sh
-go run ./examples/basic
+go run ./examples/basic -open
 ```
 
-Open `http://127.0.0.1:8080`. The example deliberately blocks scripts with its
+The `-open` flag opens `http://127.0.0.1:8080/playground` in your default Linux
+browser. See [the demo guide](examples/basic/README.md) for all pages and test
+scenarios. The example deliberately blocks scripts with its
 Content Security Policy. Theme switching and the form work with JavaScript
 disabled.
 
@@ -78,7 +81,7 @@ components/
   cards.templ             article with optional header, body, footer
   forms.templ             forms, inputs, selects, checkboxes, grids
   *_templ.go              generated Go, included for consumers
-examples/basic/           runnable showcase and cookie handler
+examples/basic/           four demo pages, playground, and cookie handler
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -147,7 +150,8 @@ label and your application's CSRF token. The consumer owns cookies, request
 protection, routing, and page rendering; the library has no global theme state.
 
 The included endpoint alternates a validated `light`/`dark` cookie and returns
-303 to the homepage. Cookies are HttpOnly, SameSite=Strict, and Secure over TLS;
+303 to the current demo when its same-origin Referer is available, otherwise to
+the homepage. Cookies are HttpOnly, SameSite=Strict, and Secure over TLS;
 the example uses Go's cross-origin request protection. Behind a TLS-terminating
 proxy, configure your application's Secure-cookie policy explicitly. The first
 example visit uses light so the server can deterministically toggle it; the
