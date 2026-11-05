@@ -1,0 +1,43 @@
+package components
+
+import "github.com/Tend-Stack/GothUI/v2026"
+
+type Theme string
+
+const (
+	ThemeSystem Theme = ""
+	ThemeLight  Theme = "light"
+	ThemeDark   Theme = "dark"
+)
+
+type LayoutProps struct {
+	Title       string
+	Language    string
+	Theme       Theme
+	Description string
+}
+
+templ Layout(props LayoutProps, body templ.Component) {
+	<!DOCTYPE html>
+	<html
+		lang={ fallback(props.Language, "en") }
+		if props.Theme == ThemeLight || props.Theme == ThemeDark {
+			data-theme={ string(props.Theme) }
+		}
+	>
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ props.Title }</title>
+			if props.Description != "" {
+				<meta name="description" content={ props.Description }/>
+			}
+			<link rel="stylesheet" href={ gothui.StylesheetURL }/>
+		</head>
+		<body>
+			if body != nil {
+				@body
+			}
+		</body>
+	</html>
+}

@@ -1,0 +1,72 @@
+package components
+
+type ButtonType string
+
+const (
+	ButtonTypeButton ButtonType = "button"
+	ButtonTypeSubmit ButtonType = "submit"
+	ButtonTypeReset  ButtonType = "reset"
+)
+
+type ButtonProps struct {
+	Text        string
+	Type        ButtonType
+	ID          string
+	Name        string
+	Value       string
+	Primary     bool
+	Outline     bool
+	Disabled    bool
+	HxGet       string
+	HxPost      string
+	HxTarget    string
+	HxSwap      string
+	HxIndicator string
+}
+
+func buttonType(t ButtonType) string {
+	switch t {
+	case ButtonTypeSubmit, ButtonTypeReset:
+		return string(t)
+	default:
+		return "button"
+	}
+}
+
+templ Button(props ButtonProps) {
+	<button
+		type={ buttonType(props.Type) }
+		class={ templ.KV("primary", props.Primary), templ.KV("outline", props.Outline) }
+		disabled?={ props.Disabled }
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		if props.Name != "" {
+			name={ props.Name }
+		}
+		if props.Value != "" {
+			value={ props.Value }
+		}
+		{ htmxAttrs(props.HxGet, props.HxPost, props.HxTarget, props.HxSwap, props.HxIndicator)... }
+	>{ props.Text }</button>
+}
+
+type LinkProps struct {
+	Text        string
+	Href        string
+	Primary     bool
+	Outline     bool
+	HxGet       string
+	HxPost      string
+	HxTarget    string
+	HxSwap      string
+	HxIndicator string
+}
+
+templ Link(props LinkProps) {
+	<a
+		href={ templ.URL(props.Href) }
+		class={ "button", templ.KV("primary", props.Primary), templ.KV("outline", props.Outline) }
+		{ htmxAttrs(props.HxGet, props.HxPost, props.HxTarget, props.HxSwap, props.HxIndicator)... }
+	>{ props.Text }</a>
+}

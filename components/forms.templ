@@ -1,0 +1,189 @@
+package components
+
+type FormMethod string
+
+const (
+	MethodGet  FormMethod = "get"
+	MethodPost FormMethod = "post"
+)
+
+type FormProps struct {
+	ID          string
+	Action      string
+	Method      FormMethod
+	HxGet       string
+	HxPost      string
+	HxTarget    string
+	HxSwap      string
+	HxIndicator string
+}
+
+func formMethod(method FormMethod) string {
+	if method == MethodPost {
+		return "post"
+	}
+	return "get"
+}
+
+templ Form(props FormProps) {
+	<form
+		action={ templ.URL(props.Action) }
+		method={ formMethod(props.Method) }
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		{ htmxAttrs(props.HxGet, props.HxPost, props.HxTarget, props.HxSwap, props.HxIndicator)... }
+	>
+		{ children... }
+	</form>
+}
+
+type InputType string
+
+const (
+	InputText     InputType = "text"
+	InputEmail    InputType = "email"
+	InputPassword InputType = "password"
+	InputNumber   InputType = "number"
+	InputSearch   InputType = "search"
+	InputTel      InputType = "tel"
+	InputURL      InputType = "url"
+	InputDate     InputType = "date"
+)
+
+type InputProps struct {
+	ID           string
+	Name         string
+	Label        string
+	Type         InputType
+	Value        string
+	Placeholder  string
+	Autocomplete string
+	Required     bool
+	Disabled     bool
+	ReadOnly     bool
+	Invalid      bool
+	DescribedBy  string
+}
+
+func inputType(t InputType) string {
+	switch t {
+	case InputEmail, InputPassword, InputNumber, InputSearch, InputTel, InputURL, InputDate:
+		return string(t)
+	default:
+		return "text"
+	}
+}
+
+templ Input(props InputProps) {
+	<label>
+		{ props.Label }
+		<input
+			type={ inputType(props.Type) }
+			name={ props.Name }
+			value={ props.Value }
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.Placeholder != "" {
+				placeholder={ props.Placeholder }
+			}
+			if props.Autocomplete != "" {
+				autocomplete={ props.Autocomplete }
+			}
+			if props.DescribedBy != "" {
+				aria-describedby={ props.DescribedBy }
+			}
+			if props.Invalid {
+				aria-invalid="true"
+			}
+			required?={ props.Required }
+			disabled?={ props.Disabled }
+			readonly?={ props.ReadOnly }
+		/>
+	</label>
+}
+
+type Option struct {
+	Label    string
+	Value    string
+	Disabled bool
+}
+
+type SelectProps struct {
+	ID          string
+	Name        string
+	Label       string
+	Value       string
+	Options     []Option
+	Required    bool
+	Disabled    bool
+	Invalid     bool
+	DescribedBy string
+}
+
+templ Select(props SelectProps) {
+	<label>
+		{ props.Label }
+		<select
+			name={ props.Name }
+			required?={ props.Required }
+			disabled?={ props.Disabled }
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.Invalid {
+				aria-invalid="true"
+			}
+			if props.DescribedBy != "" {
+				aria-describedby={ props.DescribedBy }
+			}
+		>
+			for _, option := range props.Options {
+				<option value={ option.Value } selected?={ option.Value == props.Value } disabled?={ option.Disabled }>{ option.Label }</option>
+			}
+		</select>
+	</label>
+}
+
+type CheckboxProps struct {
+	ID       string
+	Name     string
+	Label    string
+	Value    string
+	Checked  bool
+	Required bool
+	Disabled bool
+}
+
+templ Checkbox(props CheckboxProps) {
+	<label class="check">
+		<input
+			type="checkbox"
+			name={ props.Name }
+			value={ fallback(props.Value, "on") }
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			checked?={ props.Checked }
+			required?={ props.Required }
+			disabled?={ props.Disabled }
+		/>
+		{ props.Label }
+	</label>
+}
+
+type GridProps struct {
+	ID string
+}
+
+templ Grid(props GridProps) {
+	<div
+		class="grid"
+		if props.ID != "" {
+			id={ props.ID }
+		}
+	>
+		{ children... }
+	</div>
+}
