@@ -1,5 +1,30 @@
 # GothUI implementation handoff
 
+## Demo expansion (2026-11-05)
+
+The basic example now serves four connected pages: overview (`/`), component
+playground (`/playground`), form lab (`/forms`), and sample project dashboard
+(`/dashboard`). Playground options and dashboard filters use native GET forms.
+The form lab exercises browser validation, server errors, and success without
+saving data. Theme toggles return to a validated same-origin demo Referer and
+preserve filters while removing explicit theme overrides.
+
+The `-open` flag launches the default Linux browser after binding the listener;
+`-addr` selects a port. A launch attempt still failed with `socket: operation
+not permitted`, so no browser session or server is running. The pages are
+implemented and HTTP-tested but still need desktop browser review.
+
+`go test -race ./...` passed after the expansion. Tests cover routes, rendered
+control states, themes, input escaping, successful/invalid form submissions,
+oversized bodies, cross-origin rejection, project filters, and safe redirects.
+See `examples/basic/README.md` for launch and manual review steps.
+
+One executable is retained under `tests/results/demos/gothui-demo` for operator
+review. Launch it with `-open` from a normal desktop terminal. The next demo
+build should replace it; the developer completing review owns its removal
+after review is complete. The demo build cache is temporary and removed at
+handoff. Concise demo logs remain under `tests/results/` until the next run.
+
 ## Implemented
 
 - Embedded, concurrent-safe CSS handler with ETag revalidation, GET/HEAD,
