@@ -1,0 +1,27 @@
+package components
+
+type CardProps struct {
+	ID     string
+	Header templ.Component
+	Body   templ.Component
+	Footer templ.Component
+}
+
+templ Card(props CardProps) {
+	<article
+		if props.ID != "" {
+			id={ props.ID }
+		}
+	>
+		if props.Header != nil {
+			<header>@props.Header</header>
+		}
+		if props.Body != nil {
+			@props.Body
+		}
+		{ children... }
+		if props.Footer != nil {
+			<footer>@props.Footer</footer>
+		}
+	</article>
+}

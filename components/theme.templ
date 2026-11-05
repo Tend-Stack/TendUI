@@ -1,0 +1,29 @@
+package components
+
+// ThemeToggleProps optionally supplies a localized label and the application's CSRF token.
+// Use outside other forms. The native POST works without HTMX or any JavaScript.
+type ThemeToggleProps struct {
+	Label     string
+	CSRFToken string
+}
+
+func themeToggleProps(options []ThemeToggleProps) ThemeToggleProps {
+	if len(options) > 0 {
+		return options[0]
+	}
+	return ThemeToggleProps{}
+}
+
+// ThemeToggle retains the requested HTMX contract. For reliable root theming,
+// an HTMX-aware endpoint should respond with HX-Refresh: true (see examples/basic).
+templ ThemeToggle(options ...ThemeToggleProps) {
+	{{ props := themeToggleProps(options) }}
+	<form method="post" action="/api/theme/toggle" class="theme-toggle">
+		if props.CSRFToken != "" {
+			<input type="hidden" name="csrf_token" value={ props.CSRFToken }/>
+		}
+		<button type="submit" class="outline" hx-post="/api/theme/toggle" hx-target="html" hx-swap="outerHTML">
+			<span aria-hidden="true">◐</span> { fallback(props.Label, "Toggle theme") }
+		</button>
+	</form>
+}
