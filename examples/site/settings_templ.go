@@ -9,7 +9,7 @@ package site
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 func appearanceControls(a components.Appearance) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -200,7 +200,7 @@ func appearancePage(a components.Appearance, mode string, saved bool) templ.Comp
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p><small>Downloads reflect the displayed preview. Apply changes first. CSS overrides load after GothUI; the Go settings also carry your light/dark/system choice.</small></p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p><small>Downloads reflect the displayed preview. Apply changes first. CSS overrides load after TendUI; the Go settings also carry your light/dark/system choice.</small></p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

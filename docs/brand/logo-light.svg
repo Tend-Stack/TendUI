@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220"><defs>
-<linearGradient id="gopherBlue" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#a9e8ff"/><stop offset=".54" stop-color="#60c8ff"/><stop offset="1" stop-color="#267cc8"/></linearGradient>
-<linearGradient id="capePurple" x1="0" y1=".1" x2="1" y2="1"><stop stop-color="#321659"/><stop offset=".5" stop-color="#190d34"/><stop offset="1" stop-color="#43216a"/></linearGradient>
-<linearGradient id="uiCard" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6246ac"/><stop offset="1" stop-color="#322256"/></linearGradient>
-<linearGradient id="violet" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d4b8ff"/><stop offset="1" stop-color="#8a53ff"/></linearGradient>
+<linearGradient id="gopherBlue" x1=".1" y1="0" x2=".9" y2="1" objectBoundingBox="true"><stop stop-color="#a9e8ff"/><stop offset=".54" stop-color="#60c8ff"/><stop offset="1" stop-color="#267cc8"/></linearGradient>
+<linearGradient id="capePurple" x1="0" y1=".1" x2="1" y2="1" objectBoundingBox="true"><stop stop-color="#321659"/><stop offset=".5" stop-color="#190d34"/><stop offset="1" stop-color="#43216a"/></linearGradient>
+<linearGradient id="uiCard" x1="0" y1="0" x2="1" y2="1" objectBoundingBox="true"><stop stop-color="#6246ac"/><stop offset="1" stop-color="#322256"/></linearGradient>
+<linearGradient id="violet" x1="0" y1="0" x2="1" y2="0" objectBoundingBox="true"><stop stop-color="#d4b8ff"/><stop offset="1" stop-color="#8a53ff"/></linearGradient>
 <radialGradient id="glow"><stop stop-color="#6732b0" stop-opacity=".65"/><stop offset="1" stop-color="#0b0a18" stop-opacity="0"/></radialGradient>
 </defs><g transform="translate(13 -14) scale(.48)">
 <g id="gothic-arch">
@@ -52,6 +52,6 @@
   </g>
 </g>
 </g>
-       <text x="271" y="143" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="122" letter-spacing="-8" fill="#1b172a">Goth</text>
-       <text x="542" y="143" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="122" letter-spacing="-7" fill="#7840CC">UI</text>
+       <text x="271" y="143" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="122" letter-spacing="-8" fill="#1b172a">Tend</text>
+       <text x="561" y="143" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="122" letter-spacing="-7" fill="#7840CC">UI</text>
        <text x="275" y="188" fill="#1b172a" opacity=".66" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="650" letter-spacing="4.1">GOOD INTERFACES. PURE GO.</text></svg>

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/components"
 )
 
 func TestMotionStudioRoutesAndPreferences(t *testing.T) {
@@ -67,7 +67,7 @@ func TestMotionPreferenceSaveAndExports(t *testing.T) {
 		t.Fatal("motion lost from export URL")
 	}
 	for _, tc := range []struct{ path, want string }{
-		{"/appearance.css?motion=off", "--gothui-duration-enter: 0ms"},
+		{"/appearance.css?motion=off", "--tendui-duration-enter: 0ms"},
 		{"/appearance.go?motion=off", `Motion: "off"`},
 	} {
 		w := httptest.NewRecorder()

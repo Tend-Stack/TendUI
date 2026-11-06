@@ -15,6 +15,8 @@ type AppShellProps struct {
 	Actions    templ.Component
 	Footer     templ.Component
 	MainID     string
+	// Header replaces the built-in header, for example with SiteHeader.
+	Header templ.Component
 }
 
 // AppShell is a document body, with one main landmark. Place inside Layout; do not nest shells.
@@ -22,12 +24,16 @@ type AppShellProps struct {
 templ AppShell(props AppShellProps) {
 	<div class="app-shell">
 		<a class="skip-link" href={ templ.URL("#" + fallback(props.MainID, "main")) }>Skip to content</a>
-		<header class="app-header">
-			<a class="app-brand" href={ templ.URL(fallback(props.BrandHref, "/")) }>{ props.Brand }</a>
-			if props.Actions != nil {
-				<div class="cluster">@props.Actions</div>
-			}
-		</header>
+		if props.Header != nil {
+			@props.Header
+		} else {
+			<header class="app-header">
+				<a class="app-brand" href={ templ.URL(fallback(props.BrandHref, "/")) }>{ props.Brand }</a>
+				if props.Actions != nil {
+					<div class="cluster">@props.Actions</div>
+				}
+			</header>
+		}
 		<aside class="app-sidebar">
 			<details open>
 				<summary>Navigation</summary>

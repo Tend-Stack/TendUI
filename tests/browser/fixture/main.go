@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"time"
 
-	"github.com/Tend-Stack/GothUI/v2026/examples/site"
+	"github.com/Tend-Stack/TendUI/v2026/examples/site"
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 			w.Header()[k] = values
 		}
 		body := result.Body.Bytes()
-		if c, err := r.Cookie("gothui_test_htmx"); err == nil && c.Value == "1" {
+		if c, err := r.Cookie("tendui_test_htmx"); err == nil && c.Value == "1" {
 			w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; img-src 'self'; script-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
 			body = bytes.Replace(body, []byte("</head>"), []byte(`<meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"includeIndicatorStyles":false}'><script src="/__test/htmx.js" defer></script></head>`), 1)
 			w.Header().Del("Content-Length")

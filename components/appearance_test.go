@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Tend-Stack/GothUI/v2026"
+	"github.com/Tend-Stack/TendUI/v2026"
 	"github.com/a-h/templ"
 )
 
@@ -32,7 +32,7 @@ func TestAppearanceSafetyAndLayout(t *testing.T) {
 			t.Errorf("missing %s", want)
 		}
 	}
-	if strings.Index(html, "/custom.css") < strings.Index(html, gothui.StylesheetURL) {
+	if strings.Index(html, "/custom.css") < strings.Index(html, tendui.StylesheetURL) {
 		t.Fatal("custom stylesheet must follow base CSS")
 	}
 }
@@ -40,7 +40,7 @@ func TestAppearanceSafetyAndLayout(t *testing.T) {
 func stylesheet(t *testing.T) string {
 	t.Helper()
 	w := httptest.NewRecorder()
-	gothui.AssetHandler().ServeHTTP(w, httptest.NewRequest("GET", gothui.StylesheetURL, nil))
+	tendui.AssetHandler().ServeHTTP(w, httptest.NewRequest("GET", tendui.StylesheetURL, nil))
 	if w.Code != 200 {
 		t.Fatal(w.Code)
 	}
@@ -49,7 +49,7 @@ func stylesheet(t *testing.T) string {
 
 func TestAppearanceExportsUseExistingTokens(t *testing.T) {
 	css := stylesheet(t)
-	ref := regexp.MustCompile(`var\((--gothui-[a-z-]+)`)
+	ref := regexp.MustCompile(`var\((--tendui-[a-z-]+)`)
 	for _, a := range []Appearance{
 		{}, {Preset: PresetNeutral, Density: DensityCompact, Corners: CornersSquare, Typography: TypographySerif, TextSize: TextLarge, Width: WidthNarrow, Elevation: ElevationFlat},
 		{Preset: PresetForest, Corners: CornersSoft, Typography: TypographyMono, Width: WidthWide}, {Preset: PresetRose},
@@ -91,7 +91,7 @@ func contrast(a, b string) float64 {
 func TestPresetTextContrast(t *testing.T) {
 	css := stylesheet(t)
 	colors := map[string]string{}
-	for _, m := range regexp.MustCompile(`--gothui-preset-([a-z-]+):\s*(#[0-9a-f]{6})`).FindAllStringSubmatch(css, -1) {
+	for _, m := range regexp.MustCompile(`--tendui-preset-([a-z-]+):\s*(#[0-9a-f]{6})`).FindAllStringSubmatch(css, -1) {
 		colors[m[1]] = m[2]
 	}
 	for _, preset := range []string{"indigo", "neutral", "forest", "rose"} {

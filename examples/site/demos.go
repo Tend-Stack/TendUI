@@ -2,7 +2,7 @@ package site
 
 import (
 	"errors"
-	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/components"
 	"net/http"
 	"net/mail"
 	"net/url"
@@ -86,7 +86,7 @@ func submitForm(w http.ResponseWriter, r *http.Request) {
 		d.Success = true
 		status = http.StatusOK
 	}
-	renderPage(w, r, "Form lab · GothUI", formLab(d), status)
+	renderPage(w, r, "Form lab · TendUI", formLab(d), status)
 }
 
 type project struct {

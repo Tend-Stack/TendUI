@@ -1,4 +1,4 @@
-package gothui
+package tendui
 
 import (
 	"bytes"

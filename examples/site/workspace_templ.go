@@ -9,7 +9,7 @@ package site
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 func workspace() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -171,7 +171,7 @@ func workspace() templ.Component {
 			return nil
 		})
 		templ_7745c5c3_Err = components.AppShell(components.AppShellProps{
-			Brand: "◈ Studio / GothUI", BrandHref: "/", Title: "Your workspace",
+			Brand: "◈ Studio / TendUI", BrandHref: "/", Title: "Your workspace",
 			Actions: workspaceActions(), Footer: cardNote("Sample workspace · No account required"),
 			Navigation: []components.NavItem{
 				{Label: "Overview", Href: "/workspace", Current: true},
@@ -186,7 +186,7 @@ func workspace() templ.Component {
 				{Label: "Application patterns", Href: "/patterns"},
 				{Label: "Form wizard", Href: "/wizard"},
 				{Label: "CSV preview", Href: "/uploads"},
-				{Label: "GothUI home", Href: "/"},
+				{Label: "TendUI home", Href: "/"},
 			},
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {

@@ -1,10 +1,10 @@
 package site
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 templ workspace() {
 	@components.AppShell(components.AppShellProps{
-		Brand: "◈ Studio / GothUI", BrandHref: "/", Title: "Your workspace",
+		Brand: "◈ Studio / TendUI", BrandHref: "/", Title: "Your workspace",
 		Actions: workspaceActions(), Footer: cardNote("Sample workspace · No account required"),
 		Navigation: []components.NavItem{
 			{Label: "Overview", Href: "/workspace", Current: true},
@@ -19,7 +19,7 @@ templ workspace() {
 			{Label: "Application patterns", Href: "/patterns"},
 			{Label: "Form wizard", Href: "/wizard"},
 			{Label: "CSV preview", Href: "/uploads"},
-			{Label: "GothUI home", Href: "/"},
+			{Label: "TendUI home", Href: "/"},
 		},
 	}) {
 		<section>

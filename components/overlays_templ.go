@@ -53,7 +53,7 @@ func nativeButtonAttrs(props ButtonProps) templ.Attributes {
 
 func validateOverlayID(id string) error {
 	if id == "" || strings.IndexFunc(id, unicode.IsSpace) >= 0 {
-		return fmt.Errorf("gothui: overlay ID must be nonempty and contain no whitespace")
+		return fmt.Errorf("tendui: overlay ID must be nonempty and contain no whitespace")
 	}
 	return nil
 }
@@ -102,7 +102,7 @@ func Dialog(props DialogProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"gothui-dialog\" aria-labelledby=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"tendui-dialog\" aria-labelledby=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -286,7 +286,7 @@ func Popover(props PopoverProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" class=\"gothui-popover\" popover=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" class=\"tendui-popover\" popover=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

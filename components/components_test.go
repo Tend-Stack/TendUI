@@ -20,7 +20,7 @@ func render(t *testing.T, c templ.Component) string {
 
 func TestLayoutAndEscaping(t *testing.T) {
 	html := render(t, Layout(LayoutProps{Title: "<script>alert(1)</script>", Theme: ThemeDark}, Button(ButtonProps{Text: "<b>safe</b>"})))
-	for _, want := range []string{`lang="en"`, `data-theme="dark"`, `/gothui/static/gothui.css`, `&lt;script&gt;`, `&lt;b&gt;safe&lt;/b&gt;`, `type="button"`} {
+	for _, want := range []string{`lang="en"`, `data-theme="dark"`, `/tendui/static/tendui.css`, `&lt;script&gt;`, `&lt;b&gt;safe&lt;/b&gt;`, `type="button"`} {
 		if !strings.Contains(html, want) {
 			t.Errorf("missing %s", want)
 		}

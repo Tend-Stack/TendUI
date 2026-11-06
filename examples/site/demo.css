@@ -1,57 +1,37 @@
 /* The example catalog uses the same tokens and native links/forms as applications. */
 .catalog-heading { max-inline-size: 54rem; }
-.catalog-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; align-items: end; gap: var(--gothui-space); margin-block-end: 1rem; }
+.catalog-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; align-items: end; gap: var(--tendui-space); margin-block-end: 1rem; }
 .catalog-filters > label { margin: 0; }
 .catalog-results-heading, .catalog-section-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: .75rem; }
-.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: var(--gothui-grid-gap); margin-block-end: 2rem; }
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: var(--tendui-grid-gap); margin-block-end: 2rem; }
 .catalog-card { display: flex; flex-direction: column; margin: 0; min-inline-size: 0; }
 .catalog-card h2 { font-size: 1.45rem; margin-block: .4rem .75rem; overflow-wrap: anywhere; }
-.catalog-card h2 a { color: var(--gothui-text); }
-.catalog-card p { color: var(--gothui-muted); }
+.catalog-card h2 a { color: var(--tendui-text); }
+.catalog-card p { color: var(--tendui-muted); }
 .catalog-card-link { margin-block-start: auto; }
-.catalog-preview { padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); background: var(--gothui-surface); min-inline-size: 0; }
+.catalog-preview { padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--tendui-border); border-radius: var(--tendui-radius); background: var(--tendui-surface); min-inline-size: 0; }
 .catalog-preview > :last-child { margin-block-end: 0; }
 .catalog-source { tab-size: 2; max-block-size: 36rem; }
 @media (max-width: 48rem) {
  .catalog-filters { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Compact navigation keeps demos discoverable without a wall of links. */
-.demo-header { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem 2rem; inline-size: min(100% - 2rem, 1920px); padding-block: .75rem; }
-.demo-header + main { --gothui-heading-1: clamp(1.8rem, 3vw, 2.6rem); --gothui-heading-2: clamp(1.35rem, 2vw, 1.75rem); padding-block-start: 1.5rem; }
-.demo-brand { display: inline-flex; align-items: center; gap: .6rem; color: var(--gothui-text); text-decoration: none; font-size: 1.2rem; font-weight: 650; }
-.demo-brand img { flex: none; }
-.demo-primary { margin-inline-start: auto; gap: .5rem; }
-.demo-primary > a, .demo-menu > summary { padding: .55rem .8rem; border-radius: var(--gothui-radius); text-decoration: none; font-weight: 500; }
-.demo-primary a[aria-current="page"] { background: var(--gothui-subtle); color: var(--gothui-text); }
-.demo-menu { position: relative; margin: 0; padding: 0; border: 0; }
-.demo-menu > summary { margin: 0; }
-.demo-menu-panel { position: absolute; inset-block-start: calc(100% + .75rem); inset-inline-end: 0; z-index: 5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; inline-size: min(48rem, 85vw); padding: 1.5rem; background: var(--gothui-surface); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); box-shadow: var(--gothui-shadow); }
-.demo-menu-panel p { font-size: .8rem; color: var(--gothui-muted); margin-block-end: .65rem; }
-.demo-menu-panel ul { display: block; }
-.demo-menu-panel a { display: block; padding: .55rem; border-radius: var(--gothui-radius); text-decoration: none; font-size: .9rem; }
-.demo-menu-panel a:hover { background: var(--gothui-subtle); }
-.demo-theme form { margin: 0; }
-.demo-theme button { font-size: .85rem; }
+/* Demo pages use SiteHeader; this only tunes the first heading after it. */
+.site-header + main { --tendui-heading-1: clamp(1.8rem, 3vw, 2.6rem); --tendui-heading-2: clamp(1.35rem, 2vw, 1.75rem); padding-block-start: 1.5rem; }
 .catalog-card h2 { font-weight: 600; }
 .catalog-card h2 a { text-decoration: none; }
 .catalog-card h2 a:hover { text-decoration: underline; }
 .playground-jumps { justify-content: start; gap: 1rem 1.5rem; margin-block: 1.75rem; }
 .playground-jumps a { font-size: .9rem; text-decoration: none; }
-.playground-scenarios { padding: 1.25rem; background: var(--gothui-subtle); border-radius: var(--gothui-radius); }
+.playground-scenarios { padding: 1.25rem; background: var(--tendui-subtle); border-radius: var(--tendui-radius); }
 .playground-scenarios p { margin-block-end: .6rem; font-size: .85rem; }
 .playground-scenarios nav { justify-content: start; }
-.playground-scenarios a { padding: .55rem .85rem; background: var(--gothui-surface); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); text-decoration: none; font-size: .9rem; }
+.playground-scenarios a { padding: .55rem .85rem; background: var(--tendui-surface); border: 1px solid var(--tendui-border); border-radius: var(--tendui-radius); text-decoration: none; font-size: .9rem; }
 .playground-layout { display: grid; grid-template-columns: minmax(17rem, .85fr) minmax(0, 1.4fr); align-items: start; gap: 2rem; }
 .playground-layout > * { min-inline-size: 0; }
 .playground-layout h2 { font-size: 1.4rem; font-weight: 600; }
 .playground-preview { scroll-margin-block-start: 1.5rem; }
 @media (max-width: 60rem) {
  .playground-layout { grid-template-columns: minmax(0, 1fr); }
- .demo-header { gap: 1rem; }
- .demo-primary { order: 3; flex: 1 0 100%; margin: 0; justify-content: start; }
- .demo-theme { margin-inline-start: auto; }
- .demo-menu { position: static; }
- .demo-menu-panel { position: static; inline-size: 100%; grid-template-columns: minmax(0, 1fr); box-shadow: none; margin-block-start: .75rem; }
 }
-@media print { .demo-primary, .demo-theme, .playground-jumps, .playground-scenarios { display: none; } }
+@media print { .playground-jumps, .playground-scenarios { display: none; } }

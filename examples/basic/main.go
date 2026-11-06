@@ -4,8 +4,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/Tend-Stack/GothUI/v2026"
-	"github.com/Tend-Stack/GothUI/v2026/examples/site"
+	"github.com/Tend-Stack/TendUI/v2026"
+	"github.com/Tend-Stack/TendUI/v2026/examples/site"
 	"log"
 	"net"
 	"net/http"
@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-var version = gothui.Version + "-dev"
+var version = tendui.Version + "-dev"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:8080", "local listen address")
@@ -35,7 +35,7 @@ func main() {
 		log.Fatal(err)
 	}
 	address := "http://" + listener.Addr().String()
-	log.Printf("GothUI %s at %s/playground", version, address)
+	log.Printf("TendUI %s at %s/playground", version, address)
 	if *open {
 		go func() {
 			program, args := browserOpener(runtime.GOOS, address+"/playground")

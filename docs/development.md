@@ -1,4 +1,4 @@
-# Developing GothUI
+# Developing TendUI
 
 Consumers build with Go alone; the checked-in generated components use templ as
 their only runtime dependency. Contributors need Git, Go 1.26 or newer, and the
@@ -13,13 +13,13 @@ uses the toolchain that compiled it, and requires no frontend tools.
 
 | Command | Evidence |
 | --- | --- |
-| `go run ./cmd/gothui-dev check` | Go formatting, production dependency boundaries, CSS size, public API baseline, all race tests and vet |
-| `go run ./cmd/gothui-dev api` | Compiler-resolved public declarations, candidate snapshot and reviewed-baseline comparison |
-| `go run ./cmd/gothui-dev generated` | Matching templ version and byte-identical generated Go for every template; rejects orphan output |
-| `go run ./cmd/gothui-dev recipes` | Each downloadable catalog recipe generated and compiled in an independent package |
-| `go run ./cmd/gothui-dev consumer` | Clean committed module installed from a local versioned proxy, without `replace` or a templ generator |
-| `go run ./cmd/gothui-dev bench` | Three samples per server-side benchmark, allocation counts and environment metadata |
-| `go run ./cmd/gothui-dev build` | Versioned, CGO-disabled demo; size, embedded version and Linux ELF interpreter checks |
+| `go run ./cmd/tendui-dev check` | Go formatting, production dependency boundaries, CSS size, public API baseline, all race tests and vet |
+| `go run ./cmd/tendui-dev api` | Compiler-resolved public declarations, candidate snapshot and reviewed-baseline comparison |
+| `go run ./cmd/tendui-dev generated` | Matching templ version and byte-identical generated Go for every template; rejects orphan output |
+| `go run ./cmd/tendui-dev recipes` | Each downloadable catalog recipe generated and compiled in an independent package |
+| `go run ./cmd/tendui-dev consumer` | Clean committed module installed from a local versioned proxy, without `replace` or a templ generator |
+| `go run ./cmd/tendui-dev bench` | Three samples per server-side benchmark, allocation counts and environment metadata |
+| `go run ./cmd/tendui-dev build` | Versioned, CGO-disabled demo; size, embedded version and Linux ELF interpreter checks |
 
 `TEMPL=/absolute/path/to/templ` overrides generator discovery. Go module/cache
 environment settings are inherited. `check` requires a platform/toolchain that
@@ -43,15 +43,15 @@ regenerates there, compares outputs, and removes that directory on return.
 
 The `recipes` command uses the same extractor as catalog downloads. Each marked
 recipe is compiled without its neighbors in a temporary module with a local
-GothUI replacement. This catches examples that accidentally depend on another
+TendUI replacement. This catches examples that accidentally depend on another
 recipe's imports or helpers. It does **not** prove a published `go get` works.
 The temporary module is removed on success and ordinary errors. An abrupt kill
-can leave a `gothui-generated-*` or `gothui-recipes-*` directory in the OS temporary
+can leave a `tendui-generated-*` or `tendui-recipes-*` directory in the OS temporary
 directory; confirm its process has stopped before removing it.
 
 ## Versioned consumer packaging
 
-Run `go mod download` first to cache dependencies, then run `gothui-dev consumer`
+Run `go mod download` first to cache dependencies, then run `tendui-dev consumer`
 from a clean commit. It archives that commit into a temporary file-based module
 proxy under the declared release version, without creating a tag or publishing.
 A separate consumer uses `go get` for the root, components and render packages,
@@ -63,7 +63,7 @@ Dependency archives come from the existing Go download cache and are verified
 against the committed checksums. Installation uses an isolated temporary module
 cache, so the unpublished fixture cannot enter the shared cache. Both the proxy
 and cache are removed on success and ordinary failures; an abrupt kill can leave
-a `gothui-consumer-*` directory. The invoking developer owns cleanup after
+a `tendui-consumer-*` directory. The invoking developer owns cleanup after
 confirming the process has stopped. The report records archive hash, module sum,
 source revision and cleanup status. Dirty sources are rejected without changes.
 The archive preserves committed file bytes and omits Git's explicit directory
@@ -78,12 +78,12 @@ published installation. Those remain separate release gates.
 ## Review executable and versioning
 
 ```sh
-go run ./cmd/gothui-dev build
-./tests/results/demos/gothui-demo -version
-./tests/results/demos/gothui-demo -open
+go run ./cmd/tendui-dev build
+./tests/results/demos/tendui-demo -version
+./tests/results/demos/tendui-demo -open
 ```
 
-On Windows the retained executable is `tests/results/demos/gothui-demo.exe`.
+On Windows the retained executable is `tests/results/demos/tendui-demo.exe`.
 
 Builds use `CGO_ENABLED=0`, `-trimpath` and stripped debug symbols. The command
 checks the candidate executable before replacing the single retained review
@@ -132,13 +132,13 @@ From a network-enabled development environment, run the pinned Go tool:
 go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 -show verbose ./...
 ```
 
-This development command does not add a GothUI runtime dependency or alter its
+This development command does not add a TendUI runtime dependency or alter its
 module requirements. It needs the Go module proxy and vulnerability database.
 Use text mode for a failing gate: machine-readable output modes can return zero
 with findings. Treat a database/network error as an incomplete check, never a
 clean result. The separate prepared CI security job preserves logs and exact
 source/toolchain metadata; [the CI guide](ci.md) records its scope and evidence.
-The ordinary `gothui-dev check` remains usable without a vulnerability database.
+The ordinary `tendui-dev check` remains usable without a vulnerability database.
 
 When the scanner cannot reach HTTPS directly, Go also publishes a
 [complete database snapshot and file-protocol instructions](https://go.dev/doc/security/vuln/database).

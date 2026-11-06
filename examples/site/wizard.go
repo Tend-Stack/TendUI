@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/components"
 )
 
 type wizardData struct {
@@ -111,7 +111,7 @@ func projectWizard(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	title := "Project brief · GothUI"
+	title := "Project brief · TendUI"
 	if !d.Done {
 		title = "Step " + strconv.Itoa(d.Step) + " of 3 · " + title
 	}

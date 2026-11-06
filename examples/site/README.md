@@ -1,7 +1,7 @@
-# GothUI demos
+# TendUI demos
 
 Twelve connected demo areas, including a component catalog, served by one Go executable. All pages use the embedded
-GothUI stylesheet and generated templ components. No frontend tooling or
+TendUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
 From the repository root:
@@ -13,14 +13,14 @@ go run ./examples/basic -open
 To build a self-contained executable with the stylesheet embedded:
 
 ```sh
-go run ./cmd/gothui-dev build
-./tests/results/demos/gothui-demo -version
-./tests/results/demos/gothui-demo -open
+go run ./cmd/tendui-dev build
+./tests/results/demos/tendui-demo -version
+./tests/results/demos/tendui-demo -open
 ```
 
 `-open` opens the playground after the listener starts, using `xdg-open` on Linux,
 `open` on macOS or the Windows URL handler. Without that flag, open the links
-below manually. On Windows, the built executable is `gothui-demo.exe`.
+below manually. On Windows, the built executable is `tendui-demo.exe`.
 Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 The build command checks size and version before replacing the review binary.
 `-version` prints the embedded Git identifier and exits without listening.
@@ -54,7 +54,7 @@ The Appearance page has **Preview changes**, **Save preferences**, and **Restore
 defaults**. Preview affects only the URL; saving stores preferences in HttpOnly,
 SameSite=Strict cookies, with Secure enabled over TLS. The library itself stores
 no settings. Downloads reflect the currently displayed preview, so apply or save
-edits before downloading. CSS overrides require the base GothUI stylesheet; the
+edits before downloading. CSS overrides require the base TendUI stylesheet; the
 Go export also includes light/dark/system mode. The Workspace page uses the
 reusable `components.AppShell` and the same saved preferences as other demos.
 
@@ -221,7 +221,7 @@ go test -race ./examples/site
 
 The current sandbox cannot bind local TCP sockets.
 The demos must be launched from a normal local terminal for browser review.
-A single review binary may be retained at `tests/results/demos/gothui-demo`;
+A single review binary may be retained at `tests/results/demos/tendui-demo`;
 run it with `-open` to avoid recompilation. The next demo build can replace it,
 and it can be removed after review.
 

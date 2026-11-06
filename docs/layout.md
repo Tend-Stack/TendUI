@@ -27,21 +27,21 @@ templ projectActions() {
 
 Both props accept `Gap components.Space`. Empty and unknown values normalize to
 `SpaceMedium`; choose `SpaceNone` explicitly for no gap. The scale derives from
-`--gothui-space`, so the existing root density setting and exported appearance
+`--tendui-space`, so the existing root density setting and exported appearance
 stylesheet apply automatically.
 
 | Go option | CSS token | Multiple of base space |
 | --- | --- | --- |
 | `SpaceNone` | Literal zero | 0 |
-| `SpaceExtraSmall` | `--gothui-space-xs` | 0.25 |
-| `SpaceSmall` | `--gothui-space-sm` | 0.5 |
-| `SpaceMedium` | `--gothui-space-md` | 1 |
-| `SpaceLarge` | `--gothui-space-lg` | 1.5 |
-| `SpaceExtraLarge` | `--gothui-space-xl` | 2 |
+| `SpaceExtraSmall` | `--tendui-space-xs` | 0.25 |
+| `SpaceSmall` | `--tendui-space-sm` | 0.5 |
+| `SpaceMedium` | `--tendui-space-md` | 1 |
+| `SpaceLarge` | `--tendui-space-lg` | 1.5 |
+| `SpaceExtraLarge` | `--tendui-space-xl` | 2 |
 
 Comfortable density uses a 1rem base; compact uses 0.75rem. Customize the scale
-at `:root` in your stylesheet loaded after GothUI. Root custom properties derive
-at the root: changing only `--gothui-space` on a descendant does not recalculate
+at `:root` in your stylesheet loaded after TendUI. Root custom properties derive
+at the root: changing only `--tendui-space` on a descendant does not recalculate
 root-derived tokens there. For a local adjustment, set the specific scale token
 on that container instead. Prefer the typed Gap prop for ordinary layout choices.
 

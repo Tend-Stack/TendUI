@@ -77,7 +77,7 @@ func TestAppearanceExportsAndUntrustedPreferences(t *testing.T) {
 			t.Fatal("missing download")
 		}
 		if ext == "css" {
-			if !strings.Contains(w.Body.String(), "--gothui-preset-rose-dark") {
+			if !strings.Contains(w.Body.String(), "--tendui-preset-rose-dark") {
 				t.Fatal("wrong preset export")
 			}
 		} else {

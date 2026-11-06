@@ -13,7 +13,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/components"
 )
 
 const (
@@ -48,7 +48,7 @@ func uploadDemo(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	renderPage(w, r, "CSV preview · GothUI", uploadPage(d), status)
+	renderPage(w, r, "CSV preview · TendUI", uploadPage(d), status)
 }
 
 // Bound the entire request before multipart parsing, including headers, extra parts

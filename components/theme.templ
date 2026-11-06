@@ -5,6 +5,8 @@ package components
 type ThemeToggleProps struct {
 	Label     string
 	CSRFToken string
+	// IconOnly hides the visible text; Label still names the button.
+	IconOnly bool
 }
 
 func themeToggleProps(options []ThemeToggleProps) ThemeToggleProps {
@@ -19,12 +21,37 @@ func themeToggleProps(options []ThemeToggleProps) ThemeToggleProps {
 // without a theme preview parameter that would override the saved cookie.
 templ ThemeToggle(options ...ThemeToggleProps) {
 	{{ props := themeToggleProps(options) }}
-	<form method="post" action="/api/theme/toggle" class="theme-toggle">
+	<form
+		method="post"
+		action="/api/theme/toggle"
+		class="theme-toggle"
+		if props.IconOnly {
+			data-icon-only="true"
+		}
+	>
 		if props.CSRFToken != "" {
 			<input type="hidden" name="csrf_token" value={ props.CSRFToken }/>
 		}
-		<button type="submit" class="outline" hx-post="/api/theme/toggle" hx-target="html" hx-swap="outerHTML">
-			<span aria-hidden="true">◐</span> { fallback(props.Label, "Toggle theme") }
+		<button
+			type="submit"
+			class="outline"
+			hx-post="/api/theme/toggle"
+			hx-target="html"
+			hx-swap="outerHTML"
+			if props.IconOnly {
+				aria-label={ fallback(props.Label, "Toggle theme") }
+				title={ fallback(props.Label, "Toggle theme") }
+			}
+		>
+			<span class="theme-toggle-icon" data-mode="light">
+				@Icon(IconProps{Name: IconMoon, Size: IconSizeSmall})
+			</span>
+			<span class="theme-toggle-icon" data-mode="dark">
+				@Icon(IconProps{Name: IconSun, Size: IconSizeSmall})
+			</span>
+			if !props.IconOnly {
+				{ fallback(props.Label, "Toggle theme") }
+			}
 		</button>
 	</form>
 }

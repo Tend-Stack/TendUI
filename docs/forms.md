@@ -1,6 +1,6 @@
 # Composable fields and native multi-step forms
 
-GothUI keeps form ownership in the Go application. Components supply semantic
+TendUI keeps form ownership in the Go application. Components supply semantic
 labels, controls and feedback; your handler owns validation, storage and request
 protection. The `/wizard` example exercises a complete native form flow without
 client JavaScript, accounts, cookies or a database.
@@ -133,7 +133,7 @@ ErrorSummary, Button and DataTable. `uploads.go` owns all request and CSV rules:
   existing cross-origin protection and restrictive CSP also apply here.
 
 The small in-memory preview is deliberately application code, not a general
-upload API in GothUI. It has no import, session, filesystem or database side
+upload API in TendUI. It has no import, session, filesystem or database side
 effect; repeating a POST repeats the preview. A real importer must supply its
 own authorization, storage lifecycle and mutation rules. This example does not
 promise virus scanning or support arbitrary file types.

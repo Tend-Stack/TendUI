@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Tend-Stack/GothUI/v2026"
+	"github.com/Tend-Stack/TendUI/v2026"
 )
 
 func proxyModulePath(path string) string {
@@ -90,7 +90,7 @@ func (r runner) consumerFixture() (proof map[string]any, resultErr error) {
 	if err != nil {
 		return nil, err
 	}
-	temp, err := os.MkdirTemp("", "gothui-consumer-")
+	temp, err := os.MkdirTemp("", "tendui-consumer-")
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (r runner) consumerFixture() (proof map[string]any, resultErr error) {
 			resultErr = errors.Join(resultErr, fmt.Errorf("remove owned consumer fixture %s: %w", temp, err))
 		}
 	}()
-	version := "v" + gothui.Version
+	version := "v" + tendui.Version
 	versionDir := filepath.Join(proxy, filepath.FromSlash(proxyModulePath(modulePath)), "@v")
 	for _, dir := range []string{consumer, versionDir} {
 		if err := os.MkdirAll(dir, 0755); err != nil {
@@ -138,7 +138,7 @@ func (r runner) consumerFixture() (proof map[string]any, resultErr error) {
 	files := map[string][]byte{
 		filepath.Join(versionDir, version+".mod"):   mod,
 		filepath.Join(versionDir, version+".info"):  []byte(fmt.Sprintf(`{"Version":%q,"Time":"2000-01-01T00:00:00Z"}`, version)),
-		filepath.Join(consumer, "go.mod"):           []byte("module example.invalid/gothui-consumer\n\ngo 1.26.0\n"),
+		filepath.Join(consumer, "go.mod"):           []byte("module example.invalid/tendui-consumer\n\ngo 1.26.0\n"),
 		filepath.Join(consumer, "go.sum"):           sums,
 		filepath.Join(consumer, "consumer_test.go"): []byte(consumerTestSource),
 	}
@@ -223,25 +223,25 @@ import (
     "strings"
     "testing"
 
-    "github.com/Tend-Stack/GothUI/v2026"
-    "github.com/Tend-Stack/GothUI/v2026/components"
-    "github.com/Tend-Stack/GothUI/v2026/render"
+    "github.com/Tend-Stack/TendUI/v2026"
+    "github.com/Tend-Stack/TendUI/v2026/components"
+    "github.com/Tend-Stack/TendUI/v2026/render"
 )
 
 func TestInstalledModule(t *testing.T) {
     mux := http.NewServeMux()
-    mux.Handle(gothui.AssetPath, gothui.AssetHandler())
+    mux.Handle(tendui.AssetPath, tendui.AssetHandler())
     css := httptest.NewRecorder()
-    mux.ServeHTTP(css, httptest.NewRequest("GET", gothui.StylesheetURL, nil))
+    mux.ServeHTTP(css, httptest.NewRequest("GET", tendui.StylesheetURL, nil))
     if css.Code != 200 || !strings.Contains(css.Body.String(), ":root") || css.Header().Get("ETag") == "" {
         t.Fatal("installed module lost embedded stylesheet")
     }
-    page := components.Layout(components.LayoutProps{Title: "Installed <GothUI>"},
+    page := components.Layout(components.LayoutProps{Title: "Installed <TendUI>"},
         components.Card(components.CardProps{Body: components.Button(components.ButtonProps{Text: "Go <native>"})}))
     response := httptest.NewRecorder()
     if err := render.HTML(response, httptest.NewRequest("GET", "/", nil), 200, page, nil); err != nil { t.Fatal(err) }
     body := response.Body.String()
-    for _, want := range []string{"<!doctype html>", "Installed &lt;GothUI&gt;", "Go &lt;native&gt;", gothui.StylesheetURL} {
+    for _, want := range []string{"<!doctype html>", "Installed &lt;TendUI&gt;", "Go &lt;native&gt;", tendui.StylesheetURL} {
         if !strings.Contains(body, want) { t.Errorf("installed components missing %q", want) }
     }
     if response.Code != 200 || strings.Contains(body, "<script") { t.Fatal("unexpected installed page") }

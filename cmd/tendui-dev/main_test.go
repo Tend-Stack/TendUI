@@ -16,13 +16,13 @@ func TestRunnerOutputSeparatesDiagnostics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("GOTHUI_TEST_OUTPUT_HELPER", "1")
+	t.Setenv("TENDUI_TEST_OUTPUT_HELPER", "1")
 	r := runner{root: t.TempDir(), goTool: goExecutable()}
 	output, err := r.output(executable, "-test.run=^TestRunnerOutputHelper$")
 	if err != nil || output != `{"package":"example.invalid/demo"}` {
 		t.Fatalf("successful diagnostics contaminated machine output: %q, %v", output, err)
 	}
-	t.Setenv("GOTHUI_TEST_OUTPUT_FAILURE", "1")
+	t.Setenv("TENDUI_TEST_OUTPUT_FAILURE", "1")
 	output, err = r.output(executable, "-test.run=^TestRunnerOutputHelper$")
 	if output != "" || err == nil || !strings.Contains(err.Error(), "fixture diagnostic") || !strings.Contains(err.Error(), "exit status") {
 		t.Fatalf("failed command lost diagnostics: %q, %v", output, err)
@@ -31,12 +31,12 @@ func TestRunnerOutputSeparatesDiagnostics(t *testing.T) {
 
 // A subprocess fixture is portable across native Unix and Windows tests.
 func TestRunnerOutputHelper(t *testing.T) {
-	if os.Getenv("GOTHUI_TEST_OUTPUT_HELPER") != "1" {
+	if os.Getenv("TENDUI_TEST_OUTPUT_HELPER") != "1" {
 		return
 	}
 	fmt.Fprintln(os.Stdout, `{"package":"example.invalid/demo"}`)
 	fmt.Fprintln(os.Stderr, "fixture diagnostic on stderr")
-	if os.Getenv("GOTHUI_TEST_OUTPUT_FAILURE") == "1" {
+	if os.Getenv("TENDUI_TEST_OUTPUT_FAILURE") == "1" {
 		os.Exit(7)
 	}
 	os.Exit(0)
@@ -46,7 +46,7 @@ func TestBuildVersionUsesGitAndIncludesUntrackedWork(t *testing.T) {
 	dir := t.TempDir()
 	git := func(args ...string) string {
 		t.Helper()
-		cmd := exec.Command("git", append([]string{"-c", "user.name=GothUI test", "-c", "user.email=test@example.invalid"}, args...)...)
+		cmd := exec.Command("git", append([]string{"-c", "user.name=TendUI test", "-c", "user.email=test@example.invalid"}, args...)...)
 		cmd.Dir = dir
 		b, err := cmd.CombinedOutput()
 		if err != nil {

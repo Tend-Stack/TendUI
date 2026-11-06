@@ -26,7 +26,7 @@ func TestElevationPreferencesAcrossDemosAndExports(t *testing.T) {
 			h.ServeHTTP(w, r)
 			want := `data-elevation="` + level + `"`
 			if path == "/appearance.css" {
-				want = "--gothui-shadow: var(--gothui-elevation-" + level + ")"
+				want = "--tendui-shadow: var(--tendui-elevation-" + level + ")"
 			} else if path == "/appearance.go" {
 				want = `Elevation: "` + level + `"`
 			}

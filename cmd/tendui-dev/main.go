@@ -1,4 +1,4 @@
-// gothui-dev provides repeatable local checks without frontend tooling.
+// tendui-dev provides repeatable local checks without frontend tooling.
 package main
 
 import (
@@ -20,11 +20,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Tend-Stack/GothUI/v2026"
-	"github.com/Tend-Stack/GothUI/v2026/internal/recipes"
+	"github.com/Tend-Stack/TendUI/v2026"
+	"github.com/Tend-Stack/TendUI/v2026/internal/recipes"
 )
 
-const modulePath = "github.com/Tend-Stack/GothUI/v2026"
+const modulePath = "github.com/Tend-Stack/TendUI/v2026"
 const stylesheetBudget = 64 << 10
 const demoBudget = 16 << 20
 
@@ -32,7 +32,7 @@ type runner struct{ root, results, goTool, templTool string }
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Fprintln(os.Stderr, "usage: go run ./cmd/gothui-dev check|api|generated|recipes|consumer|bench|build")
+		fmt.Fprintln(os.Stderr, "usage: go run ./cmd/tendui-dev check|api|generated|recipes|consumer|bench|build")
 		os.Exit(2)
 	}
 	root, err := os.Getwd()
@@ -41,7 +41,7 @@ func main() {
 	}
 	mod, err := os.ReadFile(filepath.Join(root, "go.mod"))
 	if err != nil || !bytes.Contains(mod, []byte("module "+modulePath+"\n")) {
-		fatal(errors.New("run gothui-dev from the repository root"))
+		fatal(errors.New("run tendui-dev from the repository root"))
 	}
 	r := runner{root: root, results: filepath.Join(root, "tests/results/validation"), goTool: goExecutable(), templTool: os.Getenv("TEMPL")}
 	if r.templTool == "" {
@@ -176,7 +176,7 @@ func (r runner) check() error {
 			return fmt.Errorf("%s needs gofmt", path)
 		}
 	}
-	css, err := os.Stat(filepath.Join(r.root, "static/gothui.css"))
+	css, err := os.Stat(filepath.Join(r.root, "static/tendui.css"))
 	if err != nil {
 		return err
 	}
@@ -242,7 +242,7 @@ func (r runner) generated() error {
 	if err := r.generator(); err != nil {
 		return err
 	}
-	temp, err := os.MkdirTemp("", "gothui-generated-")
+	temp, err := os.MkdirTemp("", "tendui-generated-")
 	if err != nil {
 		return err
 	}
@@ -287,7 +287,7 @@ func (r runner) recipes() error {
 	if err := r.generator(); err != nil {
 		return err
 	}
-	temp, err := os.MkdirTemp("", "gothui-recipes-")
+	temp, err := os.MkdirTemp("", "tendui-recipes-")
 	if err != nil {
 		return err
 	}
@@ -322,7 +322,7 @@ func (r runner) recipes() error {
 	if err != nil {
 		return err
 	}
-	mod := fmt.Sprintf("module gothui-recipe-check\n\ngo 1.26.0\n\nrequire (\n %s v%s\n github.com/a-h/templ %s\n)\n\nreplace %s => %q\n", modulePath, gothui.Version, templVersion, modulePath, r.root)
+	mod := fmt.Sprintf("module tendui-recipe-check\n\ngo 1.26.0\n\nrequire (\n %s v%s\n github.com/a-h/templ %s\n)\n\nreplace %s => %q\n", modulePath, tendui.Version, templVersion, modulePath, r.root)
 	if err := os.WriteFile(filepath.Join(temp, "go.mod"), []byte(mod), 0644); err != nil {
 		return err
 	}
@@ -345,7 +345,7 @@ func (r runner) buildVersion() (string, error) {
 		if err != nil {
 			return "", err
 		}
-		describe = gothui.Version + "-dev-g" + revision
+		describe = tendui.Version + "-dev-g" + revision
 	}
 	dirty, err := r.output("git", "status", "--porcelain", "--untracked-files=normal")
 	if err != nil {
@@ -369,7 +369,7 @@ func (r runner) build() error {
 	if err := os.MkdirAll(output, 0755); err != nil {
 		return err
 	}
-	f, err := os.CreateTemp(output, executableName(".gothui-build-*", runtime.GOOS))
+	f, err := os.CreateTemp(output, executableName(".tendui-build-*", runtime.GOOS))
 	if err != nil {
 		return err
 	}
@@ -435,7 +435,7 @@ func (r runner) build() error {
 	if err != nil {
 		return err
 	}
-	name := executableName("gothui-demo", runtime.GOOS)
+	name := executableName("tendui-demo", runtime.GOOS)
 	if err := os.Rename(temp, filepath.Join(output, name)); err != nil {
 		return err
 	}
