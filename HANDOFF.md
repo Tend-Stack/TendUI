@@ -1,5 +1,40 @@
 # GothUI implementation handoff
 
+## Native interactions and navigation milestone (2026-11-05)
+
+Added Dialog, Popover, Breadcrumbs, and Pagination with generated Go. Button
+accepts typed native dialog commands and popover actions; native targets always
+render as type=button. Invalid overlay IDs fail rendering. Dialogs include a
+native close form and labels; popovers have automatic/manual modes with explicit
+close controls. No scripts or dependencies were added, and native selects remain
+unchanged as accepted by the operator.
+
+The new `/interactions` page demonstrates popovers, a modal, and a bounded,
+cross-origin-protected confirmation POST that saves/mutates nothing. An ordinary
+page provides the same confirmation flow without newer dialog command support.
+The example now has seven pages. The dashboard adds sorting, page size, and real
+pagination while retaining search/status/appearance in page URLs. Sorting uses
+a request-owned slice and does not mutate shared sample data.
+
+Component/HTTP tests cover native attributes, safe labels/URLs, render errors,
+pagination boundaries including maximum integers, bounded output, filters/sort,
+confirmation methods/body limits, fallback rendering, and cross-origin rejection.
+Race-enabled tests and vet are part of this milestone's verification. Native
+focus, keyboard behavior, and browser layout/compatibility remain pending manual
+review; this restricted session cannot start the local HTTP server. Earlier
+operator approval establishes the appearance/native-select baseline only.
+
+The current demo executable is replaced atomically at
+`tests/results/demos/gothui-demo`; existing demo processes remain untouched and
+must be restarted to load this build. One executable and concise test logs are
+retained for operator review, owned by the developer continuing this task and
+replaceable/removable after review. The task's temporary Go cache is removed.
+Earlier successful-run logs are removed after the new full validation; their
+results remain summarized below. The latest four navigation validation logs and
+the earlier socket-launch failure log remain as bounded review evidence.
+Remote delivery remains pending; advanced HTMX workflows and richer table
+abstractions remain later roadmap work.
+
 ## Appearance and application components milestone (2026-11-05)
 
 Implemented independent typed appearance settings: four accent presets

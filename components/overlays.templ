@@ -1,0 +1,118 @@
+package components
+
+import (
+	"fmt"
+	"strings"
+	"unicode"
+)
+
+type DialogCommand string
+type PopoverAction string
+type PopoverMode string
+
+const (
+	DialogShowModal    DialogCommand = "show-modal"
+	DialogClose        DialogCommand = "close"
+	DialogRequestClose DialogCommand = "request-close"
+	PopoverToggle      PopoverAction = "toggle"
+	PopoverShow        PopoverAction = "show"
+	PopoverHide        PopoverAction = "hide"
+	PopoverAuto        PopoverMode   = "auto"
+	PopoverManual      PopoverMode   = "manual"
+)
+
+func nativeButtonType(props ButtonProps) string {
+	if props.CommandFor != "" || props.PopoverTarget != "" {
+		return "button"
+	}
+	return buttonType(props.Type)
+}
+
+func nativeButtonAttrs(props ButtonProps) templ.Attributes {
+	if props.CommandFor != "" {
+		switch props.Command {
+		case DialogShowModal, DialogClose, DialogRequestClose:
+			return templ.Attributes{"commandfor": props.CommandFor, "command": string(props.Command)}
+		}
+		return nil
+	}
+	if props.PopoverTarget != "" {
+		return templ.Attributes{"popovertarget": props.PopoverTarget, "popovertargetaction": string(allowed(props.PopoverAction, PopoverToggle, PopoverToggle, PopoverShow, PopoverHide))}
+	}
+	return nil
+}
+
+func validateOverlayID(id string) error {
+	if id == "" || strings.IndexFunc(id, unicode.IsSpace) >= 0 {
+		return fmt.Errorf("gothui: overlay ID must be nonempty and contain no whitespace")
+	}
+	return nil
+}
+
+// Dialog requires a unique ID. Keep it outside other forms. Children may contain a form.
+// Opening uses Button's DialogShowModal command; unsupported browsers need an application fallback.
+type DialogProps struct {
+	ID          string
+	Title       string
+	Description string
+	CloseLabel  string
+	Footer      templ.Component
+}
+
+templ Dialog(props DialogProps) {
+	{{
+		if err := validateOverlayID(props.ID); err != nil {
+			return err
+		}
+	}}
+	<dialog
+		id={ props.ID }
+		class="gothui-dialog"
+		aria-labelledby={ props.ID + "-title" }
+		if props.Description != "" {
+			aria-describedby={ props.ID + "-description" }
+		}
+	>
+		<header class="overlay-header">
+			<h2 id={ props.ID + "-title" }>{ fallback(props.Title, "Dialog") }</h2>
+			<form method="dialog" class="overlay-close-form">
+				<button type="submit" class="outline" autofocus>{ fallback(props.CloseLabel, "Close") }</button>
+			</form>
+		</header>
+		<div class="overlay-body">
+			if props.Description != "" {
+				<p id={ props.ID + "-description" }>{ props.Description }</p>
+			}
+			{ children... }
+		</div>
+		if props.Footer != nil {
+			<footer class="overlay-footer">@props.Footer</footer>
+		}
+	</dialog>
+}
+
+// Popover is non-modal content, not an ARIA menu. Automatic mode supports light dismissal;
+// manual mode requires an explicit close action. A close button is supplied in both modes.
+type PopoverProps struct {
+	ID         string
+	Title      string
+	Mode       PopoverMode
+	CloseLabel string
+}
+
+templ Popover(props PopoverProps) {
+	{{
+		if err := validateOverlayID(props.ID); err != nil {
+			return err
+		}
+	}}
+	<section id={ props.ID } class="gothui-popover" popover={ string(allowed(props.Mode, PopoverAuto, PopoverAuto, PopoverManual)) } aria-labelledby={ props.ID + "-title" }>
+		<header class="overlay-header">
+			<h2 id={ props.ID + "-title" }>{ fallback(props.Title, "Details") }</h2>
+			@Button(ButtonProps{Text: fallback(props.CloseLabel, "Close"), Outline: true, PopoverTarget: props.ID, PopoverAction: PopoverHide})
+		</header>
+		<div class="overlay-body">
+			{ children... }
+		</div>
+	</section>
+}

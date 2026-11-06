@@ -6,6 +6,7 @@ import "github.com/Tend-Stack/GothUI/v2026/components"
 templ dashboard(d dashboardOptions) {
 	@demoHeader("/dashboard")
 	<main id="main">
+		@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "Workspace", Href: "/workspace"}, {Label: "Projects"}}})
 		<section>
 			<p class="muted">A SMALL STUDIO / DEMO WORKSPACE</p>
 			<h1>A clearer view of your work.</h1>
@@ -34,10 +35,14 @@ templ dashboard(d dashboardOptions) {
 					@components.Input(components.InputProps{Name: "q", Label: "Search projects", Type: components.InputSearch, Value: d.Search, Placeholder: "Try design or portal"})
 					@components.Select(components.SelectProps{Name: "status", Label: "Status", Value: d.Status, Options: []components.Option{{Label: "All projects", Value: "all"}, {Label: "Active", Value: "active"}, {Label: "Complete", Value: "complete"}, {Label: "On hold", Value: "paused"}}})
 				}
+				@components.Grid(components.GridProps{}) {
+					@components.Select(components.SelectProps{Name: "sort", Label: "Sort by", Value: d.Sort, Options: []components.Option{{Label: "Project name (A–Z)", Value: "name"}, {Label: "Progress (highest first)", Value: "progress"}, {Label: "Due date (earliest first)", Value: "due"}}})
+					@components.Select(components.SelectProps{Name: "per_page", Label: "Projects per page", Value: strconv.Itoa(d.PageSize), Options: []components.Option{{Label: "2 projects", Value: "2"}, {Label: "5 projects", Value: "5"}}})
+				}
 				<div class="cluster">@components.Button(components.ButtonProps{Text: "Filter projects", Type: components.ButtonTypeSubmit}) <a href="/dashboard">Clear filters</a></div>
 			}
 			@components.Card(components.CardProps{}) {
-				<p role="status">{ strconv.Itoa(len(d.Projects)) } projects match your filters.</p>
+				<p role="status">{ strconv.Itoa(d.Total) } projects match your filters.</p>
 				if len(d.Projects) == 0 {
 					<h3>No matching projects.</h3>
 					<p>Try “design,” switch the status, or clear your filters.</p><a href="/dashboard">Show all projects</a>
@@ -45,7 +50,22 @@ templ dashboard(d dashboardOptions) {
 					<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable projects table">
 						<table>
 							<caption>Sample project portfolio</caption>
-							<thead><tr><th scope="col">Project</th><th scope="col">Discipline</th><th scope="col">Status</th><th scope="col">Due</th><th scope="col">Progress</th></tr></thead>
+							<thead><tr><th
+	scope="col"
+	if d.Sort == "name" {
+		aria-sort="ascending"
+	}
+>Project</th><th scope="col">Discipline</th><th scope="col">Status</th><th
+	scope="col"
+	if d.Sort == "due" {
+		aria-sort="ascending"
+	}
+>Due</th><th
+	scope="col"
+	if d.Sort == "progress" {
+		aria-sort="descending"
+	}
+>Progress</th></tr></thead>
 							<tbody>
 								for _, p := range d.Projects {
 									<tr><th scope="row">{ p.Name }</th><td>{ p.Category }</td><td>{ p.Status }</td><td>{ p.Due }</td><td><progress aria-label={ p.Name + " progress" } value={ p.Progress } max="100">{ p.Progress }%</progress><small>{ p.Progress }%</small></td></tr>
@@ -53,6 +73,8 @@ templ dashboard(d dashboardOptions) {
 							</tbody>
 						</table>
 					</div>
+					<p class="muted">Showing { strconv.Itoa(d.Start) }–{ strconv.Itoa(d.End) } of { strconv.Itoa(d.Total) } projects.</p>
+					@components.Pagination(components.PaginationProps{Page: d.Page, TotalPages: d.TotalPages, URLForPage: d.PageURL})
 				}
 			}
 		</section>

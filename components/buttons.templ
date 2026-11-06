@@ -22,6 +22,12 @@ type ButtonProps struct {
 	HxTarget    string
 	HxSwap      string
 	HxIndicator string
+	// Native targets always use type=button so they cannot accidentally submit a form.
+	CommandFor    string
+	Command       DialogCommand
+	PopoverTarget string
+	PopoverAction PopoverAction
+	AutoFocus     bool
 }
 
 func buttonType(t ButtonType) string {
@@ -35,9 +41,11 @@ func buttonType(t ButtonType) string {
 
 templ Button(props ButtonProps) {
 	<button
-		type={ buttonType(props.Type) }
+		type={ nativeButtonType(props) }
 		class={ templ.KV("primary", props.Primary), templ.KV("outline", props.Outline) }
 		disabled?={ props.Disabled }
+		autofocus?={ props.AutoFocus }
+		{ nativeButtonAttrs(props)... }
 		if props.ID != "" {
 			id={ props.ID }
 		}

@@ -1,0 +1,119 @@
+package components
+
+import (
+	"fmt"
+	"strconv"
+)
+
+type BreadcrumbItem struct {
+	Label string
+	Href  string
+}
+type BreadcrumbsProps struct {
+	Label string
+	Items []BreadcrumbItem
+}
+
+// The final breadcrumb is always the current page and is rendered without a link.
+templ Breadcrumbs(props BreadcrumbsProps) {
+	if len(props.Items) > 0 {
+		<nav class="breadcrumbs" aria-label={ fallback(props.Label, "Breadcrumb") }>
+			<ol>
+				for i, item := range props.Items {
+					<li>
+						if i > 0 {
+							<span aria-hidden="true" class="breadcrumb-separator">/</span>
+						}
+						if i == len(props.Items)-1 {
+							<span aria-current="page">{ item.Label }</span>
+						} else if item.Href != "" {
+							<a href={ templ.URL(item.Href) }>{ item.Label }</a>
+						} else {
+							<span>{ item.Label }</span>
+						}
+					</li>
+				}
+			</ol>
+		</nav>
+	}
+}
+
+type PaginationProps struct {
+	Page       int
+	TotalPages int
+	// URLForPage must preserve application filters and return a URL for the supplied page.
+	// It is required when TotalPages > 1 and is called only with in-range pages.
+	URLForPage    func(int) string
+	Label         string
+	PreviousLabel string
+	NextLabel     string
+	PageLabel     string
+}
+
+func currentPage(page, total int) int { return max(1, min(page, max(total, 1))) }
+
+// Zero denotes an ellipsis. The window is bounded even for very large totals.
+func paginationWindow(page, total int) []int {
+	if total < 1 {
+		return nil
+	}
+	page = currentPage(page, total)
+	pages := []int{1}
+	start, end := max(2, page-2), total-1
+	if page < total-2 {
+		end = page + 2
+	}
+	if start > 2 {
+		pages = append(pages, 0)
+	}
+	for n := start; n <= end; n++ {
+		pages = append(pages, n)
+	}
+	if end < total-1 {
+		pages = append(pages, 0)
+	}
+	if total > 1 {
+		pages = append(pages, total)
+	}
+	return pages
+}
+
+templ Pagination(props PaginationProps) {
+	if props.TotalPages > 1 {
+		{{
+			if props.URLForPage == nil {
+				return fmt.Errorf("gothui: Pagination requires URLForPage when TotalPages > 1")
+			}
+		}}
+		{{ page := currentPage(props.Page, props.TotalPages) }}
+		<nav class="pagination" aria-label={ fallback(props.Label, "Pagination") }>
+			<ul>
+				<li>
+					if page > 1 {
+						<a href={ templ.URL(props.URLForPage(page - 1)) } rel="prev">{ fallback(props.PreviousLabel,"Previous") }</a>
+					} else {
+						<span aria-disabled="true">{ fallback(props.PreviousLabel,"Previous") }</span>
+					}
+				</li>
+				for _, n := range paginationWindow(page, props.TotalPages) {
+					<li>
+						if n == 0 {
+							<span class="pagination-gap" aria-hidden="true">…</span>
+						} else if n == page {
+							<span aria-current="page"><span class="sr-only">{ fallback(props.PageLabel, "Page") } </span>{ strconv.Itoa(n) }</span>
+						} else {
+							<a href={ templ.URL(props.URLForPage(n)) } aria-label={ fallback(props.PageLabel, "Page") + " " + strconv.Itoa(n) }>{ strconv.Itoa(n) }</a>
+						}
+					</li>
+				}
+				<li>
+					if page < props.TotalPages {
+						<a href={ templ.URL(props.URLForPage(page + 1)) } rel="next">{ fallback(props.NextLabel,"Next") }</a>
+					} else {
+						<span aria-disabled="true">{ fallback(props.NextLabel,"Next") }</span>
+					}
+				</li>
+			</ul>
+		</nav>
+	}
+}

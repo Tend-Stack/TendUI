@@ -102,21 +102,6 @@ var demoProjects = []project{
 	{"Team handbook", "Operations", "complete", "Nov 02", "100"},
 }
 
-type dashboardOptions struct {
-	Search, Status string
-	Projects       []project
-}
-
-func readDashboard(q url.Values) dashboardOptions {
-	d := dashboardOptions{Search: q.Get("q"), Status: choice(q.Get("status"), "all", "all", "active", "paused", "complete")}
-	for _, p := range demoProjects {
-		if (d.Status == "all" || p.Status == d.Status) && strings.Contains(strings.ToLower(p.Name+" "+p.Category), strings.ToLower(d.Search)) {
-			d.Projects = append(d.Projects, p)
-		}
-	}
-	return d
-}
-
 func fieldHint(message, fallback string) string {
 	if message != "" {
 		return message
