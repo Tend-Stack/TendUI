@@ -336,12 +336,6 @@ tbody tr:nth-child(even) { background: var(--gothui-subtle); }
   *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
 
-@media print {
-  :root { color-scheme: light; --gothui-background: white; --gothui-surface: white; --gothui-text: black; --gothui-muted: #333; --gothui-primary: #333; }
-  article { box-shadow: none; break-inside: avoid; }
-  .theme-toggle { display: none; }
-}
-
 /* Feedback uses semantic tones with text labels as well as color. */
 [data-tone="neutral"] { --gothui-tone: var(--gothui-muted); }
 [data-tone="info"] { --gothui-tone: var(--gothui-info); }
@@ -384,11 +378,6 @@ button, .button { max-inline-size: 100%; overflow-wrap: anywhere; }
   input[type="checkbox"][role="switch"] { appearance: auto; inline-size: 1.2rem; block-size: 1.2rem; }
   input[role="switch"]::before { content: none; }
 }
-@media print {
-  .app-shell { display: block; }
-  .app-sidebar, .skip-link { display: none; }
-}
-
 /* Native overlays. Leave display to the browser so closed dialogs/popovers stay hidden.
    On browsers without popover support the panel remains readable inline. */
 .gothui-dialog, .gothui-popover {
@@ -423,10 +412,6 @@ button, .button { max-inline-size: 100%; overflow-wrap: anywhere; }
 .pagination [aria-disabled="true"] { color: var(--gothui-muted); border-style: dashed; }
 .pagination .pagination-gap { border: 0; min-inline-size: 1rem; padding-inline: .25rem; }
 .pagination a:hover { background: var(--gothui-subtle); }
-@media print {
-  .gothui-dialog, .gothui-popover, .pagination { display: none; }
-}
-
 /* Expressive surfaces keep text on an opaque surface for predictable contrast. */
 article[data-surface="tinted"] { background: var(--gothui-subtle); }
 article[data-surface="outlined"] { border: 2px solid var(--gothui-primary); box-shadow: none; }
@@ -496,11 +481,6 @@ article[data-surface="gradient"] {
   article[data-surface="gradient"] { background: Canvas; border-color: CanvasText; }
   .skeleton-line, .skeleton-avatar { background: Canvas; border-color: CanvasText; }
 }
-@media print {
-  *, *::before, *::after { animation: none !important; transition: none !important; translate: none !important; }
-  article[data-surface="gradient"] { background: none; border-color: currentColor; }
-}
-
 /* Data tables retain native table/row/header semantics at every viewport width. */
 .data-table { margin-block-end: .75rem; }
 .data-table caption { font-weight: 650; text-align: start; padding-block-end: .75rem; }
@@ -534,11 +514,6 @@ article[data-surface="gradient"] {
 .steps [data-completed="true"] .step-number { border-style: double; border-width: 3px; }
 .disclosure-body { padding-block-start: .75rem; }
 .disclosure-body > :last-child { margin-block-end: 0; }
-@media print {
- .table-scroll { overflow: visible; }
- .tabs [aria-disabled="true"] { display: none; }
-}
-
 /* Composable fields connect labels, help and errors to a single native control. */
 .field { min-inline-size: 0; margin-block-end: 1.25rem; }
 .field > label { margin-block-end: .35rem; font-weight: 600; }
@@ -586,3 +561,47 @@ article[data-surface="gradient"] {
 .layout-cluster[data-layout-justify="center"] { justify-content: center; }
 .layout-cluster[data-layout-justify="end"] { justify-content: flex-end; }
 .layout-cluster[data-layout-justify="between"] { justify-content: space-between; }
+
+/* Print is a separate, opaque palette. Important tokens intentionally override
+   more-specific dark selectors and ordinary exported appearance overrides.
+   Do not require background-graphics printing to keep text or controls visible. */
+@media print {
+  :root {
+    color-scheme: light !important;
+    --gothui-background: #ffffff !important;
+    --gothui-surface: #ffffff !important;
+    --gothui-subtle: #ffffff !important;
+    --gothui-text: #000000 !important;
+    --gothui-muted: #333333 !important;
+    --gothui-border: #666666 !important;
+    --gothui-primary: #333333 !important;
+    --gothui-primary-hover: #000000 !important;
+    --gothui-on-primary: #ffffff !important;
+    --gothui-danger: #333333 !important;
+    --gothui-info: #333333 !important;
+    --gothui-success: #333333 !important;
+    --gothui-warning: #333333 !important;
+    --gothui-focus: #333333 !important;
+    --gothui-shadow: none !important;
+  }
+  *, *::before, *::after { animation: none !important; transition: none !important; translate: none !important; }
+  article { box-shadow: none; break-inside: avoid; }
+  article[data-surface="gradient"] { background: none; border-color: currentColor; }
+  .app-shell { display: block; min-block-size: 0; }
+  .app-sidebar, .skip-link, .theme-toggle, .gothui-dialog, .gothui-popover, .pagination { display: none; }
+  .table-scroll { overflow: visible; }
+  .tabs [aria-disabled="true"] { display: none; }
+  button, .button, input:is([type="submit"], [type="button"], [type="reset"]) {
+    background: transparent !important;
+    color: var(--gothui-text) !important;
+    border-color: var(--gothui-border) !important;
+  }
+  .steps [aria-current="step"] .step-number {
+    background: transparent;
+    color: var(--gothui-text);
+    border-color: var(--gothui-border);
+    border-width: 2px;
+  }
+  input[type="checkbox"][role="switch"] { appearance: auto; inline-size: 1.2rem; block-size: 1.2rem; }
+  input[role="switch"]::before { content: none; }
+}

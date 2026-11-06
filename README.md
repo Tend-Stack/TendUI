@@ -415,6 +415,14 @@ preview: download a sample, upload up to 64 KiB/50 rows, and inspect validated
 results or line-specific errors. Uploaded content stays in request memory;
 nothing is saved or imported. See the form guide for limits and HTTP behavior.
 
+## Accessibility and print
+
+Palette checks cover all built-in presets across page, card and subtle surfaces.
+Print uses a neutral palette independent of the screen theme, with readable
+outlined actions and native checkbox rendering for switches. See the
+[accessibility and print guide](docs/accessibility.md) for the measured scope,
+customization rules and browser checks still required.
+
 ## Layout composition
 
 `Stack` provides vertical rhythm; `Cluster` wraps actions and other related items
