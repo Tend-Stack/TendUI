@@ -8,7 +8,7 @@ Harassment, threats, discriminatory abuse, sexualized conduct, doxxing, and
 publication of another person's private information are not acceptable. This
 policy applies to repository issues, pull requests and other project-run spaces.
 
-Report concerns privately to **hello@tendstack.com**. Include links and relevant
+Report concerns privately to **conduct@tendstack.com**. Include links and relevant
 context, avoiding unnecessary personal information. Reports will be handled as
 privately as practicable; information may be shared where needed to investigate
 or protect participants. No response-time guarantee is promised.

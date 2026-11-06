@@ -5,7 +5,7 @@ labels: [bug]
 body:
   - type: markdown
     attributes:
-      value: "For vulnerabilities, email hello@tendstack.com privately. Do not include credentials or user data."
+      value: "For vulnerabilities, email security@tendstack.com privately. Do not include credentials or user data."
   - type: input
     id: version
     attributes:
