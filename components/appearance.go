@@ -36,6 +36,8 @@ const (
 	WidthWide          ContentWidth     = "wide"
 	ElevationRaised    Elevation        = "raised"
 	ElevationFlat      Elevation        = "flat"
+	ElevationSubtle    Elevation        = "subtle"
+	ElevationFloating  Elevation        = "floating"
 	MotionSystem       MotionPreference = "system"
 	MotionOff          MotionPreference = "off"
 )
@@ -69,7 +71,7 @@ func (a Appearance) Normalize() Appearance {
 	a.Typography = allowed(a.Typography, TypographySans, TypographySans, TypographySerif, TypographyMono)
 	a.TextSize = allowed(a.TextSize, TextStandard, TextStandard, TextLarge)
 	a.Width = allowed(a.Width, WidthStandard, WidthStandard, WidthNarrow, WidthWide)
-	a.Elevation = allowed(a.Elevation, ElevationRaised, ElevationRaised, ElevationFlat)
+	a.Elevation = allowed(a.Elevation, ElevationRaised, ElevationRaised, ElevationFlat, ElevationSubtle, ElevationFloating)
 	a.Motion = allowed(a.Motion, MotionSystem, MotionSystem, MotionOff)
 	return a
 }

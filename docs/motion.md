@@ -39,6 +39,41 @@ It does not make the article interactive: provide a real link/button for actions
 Focus outlines are not animated or removed. On touch-only devices, pointer hover
 motion is not applied.
 
+### Elevation
+
+The shared `Elevation` type has four choices: `ElevationFlat`, `ElevationSubtle`,
+`ElevationRaised` and `ElevationFloating`. `Appearance.Elevation` sets the page's
+card and overlay shadow. Raised remains the default. The Appearance editor and
+playground expose all four choices and include them in saved preferences and
+CSS/Go downloads. `/motion` compares them and lets you change the page setting.
+
+```templ
+@components.Card(components.CardProps{
+    Surface: components.SurfaceTinted,
+    Elevation: components.ElevationSubtle,
+}) {
+    <h2>A quieter surface</h2>
+    <p>A small shadow separates this card from its background.</p>
+}
+```
+
+Card's optional `Elevation` overrides the page setting, including a flat page.
+Empty or unknown values inherit the page setting. An override affects only that
+card; a nested card still follows the page unless it has its own override.
+Outlined cards always remain shadow-free. Shadows do not change stacking order,
+create an interaction or communicate state by themselves. All surfaces retain
+borders, and print and forced-color modes suppress shadows.
+
+CSS consumers can use `data-card-elevation="subtle"` on an article. The shadow
+tokens are `--gothui-elevation-flat`, `--gothui-elevation-subtle`,
+`--gothui-elevation-raised` and `--gothui-elevation-floating`; light, explicit dark
+and system dark provide consistent variants. `--gothui-shadow` is the page alias
+used by default cards and overlays. Custom styles should preserve the print and
+forced-color overrides. Review depth, clipping and readability in a browser;
+source-level tests do not measure the rendered effect.
+
+### Entrance behavior
+
 Entrance effects: `EntryFade`, `EntryRise` (half a rem), and `EntryScale` (98% to
 100%). The zero value applies none. Invalid enum values fall back to none.
 Entrances run once when inserted, including an HTMX fragment inserted by a

@@ -140,3 +140,16 @@ Global heading/line-height declarations now reference five named tokens with the
 same previous default values. Prose-specific reading styles apply only inside
 its wrapper. Existing Go callers need no import or props changes; visual browser
 review remains required when adopting it or overriding the new typography tokens.
+
+## Development addition: surface elevation
+
+`ElevationSubtle` and `ElevationFloating` extend the existing `Elevation` type.
+`Appearance.Normalize`, root attributes and CSS exports accept both values;
+the default remains `ElevationRaised`. `CardProps.Elevation` is an optional
+per-card override. Existing keyed literals keep their behavior when it is omitted.
+Unkeyed `CardProps` literals need migration to keyed fields when adding this field:
+use `CardProps{Body: body}` rather than positional construction. This is an
+intentional pre-release API addition, not a claim of source compatibility for
+positional literals. The shared shadow tokens and per-card attribute are described
+in [motion and surfaces](motion.md#elevation). Outlined, print and forced-color
+styles suppress shadows regardless of the requested elevation.

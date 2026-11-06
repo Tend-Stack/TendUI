@@ -53,6 +53,7 @@ func TestAppearanceExportsUseExistingTokens(t *testing.T) {
 	for _, a := range []Appearance{
 		{}, {Preset: PresetNeutral, Density: DensityCompact, Corners: CornersSquare, Typography: TypographySerif, TextSize: TextLarge, Width: WidthNarrow, Elevation: ElevationFlat},
 		{Preset: PresetForest, Corners: CornersSoft, Typography: TypographyMono, Width: WidthWide}, {Preset: PresetRose},
+		{Elevation: ElevationSubtle}, {Elevation: ElevationFloating},
 	} {
 		for _, m := range ref.FindAllStringSubmatch(a.CSS(), -1) {
 			if !strings.Contains(css, m[1]+":") {

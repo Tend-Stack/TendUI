@@ -85,8 +85,8 @@ module checksums verified. A published-version installation remains pending.
    useful. Validate keyboard and assistive-technology behavior. Keep validation,
    storage and request protection separate from the library.
 3. **Visual language.** Inline SVG icons with typed names and accessible action
-   composition, a shared spacing scale and Prose typography tokens are
-   implemented. Next: coherent elevation tokens, additional surface recipes,
+   composition, a shared spacing scale, Prose typography tokens and four shared
+   elevation levels with per-card overrides are implemented. Next: additional surface recipes,
    responsive page patterns and careful interaction states. Motion must remain optional and bounded. Verify icons and control
    layouts in browsers as well as the retained static drawing contact sheet.
 4. **Developer experience.** Native catalog search, category filters, preview

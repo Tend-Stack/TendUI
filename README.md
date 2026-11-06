@@ -150,6 +150,10 @@ can be combined. Raw buttons use the primary color by default.
 `CardProps` accepts `Header`, `Body`, and `Footer` components. Cards also accept
 templ children after Body. Forms and grids use templ children. Pass ordinary
 components rather than `templ.Raw` for untrusted content.
+Cards can optionally override the page's shadow with `ElevationFlat`,
+`ElevationSubtle`, `ElevationRaised`, or `ElevationFloating`. The zero value
+inherits the page setting. See [surface elevation](docs/motion.md#elevation)
+for theme tokens, nesting, outlined cards and accessibility behavior.
 
 ## Appearance and application components
 
@@ -175,7 +179,7 @@ page := components.Layout(components.LayoutProps{
 
 Available presets: Indigo, Neutral, Forest, Rose. Choose comfortable/compact
 spacing, rounded/nearly-square/soft corners, system sans/serif/monospace fonts,
-standard/large text, narrow/standard/wide content, and raised/flat cards.
+standard/large text, narrow/standard/wide content, and flat/subtle/raised/floating shadows.
 No font downloads are needed. Light/dark/system mode remains an independent
 `LayoutProps.Theme` setting.
 

@@ -13,6 +13,10 @@ func cardSurface(value CardSurface) string {
 	return string(allowed(value, SurfaceDefault, SurfaceDefault, SurfaceTinted, SurfaceOutlined, SurfaceGradient))
 }
 
+func cardElevation(value Elevation) string {
+	return string(allowed(value, "", ElevationFlat, ElevationSubtle, ElevationRaised, ElevationFloating))
+}
+
 type CardProps struct {
 	ID      string
 	Header  templ.Component
@@ -23,10 +27,16 @@ type CardProps struct {
 	Delay   EntryDelay
 	// HoverLift is decorative; it does not make the card a link or button.
 	HoverLift bool
+	// Elevation overrides the page's shadow setting. Empty or unknown inherits it.
+	// Outlined cards, print and forced colors always remain shadow-free.
+	Elevation Elevation
 }
 
 templ Card(props CardProps) {
 	<article
+		if cardElevation(props.Elevation) != "" {
+			data-card-elevation={ cardElevation(props.Elevation) }
+		}
 		if cardSurface(props.Surface) != "" {
 			data-surface={ cardSurface(props.Surface) }
 		}
