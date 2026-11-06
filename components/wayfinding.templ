@@ -154,7 +154,8 @@ templ Disclosure(props DisclosureProps) {
 		}
 	>
 		<summary>{ fallback(props.Summary, "Details") }</summary>
-		<div class="disclosure-body">{ children... }
-</div>
+		<div class="disclosure-body">
+			{ children... }
+		</div>
 	</details>
 }

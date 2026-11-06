@@ -528,3 +528,24 @@ article[data-surface="gradient"] {
  .table-scroll { overflow: visible; }
  .tabs [aria-disabled="true"] { display: none; }
 }
+
+/* Composable fields connect labels, help and errors to a single native control. */
+.field { min-inline-size: 0; margin-block-end: 1.25rem; }
+.field > label { margin-block-end: .35rem; font-weight: 600; }
+.field-description { display: block; margin-block-end: .5rem; color: var(--gothui-muted); }
+.field-error { display: block; margin-block-start: .4rem; color: var(--gothui-danger); font-weight: 600; }
+.input-group { display: flex; align-items: stretch; min-inline-size: 0; }
+.input-group > :is(input, select) { flex: 1 1 auto; inline-size: 0; min-inline-size: 0; margin: 0; position: relative; }
+.input-group > :is(input, select):focus { z-index: 1; }
+.input-addon { display: flex; align-items: center; padding: var(--gothui-control-y) .75rem; background: var(--gothui-subtle); color: var(--gothui-muted); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); overflow-wrap: anywhere; max-inline-size: 45%; }
+.input-group > :not(:first-child) { border-start-start-radius: 0; border-end-start-radius: 0; }
+.input-group > :not(:last-child) { border-start-end-radius: 0; border-end-end-radius: 0; }
+.input-group > .input-addon:not(:first-child) { border-inline-start: 0; }
+.input-group > .input-addon:first-child { border-inline-end: 0; }
+.form-actions { margin-block-start: 1.5rem; }
+.review-list > div { display: grid; grid-template-columns: minmax(8rem, 1fr) minmax(0, 2fr); gap: 1rem; padding-block: .85rem; border-block-end: 1px solid var(--gothui-border); }
+.review-list dt { font-weight: 600; }
+.review-list dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+@media (max-width: 36rem) {
+ .review-list > div { grid-template-columns: minmax(0, 1fr); gap: .25rem; }
+}

@@ -1,0 +1,80 @@
+package components
+
+import "fmt"
+import "strings"
+import "unicode"
+
+// FieldProps connects one control to its label, help and error text.
+// ID must be unique in the document. Spread ControlAttributes on the control.
+type FieldProps struct {
+	ID          string
+	Label       string
+	Description string
+	Error       string
+	Required    bool
+}
+
+func (p FieldProps) ControlAttributes() templ.Attributes {
+	attrs := templ.Attributes{"id": p.ID}
+	var descriptions []string
+	if p.Description != "" {
+		descriptions = append(descriptions, p.ID+"-description")
+	}
+	if p.Error != "" {
+		descriptions = append(descriptions, p.ID+"-error")
+		attrs["aria-invalid"] = "true"
+	}
+	if len(descriptions) != 0 {
+		attrs["aria-describedby"] = strings.Join(descriptions, " ")
+	}
+	if p.Required {
+		attrs["required"] = true
+	}
+	return attrs
+}
+
+func validateField(p FieldProps) error {
+	if p.ID == "" || strings.IndexFunc(p.ID, unicode.IsSpace) >= 0 || strings.TrimSpace(p.Label) == "" {
+		return fmt.Errorf("gothui: Field requires a unique non-whitespace ID and a label")
+	}
+	return nil
+}
+
+// Field wraps a raw input, textarea or select, not an already-labeled component.
+// Use ErrorSummary once above a form; individual errors are not duplicate live regions.
+templ Field(props FieldProps) {
+	{{
+		if err := validateField(props); err != nil {
+			return err
+		}
+	}}
+	<div class="field">
+		<label for={ props.ID }>{ props.Label }</label>
+		if props.Description != "" {
+			<small id={ props.ID + "-description" } class="field-description">{ props.Description }</small>
+		}
+		{ children... }
+		if props.Error != "" {
+			<small id={ props.ID + "-error" } class="field-error">{ props.Error }</small>
+		}
+	</div>
+}
+
+type InputGroupProps struct {
+	Prefix string
+	Suffix string
+}
+
+// InputGroup decorates one raw control. Prefix/Suffix are hidden from assistive
+// technology; put meaningful units/context in the Field label or description.
+templ InputGroup(props InputGroupProps) {
+	<div class="input-group">
+		if props.Prefix != "" {
+			<span class="input-addon" aria-hidden="true">{ props.Prefix }</span>
+		}
+		{ children... }
+		if props.Suffix != "" {
+			<span class="input-addon" aria-hidden="true">{ props.Suffix }</span>
+		}
+	</div>
+}

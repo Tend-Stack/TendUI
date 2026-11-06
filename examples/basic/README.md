@@ -1,6 +1,6 @@
 # GothUI demos
 
-Ten connected pages, served by one Go executable. All pages use the embedded
+Eleven connected pages, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -33,6 +33,7 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Inline editing | http://127.0.0.1:8080/editing | Edit, save, cancel, restore, linked validation errors and optional fragment responses |
 | Motion & surfaces | http://127.0.0.1:8080/motion | Replay entrances, compare motion off, card surfaces, skeleton/empty/metric states and overlay entrances |
 | Patterns | http://127.0.0.1:8080/patterns | Page tabs, step walkthrough, table loading/empty states and grouped native disclosures |
+| Form wizard | http://127.0.0.1:8080/wizard | Details, preferences, review, Back edit preservation, linked errors and final validation |
 
 The playground uses GET controls: click **Apply settings** to refresh the preview.
 Its URL preserves settings so you can bookmark a test case. The preview button
@@ -123,6 +124,13 @@ table previews and native grouped disclosures. Loading is labeled as a preview;
 no request is running. The walkthrough URL chooses its step and saves no data.
 See [the composition guide](../../docs/data-navigation.md) for the public APIs.
 
+The Form wizard builds a fictional project brief over three native POST steps.
+Use Back to keep edits, Continue to validate the current and prior details, and
+Finish preview to recheck everything. Completion creates or publishes nothing.
+Draft values travel with the form, not in cookies or a database. A fresh GET
+starts over. Browser history may retain submissions; use fictional information.
+See [the form guide](../../docs/forms.md) for validation and state ownership.
+
 ## Manual review
 
 1. Test at desktop width and at 375 px. Cards should stack; only the table should
@@ -170,6 +178,13 @@ See [the composition guide](../../docs/data-navigation.md) for the public APIs.
 17. On Patterns, navigate through all three sections and walkthrough steps with
     the keyboard. Check current markers, unavailable future steps, grouped details,
     table loading/empty content, narrow layouts and screen-reader labels.
+
+18. On Form wizard, submit blank/invalid details through Test server validation,
+    follow the error links, and correct the fields. Continue, change preferences,
+    go Back, edit the details, and continue again. Verify preferences survive.
+19. On each wizard step, use Enter in a text control to check forward submission;
+    use Back with incomplete values to confirm native constraints do not block it.
+    Complete the review, inspect escaped punctuation, then start a fresh brief.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:
