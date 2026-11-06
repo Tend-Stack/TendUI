@@ -7,8 +7,9 @@ theme persistence, mobile layouts, reduced motion, print, and forced colors
 where the browser supports emulation. Axe checks all 36 component detail pages
 in light and dark modes. Test failures are not retried or silently excluded.
 
-A separate test-only consumer loads pinned HTMX 2.0.11 and explicitly configures
-422 validation swaps. It checks fragment editing and the theme redirect contract.
+A separate test-only consumer loads pinned HTMX 2.0.11 with default
+response-status handling. It checks fragment editing, validation forms returned
+with 200, and the theme redirect contract. Native invalid submissions use 422.
 The fixture is under `tests/browser/fixture`; the normal example handler never
 loads this runtime. The browser suite's Node packages are development tooling,
 not a requirement to build, consume, or deploy GothUI.

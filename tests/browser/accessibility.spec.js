@@ -17,9 +17,9 @@ for (const mode of ['light', 'dark']) {
       await page.goto(`/catalog/${name}?theme=${mode}`);
       await expect(page.locator('h1')).toHaveCount(1);
       const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-      expect(scan.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })), name).toEqual([]);
+      expect.soft(scan.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })), name).toEqual([]);
       const widths = await page.evaluate(() => ({ page: document.documentElement.scrollWidth, viewport: innerWidth }));
-      expect(widths.page, name).toBeLessThanOrEqual(widths.viewport + 1);
+      expect.soft(widths.page, name).toBeLessThanOrEqual(widths.viewport + 1);
     }
   });
 }
@@ -50,7 +50,10 @@ test('reduced motion and explicit off stop animation without hiding content', as
   expect(await page.locator('[data-enter], .skeleton-shapes').evaluateAll(nodes => nodes.every(n => getComputedStyle(n).animationName === 'none'))).toBe(true);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/motion?motion=off');
-  expect(await page.locator('[data-enter], .skeleton-shapes').evaluateAll(nodes => nodes.every(n => getComputedStyle(n).animationName === 'none'))).toBe(true);
+  // Explicit Off zeros timing tokens, preserving the final visible style.
+  // An animation name with zero duration does not imply motion.
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+  expect(await page.locator('[data-enter], .skeleton-shapes').evaluateAll(nodes => nodes.every(n => getComputedStyle(n).animationDuration.split(',').every(v => parseFloat(v) === 0)))).toBe(true);
   await expect(page.locator('main h1')).toBeVisible();
 });
 

@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 test.use({ javaScriptEnabled: false });
 
-test('native profile save, cancel, validation, and reset', async ({ page }) => {
+test('native profile save, cancel, and validation', async ({ page }) => {
   await page.goto('/editing');
   await page.getByRole('link', { name: 'Edit sample profile' }).click();
   await page.getByLabel('Display name').fill('Native visitor');
@@ -23,9 +23,9 @@ test('native profile save, cancel, validation, and reset', async ({ page }) => {
   await expect(page.getByLabel('Display name')).toBeFocused();
 });
 
-test('appearance preferences persist and exports reflect the selection', async ({ page }) => {
+test('appearance preferences persist across pages', async ({ page }) => {
   await page.goto('/settings');
-  await page.getByLabel('Color mode', { exact: true }).selectOption('dark');
+  await page.getByRole('combobox', { name: 'Color mode', exact: true }).selectOption('dark');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.goto('/catalog');
@@ -46,17 +46,24 @@ test('keyboard opens and closes native popover with focus return', async ({ page
   await expect(opener).toBeFocused();
 });
 
-test('native dialog traps focus, closes with Escape, and returns focus', async ({ page }) => {
+test('native modal keeps the background inert and returns focus on Escape', async ({ page }) => {
   await page.goto('/interactions');
   const opener = page.getByRole('button', { name: 'Review demo request', exact: true });
   await opener.focus();
   await page.keyboard.press('Enter');
   const dialog = page.locator('#approval-dialog');
   await expect(dialog).toBeVisible();
-  for (let i = 0; i < 5; i++) {
-    await page.keyboard.press('Tab');
-    await expect(dialog.locator(':focus')).toHaveCount(1);
-  }
+  await expect(page.locator('#approval-dialog:modal')).toHaveCount(1);
+  const close = dialog.getByRole('button', { name: 'Close', exact: true });
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(dialog.getByRole('button', { name: 'Approve demo request' })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(close).toBeFocused();
+  // Native modality prevents focus moving into the background. Browser chrome
+  // remains reachable; do not impose a JavaScript-style circular focus trap.
+  await opener.focus();
+  await expect(close).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
   await expect(opener).toBeFocused();
