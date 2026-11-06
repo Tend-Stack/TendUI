@@ -28,6 +28,11 @@
   --gothui-focus: var(--gothui-primary);
   --gothui-radius: 0.65rem;
   --gothui-space: 1rem;
+  --gothui-space-xs: calc(var(--gothui-space) * .25);
+  --gothui-space-sm: calc(var(--gothui-space) * .5);
+  --gothui-space-md: var(--gothui-space);
+  --gothui-space-lg: calc(var(--gothui-space) * 1.5);
+  --gothui-space-xl: calc(var(--gothui-space) * 2);
   --gothui-shadow: var(--gothui-elevation-raised);
   --gothui-content-width: 72rem;
   font-family: var(--gothui-font);
@@ -554,3 +559,30 @@ article[data-surface="gradient"] {
 @media (max-width: 36rem) {
  .review-list > div { grid-template-columns: minmax(0, 1fr); gap: .25rem; }
 }
+
+/* Opt-in composition. Each container owns its gap; nested flows start fresh.
+   Existing .stack/.cluster utilities retain their original margin behavior. */
+.layout-stack, .layout-cluster {
+  display: flex;
+  min-inline-size: 0;
+  gap: var(--gothui-space-md);
+  overflow-wrap: anywhere;
+}
+.layout-stack { flex-direction: column; align-items: stretch; }
+.layout-cluster { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
+.layout-stack > *, .layout-cluster > * { min-inline-size: 0; max-inline-size: 100%; margin-block: 0; }
+:is(.layout-stack, .layout-cluster)[data-gap="none"] { gap: 0; }
+:is(.layout-stack, .layout-cluster)[data-gap="xs"] { gap: var(--gothui-space-xs); }
+:is(.layout-stack, .layout-cluster)[data-gap="sm"] { gap: var(--gothui-space-sm); }
+:is(.layout-stack, .layout-cluster)[data-gap="md"] { gap: var(--gothui-space-md); }
+:is(.layout-stack, .layout-cluster)[data-gap="lg"] { gap: var(--gothui-space-lg); }
+:is(.layout-stack, .layout-cluster)[data-gap="xl"] { gap: var(--gothui-space-xl); }
+:is(.layout-stack, .layout-cluster)[data-layout-align="start"] { align-items: flex-start; }
+:is(.layout-stack, .layout-cluster)[data-layout-align="center"] { align-items: center; }
+:is(.layout-stack, .layout-cluster)[data-layout-align="end"] { align-items: flex-end; }
+:is(.layout-stack, .layout-cluster)[data-layout-align="stretch"] { align-items: stretch; }
+.layout-cluster[data-layout-align="baseline"] { align-items: baseline; }
+.layout-cluster[data-layout-justify="start"] { justify-content: flex-start; }
+.layout-cluster[data-layout-justify="center"] { justify-content: center; }
+.layout-cluster[data-layout-justify="end"] { justify-content: flex-end; }
+.layout-cluster[data-layout-justify="between"] { justify-content: space-between; }

@@ -1,0 +1,32 @@
+package components
+
+// Stack arranges children vertically and owns their outer block spacing.
+// The div is a layout container, not a landmark or a list.
+templ Stack(props StackProps) {
+	<div
+		class="layout-stack"
+		data-gap={ layoutSpace(props.Gap) }
+		data-layout-align={ stackAlign(props.Align) }
+		if props.ID != "" {
+			id={ props.ID }
+		}
+	>
+		{ children... }
+	</div>
+}
+
+// Cluster wraps children into rows, preserving DOM, reading and focus order.
+// Use semantic elements around or inside the div where the content needs them.
+templ Cluster(props ClusterProps) {
+	<div
+		class="layout-cluster"
+		data-gap={ layoutSpace(props.Gap) }
+		data-layout-align={ clusterAlign(props.Align) }
+		data-layout-justify={ clusterJustify(props.Justify) }
+		if props.ID != "" {
+			id={ props.ID }
+		}
+	>
+		{ children... }
+	</div>
+}

@@ -79,6 +79,7 @@ func TestSelectionReviewValidationAndNoMutation(t *testing.T) {
 func TestPatternsNavigationAndStates(t *testing.T) {
 	h := newHandler()
 	for _, tc := range []struct{ path, want string }{
+		{"/patterns?section=composition", `class="layout-stack"`},
 		{"/patterns", `aria-current="step"`}, {"/patterns?step=3", "Compose it with typed props"},
 		{"/patterns?section=tables", `colspan="2"`}, {"/patterns?section=tables&state=loading", `aria-busy="true"`},
 		{"/patterns?section=disclosures", `name="pattern-faq"`}, {"/patterns?section=invalid&step=999", "Start with the interaction"},
@@ -98,5 +99,21 @@ func TestPatternsNavigationAndStates(t *testing.T) {
 		if method == "POST" && w.Code != 405 {
 			t.Fatal("unexpected mutation method")
 		}
+	}
+}
+
+func TestCompositionPatternNativeActions(t *testing.T) {
+	h := newHandler()
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest("GET", "/patterns?section=composition&density=compact", nil))
+	for _, want := range []string{`data-density="compact"`, `id="composition-title"`, `data-layout-justify="between"`, `data-layout-justify="end"`, `action="/catalog" method="get"`, `name="q"`, `type="reset"`, `type="submit"`, `/catalog/stack`, `/catalog/cluster`} {
+		if w.Code != 200 || !strings.Contains(w.Body.String(), want) {
+			t.Errorf("missing composition contract %s", want)
+		}
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest("GET", "/catalog?q=Stack", nil))
+	if w.Code != 200 || !strings.Contains(w.Body.String(), `href="/catalog/stack"`) {
+		t.Fatal("composition search destination")
 	}
 }
