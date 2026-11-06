@@ -1,5 +1,47 @@
 # GothUI implementation handoff
 
+## Pages, fragments, and inline editing milestone (2026-11-05)
+
+Added the standard-library-only `render` package. `render.HTML` accepts templ
+components through a minimal interface, selects full pages or optional fragments,
+merges Vary, respects HEAD, buffers rendering, and sends generic 500 errors
+without exposing partial markup or internal errors. `render.IsFragment` excludes
+history restoration and boosted navigation. The helper owns no authentication,
+cache policy, cookies, CSP or validation status policy. Existing demo rendering
+uses this helper; the root asset package stays standard-library-only.
+
+The eighth page, `/editing`, demonstrates native edit/save/cancel/reset flows
+and an optional HTMX fragment contract using the existing component attributes.
+Fictional profile values are bounded, validated, escaped and stored only in an
+unsigned HttpOnly browser session cookie, with SameSite=Strict and Secure over
+TLS. This is cosmetic sample storage, not an authentication/session design.
+Restoring the sample clears the cookie. Invalid submissions preserve entered
+values and show linked errors without writing a cookie. Native errors return
+422; HTMX form fragments explicitly return 200 to work with default response
+handling. Successful native POSTs redirect; fragment POSTs return the panel.
+Requests retain the example's cross-origin protection and a 4 KB body limit.
+No scripts or dependencies were added. Native selects and appearance are unchanged.
+The formatter also normalized an existing dashboard table header.
+
+Verification: `go test -race ./...` passed for all four packages and
+`go vet ./...` passed. Tests cover full/partial/history responses, merged Vary,
+HEAD, error buffering, canceled contexts and transport errors, edit form hooks,
+save/reset/cancel destinations, isolation, escaping, cookie limits and TLS flags,
+validation, method/body limits, and cross-origin rejection. Generated templ Go
+is included. These are component and HTTP contract tests, not HTMX browser tests.
+Browser review remains manual because the session cannot bind TCP sockets.
+
+The one review executable at `tests/results/demos/gothui-demo` is rebuilt and
+replaced atomically; no existing user server is terminated. Restart it from a
+normal terminal, then open `/editing`. Keep only the four current editing check
+logs and the earlier socket-launch failure alongside this binary. Earlier passing
+navigation logs are superseded by this full suite; their results remain below.
+The continuing developer owns these review artifacts and can replace/remove them
+after review. The task-specific temporary Go cache is cleaned after building.
+Remote publication remains pending under the previously documented network
+restriction. No tag or release is created. Richer table abstractions and testing
+with a consumer-supplied HTMX runtime remain future work.
+
 ## Native interactions and navigation milestone (2026-11-05)
 
 Added Dialog, Popover, Breadcrumbs, and Pagination with generated Go. Button

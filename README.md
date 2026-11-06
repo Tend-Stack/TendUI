@@ -57,7 +57,7 @@ func main() {
 ```
 
 Run the local demos, including a component playground, form lab, dashboard,
-appearance editor, workspace, native interactions, and theme endpoint:
+appearance editor, workspace, native interactions, inline editing, and theme endpoint:
 
 ```sh
 go run ./examples/basic -open
@@ -87,7 +87,8 @@ components/
   navigation.templ        breadcrumbs and bounded pagination
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
-examples/basic/           seven demo pages, preference cookies, and downloads
+render/                   buffered page/fragment HTTP responses
+examples/basic/           eight demo pages, preference cookies, and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -310,6 +311,61 @@ not an instant partial swap; the new document then has the correct theme.
 HTMX does not process its response headers on 3xx responses. See the upstream
 [response header documentation](https://htmx.org/docs/#response-headers) and
 [swap reference](https://htmx.org/attributes/hx-swap/).
+
+## Full pages and optional HTMX fragments
+
+`render` is a standard-library-only package. Its small `Component` interface is
+implemented by templ components; no adapter or additional dependency is needed.
+Use the same route for ordinary navigation and partial updates:
+
+```go
+import (
+    "log"
+    "net/http"
+
+    "github.com/Tend-Stack/GothUI/v2026/components"
+    "github.com/Tend-Stack/GothUI/v2026/render"
+)
+
+func profileHandler(w http.ResponseWriter, r *http.Request) {
+    panel := components.Alert(components.AlertProps{Title: "Profile", Message: "Your profile is ready."})
+    page := components.Layout(components.LayoutProps{Title: "Profile"}, panel)
+    w.Header().Set("Cache-Control", "private, no-store")
+    if err := render.HTML(w, r, http.StatusOK, page, panel); err != nil {
+        log.Printf("render profile: %v", err)
+    }
+}
+```
+
+`HTML` chooses the fragment for `HX-Request: true`, but serves the full page for
+history restoration or boosted navigation. A nil fragment always serves the page.
+It preserves existing `Vary` values and adds the three headers that affect the
+representation. Rendering is buffered so a component error produces a generic
+500 instead of partially written HTML; errors are returned for logging. HEAD
+has no body, including on failures. After calling it, do not write another error
+response: a render failure has already sent 500, and a transport failure may
+have committed the response. Only the selected component is rendered.
+
+The helper leaves authentication, CSRF protection, cache policy, CSP and status
+selection to the application. HTMX headers are presentation hints, never proof
+of identity or permission. For cacheable pages, use representation-specific ETags.
+Buffering is intended for bounded UI pages/fragments, not streaming responses.
+
+The [inline editing example](examples/basic/editing.go) pairs native form actions
+and link destinations with `HxPost`/`HxGet`, `HxTarget` and `HxSwap`. It returns
+303 after a successful native POST and 200 with the updated panel for an HTMX
+request. Invalid native submissions return 422. Invalid HTMX submissions return
+200 **with field errors and no save**, because default HTMX does not swap 422
+responses. This policy is explicit in the example, not imposed by `render.HTML`.
+See the upstream [response handling](https://htmx.org/docs/#response-handling),
+[history](https://htmx.org/docs/#history) and
+[caching](https://htmx.org/docs/#caching) documentation.
+
+The included demo remains JavaScript-free and blocks scripts with CSP. Its native
+flow and HTTP fragment contract are testable separately. Applications enabling
+HTMX must supply their own runtime and appropriate CSP; this project neither
+loads nor bundles it. The example cookie is unsigned cosmetic sample data,
+validated and escaped on every read. It is not an account/session implementation.
 
 ## Maintaining the library
 

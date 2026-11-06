@@ -2,7 +2,6 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"log"
 	"net"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/Tend-Stack/GothUI/v2026"
 	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/GothUI/v2026/render"
 	"github.com/a-h/templ"
 )
 
@@ -44,6 +44,7 @@ func newHandler() http.Handler {
 	mux.HandleFunc("/appearance.css", exportAppearance)
 	mux.HandleFunc("/appearance.go", exportAppearance)
 	mux.HandleFunc("/interactions/confirm", confirmDemo)
+	mux.HandleFunc("/editing", editingDemo)
 	mux.HandleFunc("/api/theme/toggle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
 		if r.Method != http.MethodPost {
@@ -136,7 +137,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing":
 		return true
 	}
 	return false
@@ -167,23 +168,18 @@ func demoReferer(r *http.Request) *url.URL {
 }
 
 func renderPage(w http.ResponseWriter, r *http.Request, title string, body templ.Component, status int) {
+	renderResponse(w, r, title, body, nil, status)
+}
+
+func renderResponse(w http.ResponseWriter, r *http.Request, title string, body, fragment templ.Component, status int) {
 	page := components.Layout(components.LayoutProps{
 		Title: title, Language: "en", Theme: theme(r), Appearance: appearance(r),
 		Description: "Interactive GothUI demos: semantic components, native forms, and layouts.",
 	}, body)
-	var buf bytes.Buffer
-	if err := page.Render(r.Context(), &buf); err != nil {
-		log.Printf("render: %v", err)
-		http.Error(w, "unable to render page", http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
-	w.WriteHeader(status)
-	if r.Method != http.MethodHead {
-		_, _ = w.Write(buf.Bytes())
+	if err := render.HTML(w, r, status, page, fragment); err != nil {
+		log.Printf("render: %v", err)
 	}
 }
 

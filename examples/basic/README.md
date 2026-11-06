@@ -1,6 +1,6 @@
 # GothUI demos
 
-Seven connected pages, served by one Go executable. All pages use the embedded
+Eight connected pages, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -23,6 +23,7 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Appearance | http://127.0.0.1:8080/settings | Presets, spacing, corners, typography, text size, width, shadows, saved preferences, CSS/Go downloads |
 | Workspace | http://127.0.0.1:8080/workspace | Reusable app header/sidebar/main layout, native collapsible navigation, feedback and cards |
 | Interactions | http://127.0.0.1:8080/interactions | Automatic/manual popovers, native modal, confirmation POST, ordinary-page fallback, breadcrumbs |
+| Inline editing | http://127.0.0.1:8080/editing | Edit, save, cancel, restore, linked validation errors and optional fragment responses |
 
 The playground uses GET controls: click **Apply settings** to refresh the preview.
 Its URL preserves settings so you can bookmark a test case. The preview button
@@ -70,6 +71,30 @@ to a success message without changing or saving records. The ordinary-page
 confirmation link exercises the same handler in browsers without dialog command
 support. Native browser behavior still needs manual compatibility testing.
 
+Inline editing stores a fictional display name/introduction in a bounded session
+cookie (HttpOnly, SameSite=Strict, Secure over TLS). **Cancel** reloads the last
+saved sample; **Restore sample** deletes that cookie. No account, database or
+shared server-side profile exists. Session cookies may survive browser restart
+when the browser restores its session, so use Restore to clear the sample.
+POST bodies are limited to 4 KB; names allow 1–60 Unicode characters and optional
+introductions allow up to 240. Unsaved invalid values remain in the form.
+
+The native flow performs full-page navigation. The same handler returns only
+`#profile-panel` when `HX-Request: true` is supplied; boosted navigation and
+history restoration receive full pages. HTMX attributes remain inert because
+this demo does not load HTMX and its CSP blocks scripts. Verify the server
+contract independently with:
+
+```sh
+curl -i -H 'HX-Request: true' 'http://127.0.0.1:8080/editing?edit=1'
+curl -i -H 'HX-Request: true' -H 'HX-History-Restore-Request: true' 'http://127.0.0.1:8080/editing?edit=1'
+```
+
+Native validation errors use HTTP 422; HTMX validation fragments use 200 so a
+consumer's default HTMX response handling can display them. Neither writes a
+cookie. Successful native saves redirect; successful HTMX saves return the panel
+and a cookie. The library helper does not choose this application status policy.
+
 ## Manual review
 
 1. Test at desktop width and at 375 px. Cards should stack; only the table should
@@ -100,6 +125,11 @@ support. Native browser behavior still needs manual compatibility testing.
     perform no POST. Repeat with JavaScript disabled.
 13. On Dashboard, change sort order, use page 2/3, change the page size, and filter
     the results. Verify link URLs retain filters and pagination stays in bounds.
+
+14. On Inline editing, save a fictional name, refresh, reopen the editor, change
+    it and cancel. Check that the saved value remains. Clear the name, use Test
+    server validation, follow the error link, then correct and save. Restore the
+    sample, then check another browser session has independent values.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:
