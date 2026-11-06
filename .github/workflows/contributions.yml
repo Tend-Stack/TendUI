@@ -1,0 +1,36 @@
+name: Contribution checks
+on:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: dco-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  dco:
+    name: DCO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify contributor sign-offs using the base branch policy
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Read policy from the trusted base; never execute contributor scripts.
+          if ! git cat-file -e "$BASE_SHA:.github/scripts/check-dco.py" 2>/dev/null; then
+            echo "DCO policy bootstrap: enforcement begins after this policy merges."
+            exit 0
+          fi
+          test "$(git rev-parse HEAD)" = "$HEAD_SHA"
+          git show "$BASE_SHA:.github/scripts/check-dco.py" > "$RUNNER_TEMP/check-dco.py"
+          git show "$BASE_SHA:.github/scripts/test_dco.py" > "$RUNNER_TEMP/test_dco.py"
+          python3 "$RUNNER_TEMP/test_dco.py"
+          python3 "$RUNNER_TEMP/check-dco.py" "$BASE_SHA" "$HEAD_SHA"

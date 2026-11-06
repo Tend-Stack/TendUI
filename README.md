@@ -549,3 +549,9 @@ current development entry points and remaining release checks.
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, review and MIT + DCO sign-off.
+Report vulnerabilities privately using [SECURITY.md](SECURITY.md); community
+participation follows [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
