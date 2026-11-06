@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220"><defs>
+<linearGradient id="gopherBlue" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#a9e8ff"/><stop offset=".54" stop-color="#60c8ff"/><stop offset="1" stop-color="#267cc8"/></linearGradient>
+<linearGradient id="capePurple" x1="0" y1=".1" x2="1" y2="1"><stop stop-color="#321659"/><stop offset=".5" stop-color="#190d34"/><stop offset="1" stop-color="#43216a"/></linearGradient>
+<linearGradient id="uiCard" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6246ac"/><stop offset="1" stop-color="#322256"/></linearGradient>
+<linearGradient id="violet" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d4b8ff"/><stop offset="1" stop-color="#8a53ff"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#6732b0" stop-opacity=".65"/><stop offset="1" stop-color="#0b0a18" stop-opacity="0"/></radialGradient>
+</defs><g transform="translate(13 -14) scale(.48)">
+<g id="gothic-arch">
+  <path d="M99 375 C97 240 145 126 255 43 C366 126 415 240 414 375" fill="#21123d" stroke="#975cf3" stroke-width="19" stroke-linejoin="round"/>
+  <path d="M125 339 C125 223 168 145 255 75 C342 145 387 223 387 339" fill="#33205a" stroke="#422767" stroke-width="8"/>
+  <path d="M254 82 L254 329 M153 330 C148 223 173 173 219 140 M359 331 C366 223 338 171 290 140" stroke="#8D5AD7" stroke-width="10" fill="none" stroke-linecap="round" opacity=".8"/>
+  <path d="M255 102 C246 119 238 127 224 129 C243 133 250 140 255 156 C261 138 267 134 285 129 C269 125 263 117 255 102Z" fill="#b99bff"/>
+  <path d="M178 192 l6 15 15 6 -15 6 -6 15 -6 -15 -15 -6 15 -6z" fill="#d8c4ff"/>
+  <path d="M331 200 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6z" fill="#d8c4ff"/>
+</g>
+
+<g id="gopher-character" stroke-linejoin="round" stroke-linecap="round">
+  <!-- ears and head -->
+  <circle cx="147" cy="214" r="38" fill="#55bdf6" stroke="#141126" stroke-width="11"/>
+  <circle cx="148" cy="216" r="19" fill="#3971a3" stroke="#141126" stroke-width="7"/>
+  <circle cx="358" cy="195" r="29" fill="#60c7fc" stroke="#141126" stroke-width="10"/>
+  <circle cx="358" cy="195" r="13" fill="#3574ad" stroke="#141126" stroke-width="6"/>
+  <path d="M138 342 C132 294 141 219 183 183 C216 155 274 150 312 168 C365 193 384 252 369 347 Z" fill="url(#gopherBlue)" stroke="#141126" stroke-width="12"/>
+  <path d="M145 306 C157 334 180 347 201 346" fill="none" stroke="#a0e7ff" stroke-width="8" opacity=".65"/>
+  <!-- wide curious eyes -->
+  <ellipse cx="217" cy="241" rx="68" ry="72" transform="rotate(-9 217 241)" fill="#FCFBFF" stroke="#141126" stroke-width="10"/>
+  <ellipse cx="324" cy="227" rx="58" ry="65" transform="rotate(-14 324 227)" fill="#FCFBFF" stroke="#141126" stroke-width="10"/>
+  <ellipse cx="242" cy="246" rx="18" ry="25" fill="#121025"/>
+  <ellipse cx="341" cy="225" rx="16" ry="22" fill="#121025"/>
+  <ellipse cx="234" cy="238" rx="7" ry="9" fill="white"/>
+  <ellipse cx="335" cy="217" rx="6" ry="8" fill="white"/>
+  <!-- snout, nose and buck teeth -->
+  <path d="M258 284 C246 286 241 296 243 306 C251 319 269 320 281 314 C293 320 311 316 313 305 C313 292 304 283 289 283 Z" fill="#e8b882" stroke="#141126" stroke-width="8"/>
+  <ellipse cx="281" cy="283" rx="21" ry="15" fill="#5c32a7" stroke="#141126" stroke-width="8"/>
+  <path d="M266 315 Q268 341 279 341 Q290 343 290 316" fill="#f8d7a9" stroke="#141126" stroke-width="6"/>
+  <path d="M279 319 V337" stroke="#94714e" stroke-width="4"/>
+  <!-- grand dramatic violet high-collar cloak -->
+  <path d="M82 331 C128 317 156 332 207 356 L258 392 C292 349 334 330 413 344 C404 371 382 393 350 420 L392 475 L90 477 L139 416 C112 399 90 373 82 331 Z" fill="url(#capePurple)" stroke="#130c26" stroke-width="11"/>
+  <path d="M83 338 C152 346 220 373 258 396 C291 360 351 349 409 349" stroke="#c18dff" stroke-width="10" fill="none"/>
+  <path d="M102 470 C151 423 188 410 244 416 M376 467 C338 431 302 420 275 418" fill="none" stroke="#9c67ea" stroke-width="10" opacity=".85"/>
+  <path d="M239 395 L261 374 L282 395 L261 420Z" fill="#f2dcff" stroke="#110d23" stroke-width="8"/>
+  <path d="M251 395 L261 385 L271 395 L261 406Z" fill="#9462eb"/>
+  <!-- hand and browser UI card -->
+  <path d="M330 386 C342 378 355 385 356 402 C355 416 346 428 329 428 C316 425 311 413 314 402 Z" fill="#f1c396" stroke="#171025" stroke-width="8"/>
+  <g transform="rotate(-7 365 326)">
+    <rect x="306" y="277" width="132" height="101" rx="13" fill="url(#uiCard)" stroke="#D5B7FF" stroke-width="8"/>
+    <circle cx="321" cy="296" r="5" fill="#f0dcff"/><circle cx="339" cy="296" r="5" fill="#f0dcff"/><circle cx="357" cy="296" r="5" fill="#f0dcff"/>
+    <path d="M322 313 H421" stroke="#b393f0" stroke-width="3" opacity=".7"/>
+    <rect x="321" y="331" width="52" height="26" rx="7" fill="#bc9cff"/>
+    <rect x="387" y="332" width="34" height="23" rx="11" fill="#8a63d3" stroke="#c7a4fa" stroke-width="3"/>
+    <circle cx="408" cy="344" r="8" fill="#d4b4ff"/>
+  </g>
+</g>
+</g>
+       <text x="271" y="143" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="122" letter-spacing="-8" fill="#1b172a">Goth</text>
+       <text x="542" y="143" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="122" letter-spacing="-7" fill="#7840CC">UI</text>
+       <text x="275" y="188" fill="#1b172a" opacity=".66" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="650" letter-spacing="4.1">GOOD INTERFACES. PURE GO.</text></svg>

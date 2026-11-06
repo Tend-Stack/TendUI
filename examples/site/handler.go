@@ -49,6 +49,8 @@ func newHandler() http.Handler {
 	mux.HandleFunc("/uploads", uploadDemo)
 	mux.HandleFunc("/uploads/sample.csv", downloadProjectSample)
 	mux.HandleFunc("/demo.css", serveDemoCSS)
+	mux.HandleFunc(demoStylePath, serveDemoCSS)
+	mux.HandleFunc("/demo-gopher.svg", serveDemoGopher)
 	mux.HandleFunc("/catalog", serveCatalog)
 	mux.HandleFunc("/catalog/", serveCatalog)
 	mux.HandleFunc("/dashboard/selection", reviewSelection)
@@ -211,5 +213,5 @@ func renderResponse(w http.ResponseWriter, r *http.Request, title string, body, 
 
 func htmlHeaders(w http.ResponseWriter) {
 	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
+	w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; img-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
 }
