@@ -17,9 +17,11 @@ test('consumer-supplied HTMX swaps the edit panel and validation response', asyn
   await expect(page.getByRole('heading', { name: 'HTMX visitor' })).toBeVisible();
   await page.getByRole('link', { name: 'Edit sample profile' }).click();
   await page.getByLabel('Display name').fill('');
-  const invalid = page.waitForResponse(r => r.url().endsWith('/editing') && r.status() === 422);
+  // This example intentionally returns 200 for invalid HTMX fragments so
+  // default response handling swaps the form; native invalid POSTs use 422.
+  const invalid = page.waitForResponse(r => r.url().endsWith('/editing') && r.request().method() === 'POST' && r.request().headers()['hx-request'] === 'true');
   await page.getByRole('button', { name: 'Test server validation' }).click();
-  await invalid;
+  expect((await invalid).status()).toBe(200);
   await expect(page.getByLabel('Display name')).toHaveAttribute('aria-invalid', 'true');
   await expect(page.locator('html')).toHaveCount(1);
   await expect(page.locator('#profile-panel')).toHaveCount(1);

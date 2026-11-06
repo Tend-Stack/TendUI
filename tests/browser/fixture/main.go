@@ -31,7 +31,7 @@ func main() {
 		body := result.Body.Bytes()
 		if c, err := r.Cookie("gothui_test_htmx"); err == nil && c.Value == "1" {
 			w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; script-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
-			body = bytes.Replace(body, []byte("</head>"), []byte(`<meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"includeIndicatorStyles":false,"responseHandling":[{"code":"204","swap":false},{"code":"[23]..","swap":true},{"code":"422","swap":true,"error":false},{"code":"[45]..","swap":false,"error":true}]}'><script src="/__test/htmx.js" defer></script></head>`), 1)
+			body = bytes.Replace(body, []byte("</head>"), []byte(`<meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"includeIndicatorStyles":false}'><script src="/__test/htmx.js" defer></script></head>`), 1)
 			w.Header().Del("Content-Length")
 		}
 		w.WriteHeader(result.Code)
