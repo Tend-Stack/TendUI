@@ -45,6 +45,7 @@ func newHandler() http.Handler {
 	mux.HandleFunc("/appearance.go", exportAppearance)
 	mux.HandleFunc("/interactions/confirm", confirmDemo)
 	mux.HandleFunc("/editing", editingDemo)
+	mux.HandleFunc("/wizard", projectWizard)
 	mux.HandleFunc("/dashboard/selection", reviewSelection)
 	mux.HandleFunc("/api/theme/toggle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
@@ -144,7 +145,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard":
 		return true
 	}
 	return false

@@ -80,6 +80,7 @@ components/
   buttons.templ           buttons and button-styled links
   cards.templ             article with optional header, body, footer
   forms.templ             forms, inputs, selects, checkboxes, grids
+  fields.templ            composable labels, help/error bindings and input addons
   controls.templ          textareas, radio groups, switches, file inputs
   feedback.templ          alerts, badges, linked error summaries
   shell.templ             application header, sidebar, main content
@@ -92,7 +93,7 @@ components/
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
 render/                   buffered page/fragment HTTP responses
-examples/basic/           ten demo pages, preference cookies, and downloads
+examples/basic/           eleven demo pages, preference cookies, and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -396,6 +397,18 @@ progress; `Disclosure` uses native details/summary with optional grouping.
 
 See the [data and navigation guide](docs/data-navigation.md) and `/patterns`
 for composition rules, working examples and validation boundaries.
+
+## Composable fields and multi-step forms
+
+`Field` pairs a raw control with its label, description and error through typed
+`FieldProps.ControlAttributes()`. `InputGroup` adds text prefixes/suffixes while
+preserving native control behavior. `ButtonProps.FormNoValidate` supports Back
+actions that submit edits without native constraints blocking navigation.
+
+The `/wizard` project-brief example preserves draft values across Back/Continue,
+checks all submitted fields on completion, and shows a validated preview without
+creating or storing a project. See [the form guide](docs/forms.md) for composition,
+validation and workflow ownership rules.
 
 ## Maintaining the library
 

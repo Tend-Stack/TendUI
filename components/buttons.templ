@@ -28,6 +28,8 @@ type ButtonProps struct {
 	PopoverTarget string
 	PopoverAction PopoverAction
 	AutoFocus     bool
+	// FormNoValidate bypasses native constraints for submit actions such as Back.
+	FormNoValidate bool
 }
 
 func buttonType(t ButtonType) string {
@@ -45,6 +47,7 @@ templ Button(props ButtonProps) {
 		class={ templ.KV("primary", props.Primary), templ.KV("outline", props.Outline) }
 		disabled?={ props.Disabled }
 		autofocus?={ props.AutoFocus }
+		formnovalidate?={ props.FormNoValidate && nativeButtonType(props) == "submit" }
 		{ nativeButtonAttrs(props)... }
 		if props.ID != "" {
 			id={ props.ID }

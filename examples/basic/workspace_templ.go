@@ -183,6 +183,7 @@ func workspace() templ.Component {
 				{Label: "Inline editing", Href: "/editing"},
 				{Label: "Motion & surfaces", Href: "/motion"},
 				{Label: "Application patterns", Href: "/patterns"},
+				{Label: "Form wizard", Href: "/wizard"},
 				{Label: "GothUI home", Href: "/"},
 			},
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)

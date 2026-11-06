@@ -26,7 +26,9 @@ validation feedback; typed appearance settings/exports; application shells;
 breadcrumbs and pagination; native dialogs/popovers; full-page/fragment helpers;
 inline editing with native fallback; short CSS motion; card surfaces; loading,
 empty and metric states; reusable DataTable with native selection review; page
-tabs, step indicators and grouped disclosures. Ten example pages exercise these APIs.
+tabs, step indicators and grouped disclosures; composable fields/input addons;
+and a native three-step form with final revalidation. Eleven example pages
+exercise these APIs.
 
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
@@ -39,10 +41,11 @@ is pending. The active broad goal remains unfinished.
    application actions with explicit server ownership; prove responsive and
    keyboard behavior in browsers. Avoid decorative controls that suggest
    unsupported behavior.
-2. **Forms for real applications.** Composable field groups, descriptions/error
-   associations, input addons, constrained file-selection examples, multi-step
-   server forms and recoverable submission states. Document validation and CSRF
-   integration without coupling the library to an application framework.
+2. **Forms for real applications.** Field label/help/error bindings, input addons
+   and native multi-step form validation are implemented. Next: constrained file
+   handling recipes and application-owned mutation/idempotency examples where
+   useful. Validate keyboard and assistive-technology behavior. Keep validation,
+   storage and request protection separate from the library.
 3. **Visual language.** Coherent space/type/elevation tokens, additional surface
    recipes, an icon strategy without external requests, responsive page patterns,
    and careful interaction states. Motion must remain optional and bounded.

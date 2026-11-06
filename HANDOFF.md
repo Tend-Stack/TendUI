@@ -1,5 +1,53 @@
 # GothUI implementation handoff
 
+## Composable fields and native wizard milestone (2026-11-05)
+
+Added Field with typed label/help/error/required metadata and fresh control
+attribute maps, plus InputGroup for escaped decorative prefixes/suffixes. Field
+requires an explicit non-whitespace ID and label; the application owns uniqueness
+and spreads ControlAttributes onto one raw native control. Existing convenience
+Input/Select/Textarea components remain unchanged. Button.FormNoValidate emits
+only for submitters, enabling Back actions without blocking native constraints.
+
+The eleventh demo `/wizard` provides a three-step project-brief flow: details,
+preferences, review, then a validated preview. Draft values travel through native
+visible/hidden form controls; Back preserves incomplete edits and choices. Every
+forward transition rechecks prior details; Finish validates all fields again.
+Hidden input is not treated as trustworthy or proof of an authorized workflow.
+No account, cookie, database, project creation, publication or external sending is
+involved. GET always starts fresh; browser history can retain submitted values.
+
+The POST handler bounds bodies to 8 KB, rejects duplicate known fields, invalid
+UTF-8, malformed step/action combinations and unknown preferences, and shares the
+server's cross-origin protection. Field errors return 422 on the relevant step;
+malformed requests return 400, oversized bodies 413 and wrong methods 405. The
+forward submitter precedes Back in DOM order to make implicit Enter advance.
+The final preview is intentionally non-mutating; production ordered approvals,
+idempotency, persistent state and authorization remain application responsibilities.
+
+Validation: templ formatting/generation completed; all four packages passed
+`go test -race ./...`; `go vet ./...` passed. Tests use actual generated hidden
+inputs to exercise details -> preferences -> Back -> edited details -> review ->
+finish, and cover escaping, field association/attribute isolation, native
+submitter flags, hidden-state tampering, final revalidation, malformed/oversized
+bodies, cross-origin rejection, method handling and fresh-request independence.
+The formatter normalized an existing Disclosure block without behavior changes.
+Embedded CSS is 32,260 bytes. Browser keyboard/focus/screen-reader/layout testing
+remains pending; HTTP tests do not establish those results.
+
+The one review binary is rebuilt statically and replaced atomically at
+`tests/results/demos/gothui-demo`. Restart from a normal terminal, then visit
+`/wizard`. Current forms check/build logs supersede successful data-suite logs;
+keep prior motion-browser.log and demo-launch.log for unresolved sandbox limits.
+The continuing developer owns the binary/current logs until review or replacement.
+The task's temporary Go cache is cleaned after building; no extra worktree,
+database, backup or running server was introduced.
+
+The broad goal remains active and incomplete. ROADMAP.md keeps its release gates;
+remote publication and browser proof remain outstanding. Next useful work is a
+searchable native component catalog with copyable recipes, then measured build/
+performance and compatibility gates. The form guide is at docs/forms.md.
+
 ## Data and navigation composition milestone (2026-11-05)
 
 Added DataTable with required captions/column labels, row shape validation,
