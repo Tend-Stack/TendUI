@@ -140,6 +140,6 @@ func appearanceFields(a components.Appearance) []appearanceField {
 		{"text_size", "Text size", string(a.TextSize), []components.Option{{Label: "Standard", Value: "standard"}, {Label: "Large", Value: "large"}}},
 		{"width", "Page width", string(a.Width), []components.Option{{Label: "Standard", Value: "standard"}, {Label: "Narrow", Value: "narrow"}, {Label: "Wide", Value: "wide"}}},
 		{"motion", "Motion", string(a.Motion), []components.Option{{Label: "Follow system preference", Value: "system"}, {Label: "Off", Value: "off"}}},
-		{"elevation", "Card shadows", string(a.Elevation), []components.Option{{Label: "Raised", Value: "raised"}, {Label: "Flat", Value: "flat"}}},
+		{"elevation", "Surface shadows", string(a.Elevation), []components.Option{{Label: "Flat", Value: "flat"}, {Label: "Subtle", Value: "subtle"}, {Label: "Raised", Value: "raised"}, {Label: "Floating", Value: "floating"}}},
 	}
 }

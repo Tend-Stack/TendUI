@@ -99,6 +99,8 @@
   --gothui-width-wide: 90rem;
   --gothui-elevation-raised: 0 .5rem 2rem rgb(25 35 65 / 6%);
   --gothui-elevation-flat: none;
+  --gothui-elevation-subtle: 0 1px 3px rgb(25 35 65 / 8%);
+  --gothui-elevation-floating: 0 .25rem .75rem rgb(25 35 65 / 8%), 0 1rem 3rem rgb(25 35 65 / 12%);
   --gothui-accent-light: var(--gothui-preset-indigo-light);
   --gothui-accent-hover-light: var(--gothui-preset-indigo-hover-light);
   --gothui-accent-dark: var(--gothui-preset-indigo-dark);
@@ -170,6 +172,8 @@
 :root:where([data-width="wide"]) { --gothui-content-width: var(--gothui-width-wide); }
 :root:where([data-elevation="raised"]) { --gothui-shadow: var(--gothui-elevation-raised); }
 :root:where([data-elevation="flat"]) { --gothui-shadow: var(--gothui-elevation-flat); }
+:root:where([data-elevation="subtle"]) { --gothui-shadow: var(--gothui-elevation-subtle); }
+:root:where([data-elevation="floating"]) { --gothui-shadow: var(--gothui-elevation-floating); }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-theme="dark"]) {
@@ -189,6 +193,8 @@
     --gothui-warning: #fde047;
     --gothui-focus: var(--gothui-primary);
     --gothui-elevation-raised: 0 0.5rem 2rem rgb(0 0 0 / 16%);
+    --gothui-elevation-subtle: 0 1px 3px rgb(0 0 0 / 24%);
+    --gothui-elevation-floating: 0 .25rem .75rem rgb(0 0 0 / 20%), 0 1rem 3rem rgb(0 0 0 / 32%);
   }
 }
 
@@ -209,6 +215,8 @@
   --gothui-warning: #fde047;
   --gothui-focus: var(--gothui-primary);
   --gothui-elevation-raised: 0 0.5rem 2rem rgb(0 0 0 / 16%);
+  --gothui-elevation-subtle: 0 1px 3px rgb(0 0 0 / 24%);
+  --gothui-elevation-floating: 0 .25rem .75rem rgb(0 0 0 / 20%), 0 1rem 3rem rgb(0 0 0 / 32%);
 }
 
 /* Reset and document flow. Keep native control behavior and focus visibility. */
@@ -302,6 +310,13 @@ article {
 article > header { margin-block-end: 1.25rem; padding-block-end: 1rem; border-block-end: 1px solid var(--gothui-border); }
 article > footer { margin-block-start: 1.25rem; padding-block-start: 1rem; border-block-start: 1px solid var(--gothui-border); color: var(--gothui-muted); }
 article > :last-child, article > header > :last-child, article > footer > :last-child { margin-block-end: 0; }
+
+/* Card overrides have low specificity so surface and accessibility rules win.
+   Change the actual shadow, not an inherited token, to keep nested cards independent. */
+article:where([data-card-elevation="flat"]) { box-shadow: var(--gothui-elevation-flat); }
+article:where([data-card-elevation="subtle"]) { box-shadow: var(--gothui-elevation-subtle); }
+article:where([data-card-elevation="raised"]) { box-shadow: var(--gothui-elevation-raised); }
+article:where([data-card-elevation="floating"]) { box-shadow: var(--gothui-elevation-floating); }
 
 /* Forms: labels wrap controls, preserving names without synthesized IDs. */
 form { margin-block-end: 1.5rem; }
@@ -490,6 +505,7 @@ article[data-surface="gradient"] {
 }
 @media (forced-colors: active) {
   article[data-surface="gradient"] { background: Canvas; border-color: CanvasText; }
+  article, .gothui-dialog, .gothui-popover { box-shadow: none; }
   .skeleton-line, .skeleton-avatar { background: Canvas; border-color: CanvasText; }
 }
 /* Data tables retain native table/row/header semantics at every viewport width. */

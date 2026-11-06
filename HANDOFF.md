@@ -1,5 +1,33 @@
 # GothUI implementation handoff
 
+## Surface elevation milestone (2026-11-06)
+
+Extended the existing elevation scale with subtle and floating alongside flat
+and raised; the default raised values are unchanged. All four work through
+Appearance normalization, root attributes, saved preferences and CSS/Go exports.
+Cards can opt into CardProps.Elevation; empty/unknown values preserve the existing
+page setting. CSS changes the card's actual box-shadow rather than an inherited
+token, keeping nested cards independent. Outlined cards remain shadow-free;
+print and forced-color overrides suppress shadows. No stacking, interactivity,
+new animation, palette color, script or runtime dependency was introduced.
+
+The playground/Appearance controls expose the scale. /motion adds a page selector
+and four comparison cards, and the downloadable Card recipe uses subtle depth.
+Tests cover safe fallbacks, nested markup, preferences across demos/exports and
+CSS selector contracts. Existing dark/system parity and contrast tests also pass.
+The full seven-package race suite, vet, 35-template regeneration and 36 standalone
+recipes pass on Go 1.27.3. CSS is 40,182 bytes against the 65,536-byte ceiling.
+Reviewed the two new constants and CardProps field; the API baseline now has 242
+entries. docs/api-compatibility.md explains migration from positional literals.
+
+After this local commit, rebuild the single review executable and rerun the
+versioned consumer packaging check against the clean source. Retain canonical
+reports and that executable; remove only /tmp/gothui-elevation-cache afterward.
+Browser visual/cascade/print review is still pending, along with remote CI,
+live vulnerability scanning and repository reconciliation/publication. The
+continuing developer owns retained evidence until replacement or review. No
+extra worktree, database, reference changes, tag or remote write was created.
+
 ## Versioned consumer packaging milestone (2026-11-06)
 
 Added `go run ./cmd/gothui-dev consumer`. From a clean commit it creates a
