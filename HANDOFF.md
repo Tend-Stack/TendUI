@@ -1,5 +1,56 @@
 # GothUI implementation handoff
 
+## Searchable component catalog milestone (2026-11-05)
+
+Added the twelfth demo area `/catalog`, covering all 32 current public templ
+components with native search, category filtering, bounded pagination, usage
+notes, inline/standalone previews and downloadable self-contained templ recipes.
+Layout and AppShell use standalone previews to avoid nested document/main
+landmarks. The overview CTA/directory and workspace navigation link to the catalog.
+
+Recipes are compiled from and embedded as `catalog_samples.templ`; marked blocks
+supply both displayed and downloadable source. Downloads use a package declaration
+and the public components import, with any local helpers contained in the recipe.
+The registry supplies metadata and demo links. Only registered component paths
+are served; no user input becomes a filesystem path. Search text is capped at
+120 Unicode characters, categories validated and pages clamped. Theme-return
+allowlisting recognizes registered catalog details/previews but excludes downloads.
+
+Catalog CSS (1,366 bytes) is embedded in the example app and served at `/demo.css`,
+leaving the library stylesheet unchanged at 32,260 bytes. Recipe source is 9,943
+bytes. Script-blocking CSP remains unchanged; source downloads are plain-text
+attachments with nosniff, and GET/HEAD semantics are covered. No frontend tools,
+client runtime, external assets or Go dependencies were added.
+
+Validation: all four packages passed `go test -race ./...`; `go vet ./...` passed.
+After the final overview-link changes, the affected example package's race suite
+passed again. Catalog tests cover every detail/preview/download (parallel subtests),
+HEAD, document landmarks, escaping, search/pagination, attachment headers and
+registered paths. A coverage test compares exported component declarations in
+components/*.templ against the registry, failing if a public templ component is
+missing. This does not claim coverage of every exported Go helper/type.
+
+All 32 downloadable recipes were generated and compiled in separate packages in
+a temporary module with a local GothUI replacement. The generator initially noted
+that templ was not a direct requirement in that temporary module; Go resolved the
+existing pinned transitive runtime and all 32 packages compiled successfully.
+This proves standalone recipe compilation, not published-module installation.
+The task-owned temporary recipe directory is removed after validation; concise
+generation/build logs remain as provenance. Browser review remains unverified.
+
+The statically linked review executable is rebuilt and atomically replaces
+`tests/results/demos/gothui-demo`; existing user processes are untouched. Restart
+from a normal terminal, then visit `/catalog`. Current catalog validation/recipe/
+build logs replace successful forms logs; retain prior browser/TCP failure logs.
+The continuing developer owns the single binary and bounded logs until review or
+replacement. The task-specific Go cache is cleaned after building. No new worktree,
+database, backup, server process or release tag was created.
+
+The broad goal remains active. ROADMAP.md still requires browser evidence, API/
+compatibility documentation, measured build/render/size gates, and safe exact
+remote publication. The next useful milestone is reproducible validation/build
+commands and performance evidence, rather than treating the catalog as a release.
+
 ## Composable fields and native wizard milestone (2026-11-05)
 
 Added Field with typed label/help/error/required metadata and fresh control

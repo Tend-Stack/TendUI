@@ -46,6 +46,9 @@ func newHandler() http.Handler {
 	mux.HandleFunc("/interactions/confirm", confirmDemo)
 	mux.HandleFunc("/editing", editingDemo)
 	mux.HandleFunc("/wizard", projectWizard)
+	mux.HandleFunc("/demo.css", serveDemoCSS)
+	mux.HandleFunc("/catalog", serveCatalog)
+	mux.HandleFunc("/catalog/", serveCatalog)
 	mux.HandleFunc("/dashboard/selection", reviewSelection)
 	mux.HandleFunc("/api/theme/toggle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
@@ -145,10 +148,10 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard", "/catalog":
 		return true
 	}
-	return false
+	return catalogPagePath(path)
 }
 
 // Only return to a known same-origin demo; never redirect to a supplied external host.
@@ -183,12 +186,17 @@ func renderResponse(w http.ResponseWriter, r *http.Request, title string, body, 
 	page := components.Layout(components.LayoutProps{
 		Title: title, Language: "en", Theme: theme(r), Appearance: appearance(r),
 		Description: "Interactive GothUI demos: semantic components, native forms, and layouts.",
+		Head:        demoHead(),
 	}, body)
-	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
+	htmlHeaders(w)
 	if err := render.HTML(w, r, status, page, fragment); err != nil {
 		log.Printf("render: %v", err)
 	}
+}
+
+func htmlHeaders(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", "no-store")
+	w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
 }
 
 func main() {
