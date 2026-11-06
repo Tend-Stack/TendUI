@@ -17,6 +17,7 @@ uses the toolchain that compiled it, and requires no frontend tools.
 | `go run ./cmd/gothui-dev api` | Compiler-resolved public declarations, candidate snapshot and reviewed-baseline comparison |
 | `go run ./cmd/gothui-dev generated` | Matching templ version and byte-identical generated Go for every template; rejects orphan output |
 | `go run ./cmd/gothui-dev recipes` | Each downloadable catalog recipe generated and compiled in an independent package |
+| `go run ./cmd/gothui-dev consumer` | Clean committed module installed from a local versioned proxy, without `replace` or a templ generator |
 | `go run ./cmd/gothui-dev bench` | Three samples per server-side benchmark, allocation counts and environment metadata |
 | `go run ./cmd/gothui-dev build` | Versioned, CGO-disabled demo; size, embedded version and Linux ELF interpreter checks |
 
@@ -47,6 +48,28 @@ recipe's imports or helpers. It does **not** prove a published `go get` works.
 The temporary module is removed on success and ordinary errors. An abrupt kill
 can leave a `gothui-generated-*` or `gothui-recipes-*` directory in the OS temporary
 directory; confirm its process has stopped before removing it.
+
+## Versioned consumer packaging
+
+Run `go mod download` first to cache dependencies, then run `gothui-dev consumer`
+from a clean commit. It archives that commit into a temporary file-based module
+proxy under the declared release version, without creating a tag or publishing.
+A separate consumer uses `go get` for the root, components and render packages,
+then runs a rendering/embedded-CSS test and `go mod verify`. The consumer has no
+local `replace` and never invokes templ. The check verifies escaped content,
+the layout stylesheet link, asset delivery and the absence of a script element.
+
+Dependency archives come from the existing Go download cache and are verified
+against the committed checksums. Installation uses an isolated temporary module
+cache, so the unpublished fixture cannot enter the shared cache. Both the proxy
+and cache are removed on success and ordinary failures; an abrupt kill can leave
+a `gothui-consumer-*` directory. The invoking developer owns cleanup after
+confirming the process has stopped. The report records archive hash, module sum,
+source revision and cleanup status. Dirty sources are rejected without changes.
+
+This proves versioned packaging and consumption locally. It does **not** prove
+repository access, a published tag, public checksum-server acceptance or a live
+published installation. Those remain separate release gates.
 
 ## Review executable and versioning
 
