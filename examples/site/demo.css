@@ -17,7 +17,8 @@
 }
 
 /* Compact navigation keeps demos discoverable without a wall of links. */
-.demo-header { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem 2rem; inline-size: min(100% - 2rem, 1920px); }
+.demo-header { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem 2rem; inline-size: min(100% - 2rem, 1920px); padding-block: .75rem; }
+.demo-header + main { --gothui-heading-1: clamp(1.8rem, 3vw, 2.6rem); --gothui-heading-2: clamp(1.35rem, 2vw, 1.75rem); padding-block-start: 1.5rem; }
 .demo-brand { display: inline-flex; align-items: center; gap: .6rem; color: var(--gothui-text); text-decoration: none; font-size: 1.2rem; font-weight: 650; }
 .demo-brand img { flex: none; }
 .demo-primary { margin-inline-start: auto; gap: .5rem; }
@@ -35,7 +36,6 @@
 .catalog-card h2 { font-weight: 600; }
 .catalog-card h2 a { text-decoration: none; }
 .catalog-card h2 a:hover { text-decoration: underline; }
-.playground-page > section:first-child h1 { font-size: clamp(2.2rem, 4vw, 3.5rem); }
 .playground-jumps { justify-content: start; gap: 1rem 1.5rem; margin-block: 1.75rem; }
 .playground-jumps a { font-size: .9rem; text-decoration: none; }
 .playground-scenarios { padding: 1.25rem; background: var(--gothui-subtle); border-radius: var(--gothui-radius); }
