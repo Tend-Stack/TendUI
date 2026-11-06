@@ -19,6 +19,10 @@ templ playground(o playgroundOptions) {
 						@components.Select(components.SelectProps{Name: "theme", Label: "Color theme", Value: o.Theme, Options: []components.Option{{Label: "Saved preference", Value: "saved"}, {Label: "Light", Value: "light"}, {Label: "Dark", Value: "dark"}, {Label: "System preference", Value: "system"}}})
 						@components.Select(components.SelectProps{Name: "variant", Label: "Button variant", Value: o.Variant, Options: []components.Option{{Label: "Primary", Value: "primary"}, {Label: "Outline", Value: "outline"}}})
 						@components.Select(components.SelectProps{Name: "state", Label: "Control state", Value: o.State, Options: []components.Option{{Label: "Normal", Value: "normal"}, {Label: "Disabled", Value: "disabled"}, {Label: "Validation error", Value: "invalid"}, {Label: "Read-only text field", Value: "readonly"}}})
+						<details>
+							<summary>Appearance settings</summary>
+							@appearanceControls(o.Appearance)
+						</details>
 						<fieldset>
 							<legend>Optional content</legend>
 							@components.Checkbox(components.CheckboxProps{Name: "header", Label: "Show card header", Checked: o.Header})
@@ -30,6 +34,7 @@ templ playground(o playgroundOptions) {
 							<a href="/playground">Reset settings</a>
 						</div>
 					}
+					@exportLinks(o.Appearance, o.Theme)
 				}
 				<div>
 					<h2>Component preview</h2>
@@ -62,6 +67,7 @@ templ playground(o playgroundOptions) {
 				</div>
 			}
 		</section>
+		@newComponents(o)
 		<section aria-labelledby="native-title">
 			<h2 id="native-title">Native elements, styled.</h2>
 			@components.Grid(components.GridProps{}) {
@@ -97,6 +103,9 @@ func previewCard(o playgroundOptions) components.CardProps {
 }
 
 templ playgroundHidden(o playgroundOptions) {
+	for _, field := range appearanceFields(o.Appearance) {
+		<input type="hidden" name={ field.Name } value={ field.Value }/>
+	}
 	<input type="hidden" name="apply" value="1"/>
 	<input type="hidden" name="label" value={ o.Label }/>
 	<input type="hidden" name="theme" value={ o.Theme }/>

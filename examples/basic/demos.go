@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"github.com/Tend-Stack/GothUI/v2026/components"
 	"net/http"
 	"net/mail"
 	"net/url"
@@ -9,6 +10,7 @@ import (
 )
 
 type playgroundOptions struct {
+	Appearance                   components.Appearance
 	Label, Variant, State, Theme string
 	Header, Footer, Checked      bool
 	Clicked                      bool
@@ -120,4 +122,14 @@ func fieldHint(message, fallback string) string {
 		return message
 	}
 	return fallback
+}
+
+func formErrors(d formData) []components.FieldError {
+	var result []components.FieldError
+	for _, id := range []string{"name", "email", "role", "message", "consent"} {
+		if message := d.Errors[id]; message != "" {
+			result = append(result, components.FieldError{ID: id, Message: message})
+		}
+	}
+	return result
 }

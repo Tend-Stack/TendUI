@@ -68,7 +68,7 @@ func formLab(d formData) templ.Component {
 					var templ_7745c5c3_Var4 string
 					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(d.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 19, Col: 26}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 19, Col: 26}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 					if templ_7745c5c3_Err != nil {
@@ -81,7 +81,7 @@ func formLab(d formData) templ.Component {
 					var templ_7745c5c3_Var5 string
 					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(d.Email)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 20, Col: 38}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 20, Col: 38}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 					if templ_7745c5c3_Err != nil {
@@ -94,7 +94,7 @@ func formLab(d formData) templ.Component {
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(d.Role)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 20, Col: 70}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 20, Col: 70}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {
@@ -112,7 +112,7 @@ func formLab(d formData) templ.Component {
 						var templ_7745c5c3_Var7 string
 						templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(d.Message)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 22, Col: 31}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 22, Col: 31}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 						if templ_7745c5c3_Err != nil {
@@ -129,12 +129,12 @@ func formLab(d formData) templ.Component {
 					}
 				} else {
 					if d.Submitted {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div role=\"alert\"><h3>Please check the highlighted fields.</h3><p>Your entries are still here. Correct the errors below and try again.</p></div>")
+						templ_7745c5c3_Err = components.ErrorSummary(components.ErrorSummaryProps{Title: "Please check the highlighted fields.", Errors: formErrors(d)}).Render(ctx, templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -154,20 +154,20 @@ func formLab(d formData) templ.Component {
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<p id=\"name-hint\"><small>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<p id=\"name-hint\"><small>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var9 string
 						templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fieldHint(d.Errors["name"], "Up to 80 characters."))
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 32, Col: 85}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 32, Col: 85}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</small></p>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</small></p>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -175,20 +175,20 @@ func formLab(d formData) templ.Component {
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<p id=\"email-hint\"><small>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<p id=\"email-hint\"><small>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var10 string
 						templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fieldHint(d.Errors["email"], "Use a sample address; no email will be sent."))
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 34, Col: 111}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 34, Col: 111}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</small></p>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</small></p>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -196,89 +196,62 @@ func formLab(d formData) templ.Component {
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<p id=\"role-hint\"><small>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p id=\"role-hint\"><small>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var11 string
 						templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(d.Errors["role"])
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 36, Col: 50}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 36, Col: 50}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</small></p><label for=\"message\">Message (optional)</label> <textarea id=\"message\" name=\"message\" maxlength=\"1000\" aria-describedby=\"message-hint\"")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</small></p>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						if d.Errors["message"] != "" {
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, " aria-invalid=\"true\"")
-							if templ_7745c5c3_Err != nil {
-								return templ_7745c5c3_Err
-							}
+						templ_7745c5c3_Err = components.Textarea(components.TextareaProps{ID: "message", Name: "message", Label: "Message (optional)", Value: d.Message, MaxLength: 1000, DescribedBy: "message-hint", Invalid: d.Errors["message"] != ""}).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, ">")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<p id=\"message-hint\"><small>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var12 string
-						templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(d.Message)
+						templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fieldHint(d.Errors["message"], "Up to 1,000 characters."))
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 46, Col: 19}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 38, Col: 94}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</textarea><p id=\"message-hint\"><small>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</small></p>")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = components.Checkbox(components.CheckboxProps{ID: "consent", Name: "consent", Label: "I understand this is a demo (required)", Checked: d.Consent, Required: true, Invalid: d.Errors["consent"] != "", DescribedBy: "consent-hint"}).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<p id=\"consent-hint\"><small>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var13 string
-						templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(fieldHint(d.Errors["message"], "Up to 1,000 characters."))
+						templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(d.Errors["consent"])
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 47, Col: 94}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/forms.templ`, Line: 40, Col: 56}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</small></p><label class=\"check\"><input type=\"checkbox\" name=\"consent\" value=\"on\"")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						if d.Consent {
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, " checked")
-							if templ_7745c5c3_Err != nil {
-								return templ_7745c5c3_Err
-							}
-						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, " required aria-describedby=\"consent-hint\"")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						if d.Errors["consent"] != "" {
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, " aria-invalid=\"true\"")
-							if templ_7745c5c3_Err != nil {
-								return templ_7745c5c3_Err
-							}
-						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "> I understand this is a demo (required)</label><p id=\"consent-hint\"><small>")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						var templ_7745c5c3_Var14 string
-						templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(d.Errors["consent"])
-						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `forms.templ`, Line: 59, Col: 56}
-						}
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</small></p><div class=\"cluster\">")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</small></p><div class=\"cluster\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -290,7 +263,7 @@ func formLab(d formData) templ.Component {
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<button type=\"submit\" class=\"outline\" formnovalidate>Test server validation</button></div>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<button type=\"submit\" class=\"outline\" formnovalidate>Test server validation</button></div>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -307,7 +280,7 @@ func formLab(d formData) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<aside aria-labelledby=\"test-plan\"><h2 id=\"test-plan\">Try these scenarios.</h2><details open><summary>1. Browser validation</summary><p>Leave required fields empty and press “Submit demo.” Your browser should focus a field and show its validation message.</p></details> <details><summary>2. Server validation</summary><p>Press “Test server validation” to bypass the browser checks. The server returns field errors while preserving your entries.</p></details> <details><summary>3. A successful submission</summary><p>Enter a name, a valid email, select a role, and check the consent box. Submit to see a receipt.</p></details> <details><summary>4. Reset and keyboard controls</summary><p>“Reset edits” restores the values present when the page loaded. Use a fresh test to clear a server response. Tab through controls and use Space to toggle consent.</p></details> <details><summary>5. Escaping and long content</summary><p>Try angle brackets in your name or message. They should appear as text. A name longer than 80 characters should produce a server error.</p></details><p><a href=\"/forms\">Clear everything and start again</a></p></aside>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<aside aria-labelledby=\"test-plan\"><h2 id=\"test-plan\">Try these scenarios.</h2><details open><summary>1. Browser validation</summary><p>Leave required fields empty and press “Submit demo.” Your browser should focus a field and show its validation message.</p></details> <details><summary>2. Server validation</summary><p>Press “Test server validation” to bypass the browser checks. The server returns field errors while preserving your entries.</p></details> <details><summary>3. A successful submission</summary><p>Enter a name, a valid email, select a role, and check the consent box. Submit to see a receipt.</p></details> <details><summary>4. Reset and keyboard controls</summary><p>“Reset edits” restores the values present when the page loaded. Use a fresh test to clear a server response. Tab through controls and use Space to toggle consent.</p></details> <details><summary>5. Escaping and long content</summary><p>Try angle brackets in your name or message. They should appear as text. A name longer than 80 characters should produce a server error.</p></details><p><a href=\"/forms\">Clear everything and start again</a></p></aside>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -317,7 +290,7 @@ func formLab(d formData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</section></main>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</section></main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

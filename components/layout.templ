@@ -15,12 +15,16 @@ type LayoutProps struct {
 	Language    string
 	Theme       Theme
 	Description string
+	Appearance  Appearance
+	// Head accepts application-owned metadata and stylesheet links.
+	Head templ.Component
 }
 
 templ Layout(props LayoutProps, body templ.Component) {
 	<!DOCTYPE html>
 	<html
 		lang={ fallback(props.Language, "en") }
+		{ props.Appearance.Attributes()... }
 		if props.Theme == ThemeLight || props.Theme == ThemeDark {
 			data-theme={ string(props.Theme) }
 		}
@@ -33,6 +37,9 @@ templ Layout(props LayoutProps, body templ.Component) {
 				<meta name="description" content={ props.Description }/>
 			}
 			<link rel="stylesheet" href={ gothui.StylesheetURL }/>
+			if props.Head != nil {
+				@props.Head
+			}
 		</head>
 		<body>
 			if body != nil {

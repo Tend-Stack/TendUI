@@ -1,0 +1,158 @@
+package components
+
+import "strconv"
+
+type TextareaProps struct {
+	ID          string
+	Name        string
+	Label       string
+	Value       string
+	Placeholder string
+	DescribedBy string
+	Rows        int
+	MaxLength   int
+	Required    bool
+	Disabled    bool
+	ReadOnly    bool
+	Invalid     bool
+}
+
+templ Textarea(props TextareaProps) {
+	<label>
+		{ props.Label }
+		<textarea
+			name={ props.Name }
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.Placeholder != "" {
+				placeholder={ props.Placeholder }
+			}
+			if props.DescribedBy != "" {
+				aria-describedby={ props.DescribedBy }
+			}
+			if props.Rows > 0 {
+				rows={ strconv.Itoa(props.Rows) }
+			}
+			if props.MaxLength > 0 {
+				maxlength={ strconv.Itoa(props.MaxLength) }
+			}
+			if props.Invalid {
+				aria-invalid="true"
+			}
+			required?={ props.Required }
+			disabled?={ props.Disabled }
+			readonly?={ props.ReadOnly }
+		>{ props.Value }</textarea>
+	</label>
+}
+
+type RadioGroupProps struct {
+	ID          string
+	Name        string
+	Legend      string
+	Value       string
+	Options     []Option
+	Required    bool
+	Disabled    bool
+	Invalid     bool
+	DescribedBy string
+}
+
+templ RadioGroup(props RadioGroupProps) {
+	<fieldset
+		disabled?={ props.Disabled }
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		if props.Invalid {
+			aria-invalid="true"
+		}
+		if props.DescribedBy != "" {
+			aria-describedby={ props.DescribedBy }
+		}
+	>
+		<legend>{ props.Legend }</legend>
+		for _, option := range props.Options {
+			<label class="check">
+				<input
+					type="radio"
+					name={ props.Name }
+					value={ option.Value }
+					checked?={ props.Value == option.Value }
+					disabled?={ option.Disabled }
+					required?={ props.Required }
+				/>
+				{ option.Label }
+			</label>
+		}
+	</fieldset>
+}
+
+type SwitchProps struct {
+	ID          string
+	Name        string
+	Label       string
+	Value       string
+	Checked     bool
+	Disabled    bool
+	DescribedBy string
+}
+
+templ Switch(props SwitchProps) {
+	<label class="check">
+		<input
+			type="checkbox"
+			role="switch"
+			name={ props.Name }
+			value={ fallback(props.Value, "on") }
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.DescribedBy != "" {
+				aria-describedby={ props.DescribedBy }
+			}
+			checked?={ props.Checked }
+			disabled?={ props.Disabled }
+		/>
+		{ props.Label }
+	</label>
+}
+
+// Accept is a browser hint, not server-side upload validation. The application owns upload handling.
+type FileInputProps struct {
+	ID          string
+	Name        string
+	Label       string
+	Accept      string
+	Multiple    bool
+	Required    bool
+	Disabled    bool
+	Invalid     bool
+	DescribedBy string
+}
+
+templ FileInput(props FileInputProps) {
+	<label>
+		{ props.Label }
+		<input
+			type="file"
+			name={ props.Name }
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.Accept != "" {
+				accept={ props.Accept }
+			}
+			if props.DescribedBy != "" {
+				aria-describedby={ props.DescribedBy }
+			}
+			if props.Invalid {
+				aria-invalid="true"
+			}
+			multiple?={ props.Multiple }
+			required?={ props.Required }
+			disabled?={ props.Disabled }
+		/>
+	</label>
+}

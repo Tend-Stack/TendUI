@@ -4,7 +4,7 @@
 /* Theme tokens. Override these in a stylesheet loaded after GothUI. */
 :root {
   color-scheme: light;
-  --gothui-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gothui-font: var(--gothui-font-sans);
   --gothui-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
   --gothui-background: #f7f8fc;
   --gothui-surface: #ffffff;
@@ -12,20 +12,142 @@
   --gothui-text: #20283e;
   --gothui-muted: #56627a;
   --gothui-border: #7b879c;
-  --gothui-primary: #4f46c8;
-  --gothui-primary-hover: #3f36aa;
+  --gothui-primary: var(--gothui-accent-light);
+  --gothui-primary-hover: var(--gothui-accent-hover-light);
   --gothui-on-primary: #ffffff;
   --gothui-danger: #b42332;
-  --gothui-focus: #6c47da;
+  --gothui-info: #1d4ed8;
+  --gothui-success: #166534;
+  --gothui-warning: #854d0e;
+  --gothui-focus: var(--gothui-primary);
   --gothui-radius: 0.65rem;
   --gothui-space: 1rem;
-  --gothui-shadow: 0 0.5rem 2rem rgb(25 35 65 / 6%);
+  --gothui-shadow: var(--gothui-elevation-raised);
   --gothui-content-width: 72rem;
   font-family: var(--gothui-font);
-  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  font-size: var(--gothui-text-size);
   line-height: 1.6;
   text-size-adjust: 100%;
 }
+
+/* Appearance tokens: shared by native attributes and exported CSS overrides. */
+:root {
+  --gothui-preset-indigo-light: #4f46c8;
+  --gothui-preset-indigo-hover-light: #3f36aa;
+  --gothui-preset-indigo-dark: #b1a7ff;
+  --gothui-preset-indigo-hover-dark: #cdc6ff;
+  --gothui-preset-indigo-on-dark: #18132f;
+  --gothui-preset-neutral-light: #475569;
+  --gothui-preset-neutral-hover-light: #334155;
+  --gothui-preset-neutral-dark: #cbd5e1;
+  --gothui-preset-neutral-hover-dark: #e2e8f0;
+  --gothui-preset-neutral-on-dark: #17202d;
+  --gothui-preset-forest-light: #166534;
+  --gothui-preset-forest-hover-light: #14532d;
+  --gothui-preset-forest-dark: #86efac;
+  --gothui-preset-forest-hover-dark: #bbf7d0;
+  --gothui-preset-forest-on-dark: #10291b;
+  --gothui-preset-rose-light: #be123c;
+  --gothui-preset-rose-hover-light: #9f1239;
+  --gothui-preset-rose-dark: #fda4af;
+  --gothui-preset-rose-hover-dark: #fecdd3;
+  --gothui-preset-rose-on-dark: #3d1020;
+  --gothui-density-comfortable-space: 1rem;
+  --gothui-density-comfortable-control-y: .65rem;
+  --gothui-density-comfortable-control-x: 1.1rem;
+  --gothui-density-comfortable-control-height: 2.75rem;
+  --gothui-density-comfortable-card-padding: clamp(1rem, 2.5vw, 1.75rem);
+  --gothui-density-comfortable-grid-gap: 1.5rem;
+  --gothui-density-compact-space: .75rem;
+  --gothui-density-compact-control-y: .4rem;
+  --gothui-density-compact-control-x: .8rem;
+  --gothui-density-compact-control-height: 2.25rem;
+  --gothui-density-compact-card-padding: 1rem;
+  --gothui-density-compact-grid-gap: 1rem;
+  --gothui-corners-rounded: .65rem;
+  --gothui-corners-square: .15rem;
+  --gothui-corners-soft: 1.15rem;
+  --gothui-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gothui-font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --gothui-font-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --gothui-size-standard: clamp(1rem, .96rem + .2vw, 1.125rem);
+  --gothui-size-large: clamp(1.125rem, 1.05rem + .3vw, 1.3rem);
+  --gothui-width-standard: 72rem;
+  --gothui-width-narrow: 52rem;
+  --gothui-width-wide: 90rem;
+  --gothui-elevation-raised: 0 .5rem 2rem rgb(25 35 65 / 6%);
+  --gothui-elevation-flat: none;
+  --gothui-accent-light: var(--gothui-preset-indigo-light);
+  --gothui-accent-hover-light: var(--gothui-preset-indigo-hover-light);
+  --gothui-accent-dark: var(--gothui-preset-indigo-dark);
+  --gothui-accent-hover-dark: var(--gothui-preset-indigo-hover-dark);
+  --gothui-accent-on-dark: var(--gothui-preset-indigo-on-dark);
+  --gothui-space: var(--gothui-density-comfortable-space);
+  --gothui-control-y: var(--gothui-density-comfortable-control-y);
+  --gothui-control-x: var(--gothui-density-comfortable-control-x);
+  --gothui-control-height: var(--gothui-density-comfortable-control-height);
+  --gothui-card-padding: var(--gothui-density-comfortable-card-padding);
+  --gothui-grid-gap: var(--gothui-density-comfortable-grid-gap);
+  --gothui-text-size: var(--gothui-size-standard);
+}
+
+:root:where([data-preset="indigo"]) {
+  --gothui-accent-light: var(--gothui-preset-indigo-light);
+  --gothui-accent-hover-light: var(--gothui-preset-indigo-hover-light);
+  --gothui-accent-dark: var(--gothui-preset-indigo-dark);
+  --gothui-accent-hover-dark: var(--gothui-preset-indigo-hover-dark);
+  --gothui-accent-on-dark: var(--gothui-preset-indigo-on-dark);
+}
+:root:where([data-preset="neutral"]) {
+  --gothui-accent-light: var(--gothui-preset-neutral-light);
+  --gothui-accent-hover-light: var(--gothui-preset-neutral-hover-light);
+  --gothui-accent-dark: var(--gothui-preset-neutral-dark);
+  --gothui-accent-hover-dark: var(--gothui-preset-neutral-hover-dark);
+  --gothui-accent-on-dark: var(--gothui-preset-neutral-on-dark);
+}
+:root:where([data-preset="forest"]) {
+  --gothui-accent-light: var(--gothui-preset-forest-light);
+  --gothui-accent-hover-light: var(--gothui-preset-forest-hover-light);
+  --gothui-accent-dark: var(--gothui-preset-forest-dark);
+  --gothui-accent-hover-dark: var(--gothui-preset-forest-hover-dark);
+  --gothui-accent-on-dark: var(--gothui-preset-forest-on-dark);
+}
+:root:where([data-preset="rose"]) {
+  --gothui-accent-light: var(--gothui-preset-rose-light);
+  --gothui-accent-hover-light: var(--gothui-preset-rose-hover-light);
+  --gothui-accent-dark: var(--gothui-preset-rose-dark);
+  --gothui-accent-hover-dark: var(--gothui-preset-rose-hover-dark);
+  --gothui-accent-on-dark: var(--gothui-preset-rose-on-dark);
+}
+:root:where([data-density="comfortable"]) {
+  --gothui-space: var(--gothui-density-comfortable-space);
+  --gothui-control-y: var(--gothui-density-comfortable-control-y);
+  --gothui-control-x: var(--gothui-density-comfortable-control-x);
+  --gothui-control-height: var(--gothui-density-comfortable-control-height);
+  --gothui-card-padding: var(--gothui-density-comfortable-card-padding);
+  --gothui-grid-gap: var(--gothui-density-comfortable-grid-gap);
+}
+:root:where([data-density="compact"]) {
+  --gothui-space: var(--gothui-density-compact-space);
+  --gothui-control-y: var(--gothui-density-compact-control-y);
+  --gothui-control-x: var(--gothui-density-compact-control-x);
+  --gothui-control-height: var(--gothui-density-compact-control-height);
+  --gothui-card-padding: var(--gothui-density-compact-card-padding);
+  --gothui-grid-gap: var(--gothui-density-compact-grid-gap);
+}
+:root:where([data-corners="rounded"]) { --gothui-radius: var(--gothui-corners-rounded); }
+:root:where([data-corners="square"]) { --gothui-radius: var(--gothui-corners-square); }
+:root:where([data-corners="soft"]) { --gothui-radius: var(--gothui-corners-soft); }
+:root:where([data-typography="sans"]) { --gothui-font: var(--gothui-font-sans); }
+:root:where([data-typography="serif"]) { --gothui-font: var(--gothui-font-serif); }
+:root:where([data-typography="mono"]) { --gothui-font: var(--gothui-font-mono); }
+:root:where([data-text-size="standard"]) { --gothui-text-size: var(--gothui-size-standard); }
+:root:where([data-text-size="large"]) { --gothui-text-size: var(--gothui-size-large); }
+:root:where([data-width="standard"]) { --gothui-content-width: var(--gothui-width-standard); }
+:root:where([data-width="narrow"]) { --gothui-content-width: var(--gothui-width-narrow); }
+:root:where([data-width="wide"]) { --gothui-content-width: var(--gothui-width-wide); }
+:root:where([data-elevation="raised"]) { --gothui-shadow: var(--gothui-elevation-raised); }
+:root:where([data-elevation="flat"]) { --gothui-shadow: var(--gothui-elevation-flat); }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-theme="dark"]) {
@@ -36,12 +158,15 @@
     --gothui-text: #eef0f8;
     --gothui-muted: #aeb9ce;
     --gothui-border: #71809b;
-    --gothui-primary: #b1a7ff;
-    --gothui-primary-hover: #cdc6ff;
-    --gothui-on-primary: #18132f;
+    --gothui-primary: var(--gothui-accent-dark);
+    --gothui-primary-hover: var(--gothui-accent-hover-dark);
+    --gothui-on-primary: var(--gothui-accent-on-dark);
     --gothui-danger: #ff9caa;
-    --gothui-focus: #c2b5ff;
-    --gothui-shadow: 0 0.5rem 2rem rgb(0 0 0 / 16%);
+    --gothui-info: #93c5fd;
+    --gothui-success: #86efac;
+    --gothui-warning: #fde047;
+    --gothui-focus: var(--gothui-primary);
+    --gothui-elevation-raised: 0 0.5rem 2rem rgb(0 0 0 / 16%);
   }
 }
 
@@ -53,12 +178,15 @@
   --gothui-text: #eef0f8;
   --gothui-muted: #aeb9ce;
   --gothui-border: #71809b;
-  --gothui-primary: #b1a7ff;
-  --gothui-primary-hover: #cdc6ff;
-  --gothui-on-primary: #18132f;
+  --gothui-primary: var(--gothui-accent-dark);
+  --gothui-primary-hover: var(--gothui-accent-hover-dark);
+  --gothui-on-primary: var(--gothui-accent-on-dark);
   --gothui-danger: #ff9caa;
-  --gothui-focus: #c2b5ff;
-  --gothui-shadow: 0 0.5rem 2rem rgb(0 0 0 / 16%);
+  --gothui-info: #93c5fd;
+  --gothui-success: #86efac;
+  --gothui-warning: #fde047;
+  --gothui-focus: var(--gothui-primary);
+  --gothui-elevation-raised: 0 0.5rem 2rem rgb(0 0 0 / 16%);
 }
 
 /* Reset and document flow. Keep native control behavior and focus visibility. */
@@ -82,7 +210,7 @@ body > header { border-block-end: 1px solid var(--gothui-border); }
 body > footer { color: var(--gothui-muted); border-block-start: 1px solid var(--gothui-border); }
 main { display: block; }
 section + section { margin-block-start: 3rem; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: 1.5rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--gothui-grid-gap); }
 .grid > * { min-inline-size: 0; }
 .stack > * + * { margin-block-start: var(--gothui-space); }
 .cluster, nav, nav ul { display: flex; align-items: center; flex-wrap: wrap; gap: var(--gothui-space); }
@@ -113,8 +241,8 @@ button, .button, input:is([type="submit"], [type="button"], [type="reset"]) {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-block-size: 2.75rem;
-  padding: 0.65rem 1.1rem;
+  min-block-size: var(--gothui-control-height);
+  padding: var(--gothui-control-y) var(--gothui-control-x);
   border: 1px solid var(--gothui-primary);
   border-radius: var(--gothui-radius);
   background: var(--gothui-primary);
@@ -138,7 +266,7 @@ button, .button, input:is([type="submit"], [type="button"], [type="reset"]) {
 /* Cards are plain articles; their header and footer are optional. */
 article {
   margin-block: 0 1.5rem;
-  padding: clamp(1rem, 2.5vw, 1.75rem);
+  padding: var(--gothui-card-padding);
   background: var(--gothui-surface);
   border: 1px solid var(--gothui-border);
   border-radius: var(--gothui-radius);
@@ -154,9 +282,9 @@ label { display: block; margin-block-end: 1rem; font-weight: 500; }
 input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"], [type="reset"], [type="hidden"]), select, textarea {
   display: block;
   inline-size: 100%;
-  min-block-size: 2.75rem;
+  min-block-size: var(--gothui-control-height);
   margin-block-start: 0.4rem;
-  padding: 0.65rem 0.85rem;
+  padding: var(--gothui-control-y) var(--gothui-control-x);
   border: 1px solid var(--gothui-border);
   border-radius: var(--gothui-radius);
   background: var(--gothui-surface);
@@ -177,7 +305,7 @@ details { padding-block: 1rem; border-block-end: 1px solid var(--gothui-border);
 summary { cursor: pointer; font-weight: 600; }
 details[open] > summary { margin-block-end: 1rem; }
 table { inline-size: 100%; border-collapse: collapse; text-align: start; }
-th, td { padding: 0.75rem 1rem; border-block-end: 1px solid var(--gothui-border); text-align: start; }
+th, td { padding: var(--gothui-control-y) var(--gothui-control-x); border-block-end: 1px solid var(--gothui-border); text-align: start; }
 th { font-weight: 600; }
 tbody tr:nth-child(even) { background: var(--gothui-subtle); }
 .table-scroll { overflow-x: auto; }
@@ -196,4 +324,51 @@ tbody tr:nth-child(even) { background: var(--gothui-subtle); }
   :root { color-scheme: light; --gothui-background: white; --gothui-surface: white; --gothui-text: black; --gothui-muted: #333; --gothui-primary: #333; }
   article { box-shadow: none; break-inside: avoid; }
   .theme-toggle { display: none; }
+}
+
+/* Feedback uses semantic tones with text labels as well as color. */
+[data-tone="neutral"] { --gothui-tone: var(--gothui-muted); }
+[data-tone="info"] { --gothui-tone: var(--gothui-info); }
+[data-tone="success"] { --gothui-tone: var(--gothui-success); }
+[data-tone="warning"] { --gothui-tone: var(--gothui-warning); }
+[data-tone="danger"] { --gothui-tone: var(--gothui-danger); }
+.badge { display: inline-block; padding: .15em .6em; border: 1px solid currentColor; border-radius: var(--gothui-radius); color: var(--gothui-tone, var(--gothui-muted)); font-size: .8em; font-weight: 650; line-height: 1.5; }
+.alert { padding: var(--gothui-space); margin-block-end: var(--gothui-space); border: 1px solid var(--gothui-border); border-inline-start: .3rem solid var(--gothui-tone, var(--gothui-info)); border-radius: var(--gothui-radius); background: var(--gothui-surface); }
+.alert > :last-child { margin-block-end: 0; }
+.alert > p:first-child > strong { color: var(--gothui-tone, var(--gothui-text)); }
+
+/* Native switch semantics and keyboard interaction; checked state is not color-only. */
+input[type="checkbox"][role="switch"] { appearance: none; flex: 0 0 auto; inline-size: 2.6rem; block-size: 1.5rem; border: 2px solid var(--gothui-border); border-radius: 2rem; background: var(--gothui-subtle); position: relative; cursor: pointer; }
+input[role="switch"]::before { content: ""; position: absolute; inline-size: 1rem; block-size: 1rem; border-radius: 50%; inset-block-start: calc(50% - .5rem); inset-inline-start: .15rem; background: var(--gothui-text); }
+input[role="switch"]:checked { background: var(--gothui-primary); border-color: var(--gothui-primary); }
+input[role="switch"]:checked::before { inset-inline-start: calc(100% - 1.15rem); background: var(--gothui-on-primary); }
+input[type="file"]::file-selector-button { margin-inline-end: .75rem; padding: .3rem .6rem; border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); background: var(--gothui-subtle); color: var(--gothui-text); cursor: pointer; font: inherit; }
+
+/* Responsive application shell, including a native collapsible sidebar. */
+.app-shell { display: grid; grid-template-columns: 15rem minmax(0, 1fr); grid-template-rows: auto 1fr; min-block-size: 100dvh; max-inline-size: calc(var(--gothui-content-width) + 15rem); margin-inline: auto; }
+.app-header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--gothui-space); padding: var(--gothui-space) 1.5rem; border-block-end: 1px solid var(--gothui-border); }
+.app-brand { font-size: 1.25rem; font-weight: 750; text-decoration: none; }
+.app-sidebar { padding: 1.5rem var(--gothui-space); background: var(--gothui-surface); border-inline-end: 1px solid var(--gothui-border); min-inline-size: 0; }
+.app-sidebar details { padding: 0; border: 0; }
+.app-sidebar nav, .app-sidebar nav ul { display: block; }
+.app-sidebar nav a { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .7rem; margin-block: .2rem; border-radius: var(--gothui-radius); text-decoration: none; overflow-wrap: anywhere; }
+.app-sidebar nav a:hover, .app-sidebar nav a[aria-current="page"] { background: var(--gothui-subtle); }
+nav a[aria-current="page"] { font-weight: 750; text-decoration-thickness: .15em; }
+.app-sidebar footer { margin-block-start: 2rem; color: var(--gothui-muted); }
+.app-main { min-inline-size: 0; padding: clamp(1rem, 3vw, 2.5rem); }
+.app-main > h1 { font-size: clamp(2rem, 4vw, 3rem); }
+.skip-link { position: absolute; inset-inline-start: 1rem; inset-block-start: -10rem; z-index: 10; padding: .5rem 1rem; background: var(--gothui-surface); }
+.skip-link:focus { inset-block-start: 1rem; }
+button, .button { max-inline-size: 100%; overflow-wrap: anywhere; }
+@media (max-width: 48rem) {
+  .app-shell { grid-template-columns: minmax(0, 1fr); }
+  .app-sidebar { border-inline-end: 0; border-block-end: 1px solid var(--gothui-border); }
+}
+@media (forced-colors: active) {
+  input[type="checkbox"][role="switch"] { appearance: auto; inline-size: 1.2rem; block-size: 1.2rem; }
+  input[role="switch"]::before { content: none; }
+}
+@media print {
+  .app-shell { display: block; }
+  .app-sidebar, .skip-link { display: none; }
 }
