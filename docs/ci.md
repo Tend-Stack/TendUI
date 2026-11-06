@@ -122,7 +122,7 @@ versions, including the independent security job. Local evidence remains under
 ignored `tests/results/` directories; these are developer records, not shipped
 assets. The workflow retains its reports for seven days.
 
-Published-tag consumer installation, optional HTMX execution, and real-browser
-keyboard/accessibility checks remain independent release gates. In-process HTTP
-tests and cross-compilation do not replace browser review. No release tag has
-been created yet.
+Published-tag consumer installation and browser checks are independent release
+gates. In-process HTTP tests and cross-compilation do not replace browser review.
+See [release verification](release-verification.md) for the v2026.1.0 exact-commit
+native, security, browser and published-tag installation results.

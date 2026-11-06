@@ -61,19 +61,17 @@ with unchanged output across the captured parity fixtures. See docs/performance.
 Expanded source-color checks cover text, links and control borders across all
 built-in surfaces. A consolidated print palette takes priority over dark themes
 and retains readable controls without requiring background graphics. See
-docs/accessibility.md for measured scope and the pending browser review matrix.
+docs/accessibility.md for measured scope and the consumer review matrix.
 
 Expanded asset HTTP coverage verifies content-derived ETags, stale validators,
 HEAD, single/multipart ranges and concurrent readers. docs/assets.md records the
 stable-URL cache contract and distinguishes in-process checks from live delivery.
 
-Development history is published to GitHub. Browser review,
-release-specific verification and tagged-version publication remain release gates.
-The broad goal remains unfinished.
-
-Versioned packaging also passes in an isolated consumer through a local file
-proxy: no `replace`, no templ generator, embedded CSS and components tested,
-module checksums verified. A published-version installation remains pending.
+The first release baseline now has a complete documentation website, shared
+component catalog, examples and playground, plus passing native, security and
+browser verification. See [release verification](docs/release-verification.md)
+for exact commits, runs, published-tag installation and remaining coverage limits.
+The development tracks below describe continuing product work beyond this baseline.
 
 ## Next development tracks
 

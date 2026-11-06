@@ -29,10 +29,14 @@ run `./tests/results/demos/gothui-demo -open` on a host with browser access.
 
 ## Release boundary
 
-The initial GitHub native matrix and vulnerability job passed. Require green
-checks at the exact proposed release SHA. Still outstanding: real-browser and
-assistive-technology review, optional HTMX browser verification, a release tag,
-and installation from that published version. Do not infer these from Go tests.
+The v2026.1.0 candidate at `2f622c95fbf7` passed the six native Go/OS jobs,
+the vulnerability scan, and 53 browser checks in Chromium, Firefox and WebKit.
+One WebKit forced-color emulation check is explicitly unsupported/skipped.
+The documentation website passed all eight desktop/mobile browser checks and
+its native/container workflow. See [release verification](docs/release-verification.md)
+for exact runs, tag installation evidence and the scope of accessibility review.
+Manual screen-reader and physical-device testing remain application-level work;
+automated accessibility checks are not a conformance certification.
 
 Keep focused local test evidence under ignored `tests/results/`. Reuse one
 review binary, remove completed disposable build environments, and preserve
