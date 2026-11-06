@@ -1,0 +1,63 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ appearanceControls(a components.Appearance) {
+	@components.Grid(components.GridProps{}) {
+		for _, field := range appearanceFields(a) {
+			@components.Select(components.SelectProps{Name: field.Name, Label: field.Label, Value: field.Value, Options: field.Options})
+		}
+	}
+}
+
+templ exportLinks(a components.Appearance, mode string) {
+	<div class="cluster">
+		<a href={ templ.URL(appearanceExportURL(a, mode, "css")) }>Download CSS overrides</a>
+		<a href={ templ.URL(appearanceExportURL(a, mode, "go")) }>Download Go settings</a>
+	</div>
+}
+
+templ appearancePage(a components.Appearance, mode string, saved bool) {
+	@demoHeader("/settings")
+	<main id="main">
+		<section>
+			<p class="muted">MAKE IT YOURS</p>
+			<h1>A different feel. The same foundation.</h1>
+			<p>Combine a color preset with your preferred spacing, typography, and surfaces. Preview this page or save your choices across every demo.</p>
+		</section>
+		<section aria-label="Appearance editor">
+			if saved {
+				@components.Alert(components.AlertProps{Title: "Preferences updated", Message: "Your saved appearance applies across the demos.", Tone: components.ToneSuccess, Live: true})
+			}
+			@components.Card(components.CardProps{Header: cardHeading("Your appearance")}) {
+				@components.Form(components.FormProps{Action: "/settings", Method: components.MethodPost}) {
+					@components.Select(components.SelectProps{Name: "theme", Label: "Color mode", Value: mode, Options: []components.Option{{Label: "Light", Value: "light"}, {Label: "Dark", Value: "dark"}, {Label: "Follow the system", Value: "system"}}})
+					@appearanceControls(a)
+					<div class="cluster">
+						@components.Button(components.ButtonProps{Text: "Save preferences", Type: components.ButtonTypeSubmit})
+						<button type="submit" formmethod="get" class="outline">Preview changes</button>
+						@components.Button(components.ButtonProps{Text: "Restore defaults", Type: components.ButtonTypeSubmit, Name: "action", Value: "reset", Outline: true})
+					</div>
+				}
+				@exportLinks(a, mode)
+				<p><small>Downloads reflect the displayed preview. Apply changes first. CSS overrides load after GothUI; the Go settings also carry your light/dark/system choice.</small></p>
+			}
+		</section>
+		<section aria-labelledby="preview-heading">
+			<h2 id="preview-heading">A little of everything.</h2>
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("Ready for your next idea")}) {
+					<p>Use the same theme for a public page or a focused workspace. Compact spacing keeps forms and tables comfortable in smaller spaces.</p>
+					@components.Link(components.LinkProps{Text: "Explore the workspace", Href: "/workspace"})
+				}
+				@components.Card(components.CardProps{Header: cardHeading("Form & feedback")}) {
+					@components.Input(components.InputProps{Label: "Project name", Name: "sample-project", Placeholder: "Something worth building"})
+					@components.Switch(components.SwitchProps{Label: "Email updates", Name: "sample-updates", Checked: true})
+					@components.Alert(components.AlertProps{Message: "This preview is ready to explore.", Tone: components.ToneInfo})
+					@components.Badge(components.BadgeProps{Text: "Ready", Tone: components.ToneSuccess})
+				}
+			}
+		</section>
+	</main>
+	@demoFooter()
+}

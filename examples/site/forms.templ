@@ -1,0 +1,62 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ formLab(d formData) {
+	@demoHeader("/forms")
+	<main id="main">
+		<section>
+			<p class="muted">THE FORM LAB</p>
+			<h1>A form you can put to the test.</h1>
+			<p>Try empty fields, an invalid email, or a complete submission. This demo only echoes your input; nothing is stored or sent.</p>
+		</section>
+		<section aria-label="Form and test instructions">
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("Say hello")}) {
+					if d.Success {
+						<section role="status" aria-labelledby="success-title">
+							<h2 id="success-title">All checks passed.</h2>
+							<p>Thanks, { d.Name }. The server accepted your demo submission.</p>
+							<dl><dt>Email</dt><dd>{ d.Email }</dd><dt>Role</dt><dd>{ d.Role }</dd></dl>
+							if d.Message != "" {
+								<blockquote>{ d.Message }</blockquote>
+							}
+							<a href="/forms">Start a fresh test</a>
+						</section>
+					} else {
+						if d.Submitted {
+							@components.ErrorSummary(components.ErrorSummaryProps{Title: "Please check the highlighted fields.", Errors: formErrors(d)})
+						}
+						@components.Form(components.FormProps{Action: "/forms", Method: components.MethodPost}) {
+							@components.Input(components.InputProps{ID: "name", Name: "name", Label: "Name (required)", Value: d.Name, Required: true, Autocomplete: "name", Invalid: d.Errors["name"] != "", DescribedBy: "name-hint"})
+							<p id="name-hint"><small>{ fieldHint(d.Errors["name"], "Up to 80 characters.") }</small></p>
+							@components.Input(components.InputProps{ID: "email", Name: "email", Label: "Email (required)", Type: components.InputEmail, Value: d.Email, Required: true, Autocomplete: "email", Invalid: d.Errors["email"] != "", DescribedBy: "email-hint", Placeholder: "alex@example.com"})
+							<p id="email-hint"><small>{ fieldHint(d.Errors["email"], "Use a sample address; no email will be sent.") }</small></p>
+							@components.Select(components.SelectProps{ID: "role", Name: "role", Label: "What best describes you? (required)", Value: d.Role, Required: true, Invalid: d.Errors["role"] != "", DescribedBy: "role-hint", Options: []components.Option{{Label: "Choose an option", Value: ""}, {Label: "Developer", Value: "developer"}, {Label: "Designer", Value: "designer"}, {Label: "Just exploring", Value: "exploring"}}})
+							<p id="role-hint"><small>{ d.Errors["role"] }</small></p>
+							@components.Textarea(components.TextareaProps{ID: "message", Name: "message", Label: "Message (optional)", Value: d.Message, MaxLength: 1000, DescribedBy: "message-hint", Invalid: d.Errors["message"] != ""})
+							<p id="message-hint"><small>{ fieldHint(d.Errors["message"], "Up to 1,000 characters.") }</small></p>
+							@components.Checkbox(components.CheckboxProps{ID: "consent", Name: "consent", Label: "I understand this is a demo (required)", Checked: d.Consent, Required: true, Invalid: d.Errors["consent"] != "", DescribedBy: "consent-hint"})
+							<p id="consent-hint"><small>{ d.Errors["consent"] }</small></p>
+							<div class="cluster">
+								@components.Button(components.ButtonProps{Text: "Submit demo", Type: components.ButtonTypeSubmit, Primary: true})
+								@components.Button(components.ButtonProps{Text: "Reset edits", Type: components.ButtonTypeReset, Outline: true})
+								<button type="submit" class="outline" formnovalidate>Test server validation</button>
+							</div>
+						}
+					}
+				}
+				<aside aria-labelledby="test-plan">
+					<h2 id="test-plan">Try these scenarios.</h2>
+					<details open><summary>1. Browser validation</summary><p>Leave required fields empty and press “Submit demo.” Your browser should focus a field and show its validation message.</p></details>
+					<details><summary>2. Server validation</summary><p>Press “Test server validation” to bypass the browser checks. The server returns field errors while preserving your entries.</p></details>
+					<details><summary>3. A successful submission</summary><p>Enter a name, a valid email, select a role, and check the consent box. Submit to see a receipt.</p></details>
+					<details><summary>4. Reset and keyboard controls</summary><p>“Reset edits” restores the values present when the page loaded. Use a fresh test to clear a server response. Tab through controls and use Space to toggle consent.</p></details>
+					<details><summary>5. Escaping and long content</summary><p>Try angle brackets in your name or message. They should appear as text. A name longer than 80 characters should produce a server error.</p></details>
+					<p><a href="/forms">Clear everything and start again</a></p>
+				</aside>
+			}
+		</section>
+	</main>
+	@demoFooter()
+}

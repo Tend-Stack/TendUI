@@ -1,0 +1,55 @@
+package site
+
+import (
+	"github.com/Tend-Stack/GothUI/v2026/components"
+	"strconv"
+)
+
+templ uploadPage(d uploadData) {
+	@demoHeader("/uploads")
+	<main id="main">
+		<section>
+			<p class="muted">FILE INPUT / GO VALIDATION</p>
+			<h1>From a file to a useful preview.</h1>
+			<p>Choose a small project CSV and inspect its rows. This demo sends the file to the Go server for validation; it stays in memory for this request and is never saved or imported.</p>
+		</section>
+		@components.Grid(components.GridProps{}) {
+			@components.Card(components.CardProps{Header: cardHeading("Choose your CSV")}) {
+				if d.Error != "" {
+					@components.ErrorSummary(components.ErrorSummaryProps{Title: "Please check your file", Errors: []components.FieldError{{ID: "project-csv", Message: d.Error}}})
+				}
+				@components.Form(components.FormProps{Action: "/uploads", Method: components.MethodPost, Multipart: true}) {
+					@components.FileInput(components.FileInputProps{ID: "project-csv", Name: "projects", Label: "Project CSV (required)", Accept: ".csv,text/csv", Required: true, Invalid: d.Error != "", DescribedBy: "upload-help upload-error"})
+					<p id="upload-help"><small>UTF-8 CSV, up to 64 KiB and 50 project rows. Header: <code>project,owner,status</code>.</small></p>
+					<p id="upload-error"><small>{ d.Error }</small></p>
+					if d.Error != "" {
+						<p><small>After correcting the file, choose it again before submitting.</small></p>
+					}
+					<div class="cluster">
+						@components.Button(components.ButtonProps{Text: "Preview CSV", Type: components.ButtonTypeSubmit, Primary: true, IconBefore: components.IconUpload})
+						<a href="/uploads">Start fresh</a>
+					</div>
+				}
+			}
+			<aside aria-labelledby="upload-try">
+				<h2 id="upload-try">Try it with a sample.</h2>
+				<p><a href="/uploads/sample.csv" download>Download the sample CSV</a>, then choose it in the form.</p>
+				<ul>
+					<li>Keep the exact header. Each row has three fields.</li>
+					<li>Project and owner are single-line text, 1–80 characters each. Spaces at the edges are trimmed.</li>
+					<li>Status is <code>planned</code>, <code>active</code> or <code>complete</code>, in lowercase.</li>
+					<li>Try a missing owner or an unknown status to see a line-specific error. All rows must pass before a preview appears.</li>
+				</ul>
+				<p><small>The file chooser's filter is a convenience. The server checks the actual contents.</small></p>
+			</aside>
+		}
+		if len(d.Rows) > 0 {
+			<section aria-labelledby="upload-preview">
+				<h2 id="upload-preview">Your CSV preview</h2>
+				@components.Alert(components.AlertProps{Title: "Validation passed", Message: "Project rows ready to inspect: " + strconv.Itoa(len(d.Rows)) + ". Nothing has been saved.", Tone: components.ToneSuccess})
+				@components.DataTable(components.DataTableProps{Caption: "Validated project rows", Columns: []components.TableColumn{{Label: "Project", RowHeader: true}, {Label: "Owner"}, {Label: "Status"}}, Rows: d.Rows, Striped: true})
+			</section>
+		}
+	</main>
+	@demoFooter()
+}

@@ -1,0 +1,128 @@
+package site
+
+import "strconv"
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ patterns(p patternOptions) {
+	@demoHeader("/patterns")
+	<main id="main">
+		<section>
+			<p class="muted">GIVE INFORMATION A PLACE</p>
+			<h1>Clarity, from page to page.</h1>
+			<p>Explore navigation, data states, and disclosures that work through native HTML and Go responses.</p>
+		</section>
+		@components.Tabs(components.TabsProps{Label: "Pattern examples", Items: p.Tabs()})
+		if p.Section == "reading" {
+			@readingPattern(p.Measure)
+		} else if p.Section == "composition" {
+			@compositionPattern()
+		} else if p.Section == "navigation" {
+			<section aria-labelledby="walkthrough-title">
+				<h2 id="walkthrough-title">A three-step walkthrough</h2>
+				@components.Steps(components.StepsProps{Label: "Pattern walkthrough", Items: p.Steps()})
+				@components.Card(components.CardProps{}) {
+					if p.Step == 1 {
+						<h3>Start with the interaction.</h3>
+						<p>A page destination is a link. A disclosure is a native details element. A form submission belongs to your Go handler.</p>
+					} else if p.Step == 2 {
+						<h3>Give each state an explanation.</h3>
+						<p>Keep loading labels readable, make empty results recoverable, and mark the current page or step.</p>
+					} else {
+						<h3>Compose it with typed props.</h3>
+						<p>Use Tabs, Steps, Disclosure and DataTable in your templ pages. Application code owns destinations, progress and data.</p>
+					}
+					<div class="cluster">
+						if p.Step > 1 {
+							<a href={ templ.URL("/patterns?step=" + strconv.Itoa(p.Step-1)) }>Previous step</a>
+						}
+						if p.Step < 3 {
+							@components.Link(components.LinkProps{Text: "Next step", Href: "/patterns?step=" + strconv.Itoa(p.Step+1)})
+						} else {
+							@components.Link(components.LinkProps{Text: "Explore the dashboard", Href: "/dashboard"})
+							<a href="/patterns">Restart walkthrough</a>
+						}
+					</div>
+				}
+				<p><small>This walkthrough stores no data. Its URL represents the selected step; it is not an account setup flow.</small></p>
+			</section>
+		} else if p.Section == "tables" {
+			<section aria-labelledby="table-states-title">
+				<h2 id="table-states-title">Make waiting and empty results clear.</h2>
+				<div class="cluster"><a href="/patterns?section=tables&state=loading">Preview loading state</a><a href="/patterns?section=tables">Preview empty state</a><a href="/dashboard">Try a populated table</a></div>
+				<p>The loading view is a static preview; no request is running.</p>
+				@components.DataTable(components.DataTableProps{Caption: "Table state preview", Columns: []components.TableColumn{{Label: "Project", RowHeader: true}, {Label: "Status"}}, Loading: p.Loading, LoadingLabel: "Loading state preview — no active request", Empty: patternEmpty()})
+			</section>
+		} else {
+			<section aria-labelledby="disclosure-title">
+				<h2 id="disclosure-title">Let the details unfold.</h2>
+				@components.Disclosure(components.DisclosureProps{Summary: "Does this require JavaScript?", Name: "pattern-faq", Open: true}) {
+					<p>No. The browser owns disclosure behavior. Tab to a summary, then use Enter or Space.</p>
+				}
+				@components.Disclosure(components.DisclosureProps{Summary: "Can only one section stay open?", Name: "pattern-faq"}) {
+					<p>These disclosures share a group name. Browsers supporting grouped details close the previous section. Older browsers can keep multiple sections open.</p>
+				}
+				@components.Disclosure(components.DisclosureProps{Summary: "Can I put actions inside?", Name: "pattern-faq"}) {
+					<p>Keep the summary as a clear label and place links and controls in the body.</p><a href="/forms">Try the form lab</a>
+				}
+			</section>
+		}
+	</main>
+	@demoFooter()
+}
+
+templ patternEmpty() {
+	@components.EmptyState(components.EmptyStateProps{Title: "No matching records", Message: "Adjust the filters or return to the sample projects."}) {
+		<a href="/dashboard">Browse sample projects</a>
+	}
+}
+
+
+templ compositionPattern() {
+	<section aria-labelledby="composition-title">
+		@components.Stack(components.StackProps{Gap: components.SpaceLarge}) {
+			@components.Stack(components.StackProps{Gap: components.SpaceSmall}) {
+				<h2 id="composition-title">Give every group the right amount of space.</h2>
+				<p>Stacks separate related blocks. Clusters keep actions together and wrap as space narrows. Resize the window or change your density in Appearance.</p>
+			}
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Surface: components.SurfaceTinted}) {
+					@components.Stack(components.StackProps{Gap: components.SpaceLarge}) {
+						@components.Cluster(components.ClusterProps{Justify: components.LayoutJustifyBetween}) {
+							<h3>Studio website</h3>
+							@components.Badge(components.BadgeProps{Text: "In progress", Tone: components.ToneInfo})
+						}
+						<p>A project summary, status and next action, composed without per-element spacing overrides.</p>
+						@components.Stack(components.StackProps{Gap: components.SpaceExtraSmall}) {
+							<strong>Next milestone</strong>
+							<p>Review the responsive layouts with the team.</p>
+						}
+						@components.Cluster(components.ClusterProps{Gap: components.SpaceSmall}) {
+							@components.Link(components.LinkProps{Text: "View projects", Href: "/dashboard", IconAfter: components.IconArrowRight})
+							<a href="/workspace">Open workspace</a>
+						}
+					}
+				}
+				@components.Card(components.CardProps{}) {
+					@components.Stack(components.StackProps{Gap: components.SpaceLarge}) {
+						<h3>Try a real form action.</h3>
+						@components.Form(components.FormProps{Action: "/catalog", Method: components.MethodGet}) {
+							@components.Stack(components.StackProps{Gap: components.SpaceMedium}) {
+								@components.Input(components.InputProps{ID: "composition-search", Name: "q", Label: "Find a component", Type: components.InputSearch, Placeholder: "Try Stack or Cluster"})
+								@components.Cluster(components.ClusterProps{Gap: components.SpaceSmall, Justify: components.LayoutJustifyEnd}) {
+									@components.Button(components.ButtonProps{Text: "Reset", Type: components.ButtonTypeReset, Outline: true})
+									@components.Button(components.ButtonProps{Text: "Search catalog", Type: components.ButtonTypeSubmit, Primary: true, IconBefore: components.IconSearch})
+								}
+							}
+						}
+						<p><small>Use Tab and Enter as usual. Layout changes do not reorder the controls.</small></p>
+					}
+				}
+			}
+			@components.Cluster(components.ClusterProps{Gap: components.SpaceSmall}) {
+				<a href="/catalog/stack">Stack source and props</a>
+				<a href="/catalog/cluster">Cluster source and props</a>
+				<a href="/settings">Change density and typography</a>
+			}
+		}
+	</section>
+}

@@ -1,0 +1,74 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ editingPage(d editingData) {
+	@demoHeader("/editing")
+	<main id="main">
+		@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "GothUI", Href: "/"}, {Label: "Inline editing"}}})
+		<section>
+			<p class="muted">SMALL EDITS, CLEAR FEEDBACK</p>
+			<h1>Make it yours.</h1>
+			<p>Edit a sample profile, cancel an unsaved change, or restore the original. Your saved sample stays in this browser session.</p>
+		</section>
+		@components.Grid(components.GridProps{}) {
+			@profilePanel(d)
+			@components.Card(components.CardProps{Header: cardHeading("Take the editing flow for a spin")}) {
+				<ol>
+					<li>Edit the name and introduction, then save. Refresh to check your saved sample.</li>
+					<li>Make another change and cancel. Your last saved version should remain.</li>
+					<li>Clear the name and use “Test server validation” to see linked field errors.</li>
+					<li>Restore the sample to clear your saved demo values.</li>
+				</ol>
+				<p><small>Use fictional details. This demo stores the sample in a browser cookie, without an account or database.</small></p>
+			}
+		}
+		<details>
+			<summary>For Go developers: pages and fragments</summary>
+			<p>This demo uses ordinary links and forms, so each action loads a page. It also supplies HTMX attributes and a fragment response contract for applications that load their own HTMX runtime. This example loads no JavaScript.</p>
+			<p>Try the fragment endpoint from a terminal:</p>
+			<pre><code>curl -H 'HX-Request: true' 'http://127.0.0.1:8080/editing?edit=1'</code></pre>
+			<p>Add <code>HX-History-Restore-Request: true</code> to receive a complete document. The same form renders on either path.</p>
+		</details>
+	</main>
+	@demoFooter()
+}
+
+templ profilePanel(d editingData) {
+	<article id="profile-panel" aria-labelledby="profile-heading">
+		<header><h2 id="profile-heading">Your sample profile</h2></header>
+		if d.Notice != "" {
+			@components.Alert(components.AlertProps{Message: d.Notice, Tone: components.ToneSuccess, Live: true})
+		}
+		if d.Editing {
+			@components.ErrorSummary(components.ErrorSummaryProps{Errors: d.Errors})
+			@components.Form(components.FormProps{Action: "/editing", Method: components.MethodPost, HxPost: "/editing", HxTarget: "#profile-panel", HxSwap: "outerHTML", HxIndicator: "#profile-saving"}) {
+				<input type="hidden" name="intent" value="save"/>
+				@components.Input(components.InputProps{ID: "profile-name", Name: "name", Label: "Display name", Value: d.Profile.Name, Required: true, Invalid: profileError(d, "profile-name") != "", DescribedBy: "profile-name-help"})
+				<small id="profile-name-help">1–60 characters. { profileError(d, "profile-name") }</small>
+				@components.Textarea(components.TextareaProps{ID: "profile-bio", Name: "bio", Label: "Introduction", Value: d.Profile.Bio, Rows: 3, Invalid: profileError(d, "profile-bio") != "", DescribedBy: "profile-bio-help"})
+				<small id="profile-bio-help">Optional, up to 240 characters. { profileError(d, "profile-bio") }</small>
+				<div class="cluster">
+					@components.Button(components.ButtonProps{Text: "Save sample", Type: components.ButtonTypeSubmit})
+					@components.Link(components.LinkProps{Text: "Cancel", Href: "/editing", HxGet: "/editing", HxTarget: "#profile-panel", HxSwap: "outerHTML", Outline: true})
+					<button type="submit" class="outline" formnovalidate>Test server validation</button>
+				</div>
+				<span id="profile-saving" class="htmx-indicator" role="status">Saving sample…</span>
+			}
+		} else {
+			<h3>{ d.Profile.Name }</h3>
+			if d.Profile.Bio != "" {
+				<p>{ d.Profile.Bio }</p>
+			} else {
+				<p class="muted">No introduction yet.</p>
+			}
+			@components.Link(components.LinkProps{Text: "Edit sample profile", Href: "/editing?edit=1", HxGet: "/editing?edit=1", HxTarget: "#profile-panel", HxSwap: "outerHTML"})
+			<footer>
+				@components.Form(components.FormProps{Action: "/editing", Method: components.MethodPost, HxPost: "/editing", HxTarget: "#profile-panel", HxSwap: "outerHTML"}) {
+					<input type="hidden" name="intent" value="reset"/>
+					@components.Button(components.ButtonProps{Text: "Restore sample", Type: components.ButtonTypeSubmit, Outline: true})
+				}
+			</footer>
+		}
+	</article>
+}

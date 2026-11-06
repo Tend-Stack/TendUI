@@ -292,7 +292,7 @@ func (r runner) recipes() error {
 		return err
 	}
 	defer os.RemoveAll(temp)
-	source, err := os.ReadFile(filepath.Join(r.root, "examples/basic/catalog_samples.templ"))
+	source, err := os.ReadFile(filepath.Join(r.root, "examples/site/catalog_samples.templ"))
 	if err != nil {
 		return err
 	}

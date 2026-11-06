@@ -1,0 +1,34 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ newComponents(o playgroundOptions) {
+	<section id="new-components" aria-labelledby="new-components-title">
+		<h2 id="new-components-title">More ways to build.</h2>
+		<p>These controls inherit your theme and the control state selected above. File selection stays in your browser; this preview does not upload anything.</p>
+		@components.Grid(components.GridProps{}) {
+			@components.Card(components.CardProps{Header: cardHeading("Native form controls")}) {
+				@components.Textarea(components.TextareaProps{Label: "A longer thought", Name: "sample-notes", Placeholder: "Write a few lines…", Value: "There is room for more than a single line.", Rows: 4, MaxLength: 500, Disabled: o.State == "disabled", ReadOnly: o.State == "readonly", Invalid: o.State == "invalid"})
+				@components.RadioGroup(components.RadioGroupProps{Legend: "Delivery preference", Name: "sample-delivery", Value: "weekly", Disabled: o.State == "disabled", Invalid: o.State == "invalid", Options: []components.Option{{Label: "Every day", Value: "daily"}, {Label: "Every week", Value: "weekly"}, {Label: "Unavailable option", Value: "unavailable", Disabled: true}}})
+				@components.Switch(components.SwitchProps{Label: "Notifications enabled", Name: "sample-notifications", Checked: o.Checked, Disabled: o.State == "disabled"})
+				@components.FileInput(components.FileInputProps{Label: "Choose images (local preview only)", Name: "sample-files", Accept: "image/*", Multiple: true, Disabled: o.State == "disabled", Invalid: o.State == "invalid"})
+			}
+			@components.Card(components.CardProps{Header: cardHeading("Feedback with meaning")}) {
+				<div class="cluster">
+					@components.Badge(components.BadgeProps{Text: "Draft"})
+					@components.Badge(components.BadgeProps{Text: "In progress", Tone: components.ToneInfo})
+					@components.Badge(components.BadgeProps{Text: "Complete", Tone: components.ToneSuccess})
+					@components.Badge(components.BadgeProps{Text: "Needs review", Tone: components.ToneWarning})
+					@components.Badge(components.BadgeProps{Text: "Failed", Tone: components.ToneDanger})
+				</div>
+				<hr/>
+				@components.Alert(components.AlertProps{Title: "A useful detail", Message: "Alerts can contain text, links, or nested components.", Tone: components.ToneInfo})
+				@components.Alert(components.AlertProps{Title: "Changes saved", Message: "Your work is ready for the next step.", Tone: components.ToneSuccess})
+				@components.Alert(components.AlertProps{Title: "A little attention needed", Message: "Review the details before continuing.", Tone: components.ToneWarning})
+				@components.Alert(components.AlertProps{Title: "We could not complete that", Message: "Check your entries and try again.", Tone: components.ToneDanger})
+				<p><small>These are static examples. The form lab demonstrates live error feedback and links to invalid fields.</small></p>
+				@components.Link(components.LinkProps{Text: "Try the form lab", Href: "/forms", Outline: true})
+			}
+		}
+	</section>
+}

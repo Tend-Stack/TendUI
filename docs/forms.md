@@ -112,7 +112,7 @@ the file input, set `aria-invalid`, and explain which line needs correction. The
 browser cannot repopulate a file chooser, so users must choose the corrected file
 again. A fresh GET has no previous upload state.
 
-`examples/basic/uploads.templ` composes Form with `Multipart: true`, FileInput,
+`examples/site/uploads.templ` composes Form with `Multipart: true`, FileInput,
 ErrorSummary, Button and DataTable. `uploads.go` owns all request and CSV rules:
 
 - `http.MaxBytesReader` bounds the whole request at 72 KiB, including multipart

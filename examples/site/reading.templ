@@ -1,0 +1,49 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ readingPattern(measure components.TextMeasure) {
+	<section aria-labelledby="reading-settings">
+		<h2 id="reading-settings">A comfortable place to read.</h2>
+		@components.Form(components.FormProps{Action: "/patterns", Method: components.MethodGet}) {
+			<input type="hidden" name="section" value="reading"/>
+			@components.Select(components.SelectProps{Name: "measure", Label: "Reading width", Value: string(measure), Options: []components.Option{{Label: "Narrow · 55ch", Value: "narrow"}, {Label: "Standard · 65ch", Value: "standard"}, {Label: "Wide · 80ch", Value: "wide"}}})
+			@components.Cluster(components.ClusterProps{Gap: components.SpaceSmall}) {
+				@components.Button(components.ButtonProps{Text: "Apply reading width", Type: components.ButtonTypeSubmit, Primary: true})
+				<a href="/settings">Change font and text size</a>
+				<a href="/catalog/prose">Get the Prose recipe</a>
+			}
+		}
+		<p><small>The width follows the font's character metrics and shrinks to fit small screens. It is an upper bound, not an exact number of letters per line.</small></p>
+	</section>
+	<section aria-labelledby="reading-title">
+		@components.Prose(components.ProseProps{ID: "reading-example", Measure: measure}) {
+			<h2 id="reading-title">Build the smallest useful page.</h2>
+			<p>A good application makes room for more than controls. Help articles, project briefs and release notes deserve the same care as the dashboard around them.</p>
+			<p>Start with <strong>clear structure</strong> and a useful first sentence. Let headings describe the next section, keep related ideas together, and make each link explain where it goes.</p>
+			<h3>Give content a natural rhythm.</h3>
+			<p>This page uses native HTML. The server supplies its words and structure; the stylesheet handles line length, heading space and the quieter details.</p>
+			<ol>
+				<li>Choose the heading level that fits the document.</li>
+				<li>
+					Group related information into a list when it helps scanning.
+					<ul><li>Keep each point specific.</li><li>Use a nested list only for a real relationship.</li></ul>
+				</li>
+				<li>Offer a useful next action, such as <a href="/forms">trying the form lab</a>.</li>
+			</ol>
+			<blockquote><p>A readable page gives the reader time to understand one idea before introducing the next.</p></blockquote>
+			<h3>Small details, sensible defaults.</h3>
+			<dl><dt>Measure</dt><dd>The maximum reading width, expressed in font-relative <code>ch</code> units.</dd><dt>Rhythm</dt><dd>The space and line height that separate ideas without fragmenting them.</dd><dt>Semantics</dt><dd>The native headings, lists, labels and links that describe the content.</dd></dl>
+			<figure>
+				<pre tabindex="0" role="region" aria-label="Go route example"><code>{ "mux.Handle(\"/gothui/static/\", gothui.AssetHandler())\n// Your application owns routing and page content." }</code></pre>
+				<figcaption>Local assets, ordinary routes, and one Go binary. Tab to the code block if you need to scroll a long line.</figcaption>
+			</figure>
+			<h3>Bring the rest of the interface along.</h3>
+			<p>Embedded controls and feedback can keep their own spacing. Their appearance still follows the same theme.</p>
+			<div data-prose="off">
+				@components.Alert(components.AlertProps{Title: "Try another view", Message: "Switch between narrow and wide measures, choose a serif font in Appearance, then compare light and dark themes.", Tone: components.ToneInfo})
+			</div>
+			<p>Long content can remain readable inside a larger workspace. Explore <a href="/patterns?section=composition">layout composition</a> when you are ready to put the pieces together.</p>
+		}
+	</section>
+}

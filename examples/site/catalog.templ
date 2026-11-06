@@ -1,0 +1,98 @@
+package site
+
+import "strconv"
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ catalogPage(d catalogOptions) {
+	@demoHeader("/catalog")
+	<main id="main">
+		<section class="catalog-heading">
+			<p class="muted">THE BUILDING BLOCKS, ALL IN ONE PLACE</p>
+			<h1>Compose something thoughtful.</h1>
+			<p>Explore { strconv.Itoa(len(catalogEntries)) } typed components. Find a pattern, try its preview, and take the templ example into your Go application.</p>
+		</section>
+		@components.Form(components.FormProps{Action: "/catalog", Method: components.MethodGet}) {
+			<div class="catalog-filters">
+				@components.Input(components.InputProps{Name: "q", Label: "Search components", Type: components.InputSearch, Value: d.Query, Placeholder: "Try form, motion, or HTMX"})
+				<label>
+					Category
+					<select name="category">
+						<option value="all" selected?={ d.Category == "all" }>All categories</option>
+						for _, category := range catalogCategories {
+							<option value={ category } selected?={ d.Category == category }>{ category }</option>
+						}
+					</select>
+				</label>
+				@components.Button(components.ButtonProps{Text: "Find components", Type: components.ButtonTypeSubmit})
+			</div>
+		}
+		<div class="catalog-results-heading"><p role="status">{ strconv.Itoa(d.Total) } components found</p><a href="/catalog">Clear filters</a></div>
+		if len(d.Entries) == 0 {
+			@components.EmptyState(components.EmptyStateProps{Title: "No components match yet", Message: "Try a shorter search or choose another category."}) {
+				<a href="/catalog">Browse all components</a>
+			}
+		} else {
+			<div class="catalog-grid">
+				for _, entry := range d.Entries {
+					<article class="catalog-card">
+						<small class="muted">{ entry.Category }</small>
+						<h2><a href={ templ.URL(entry.URL()) }>{ entry.Name }</a></h2>
+						<p>{ entry.Summary }</p>
+						<a class="catalog-card-link" href={ templ.URL(entry.URL()) } aria-label={ "Preview and source for " + entry.Name }>Preview & source →</a>
+					</article>
+				}
+			</div>
+			@components.Pagination(components.PaginationProps{Page: d.Page, TotalPages: d.Pages, URLForPage: d.PageURL, Label: "Catalog pages"})
+		}
+		@components.Disclosure(components.DisclosureProps{Summary: "How to use the examples"}) {
+			<p>Each component page includes a compiled preview and its templ source. Download the example, change its package name to match your application, and adapt demo destinations and IDs to your routes.</p>
+			<p>The library includes generated Go. Only contributors and applications editing templ source need the Go templ generator. No frontend tooling or script runtime is added by this catalog.</p>
+		}
+	</main>
+	@demoFooter()
+}
+
+templ catalogDetail(e catalogEntry, source string) {
+	@demoHeader("/catalog")
+	<main id="main">
+		@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "Catalog", Href: "/catalog"}, {Label: e.Name}}})
+		<section class="catalog-heading">
+			<p class="muted">{ e.Category }</p>
+			<h1>{ e.Name }</h1>
+			<p>{ e.Summary }</p>
+			<p><code>{ "components."+e.Name }</code> · <code>{ e.Name+"Props" }</code></p>
+		</section>
+		<section aria-labelledby="catalog-preview-title">
+			<div class="catalog-section-heading"><h2 id="catalog-preview-title">Preview</h2><a href={ templ.URL(e.URL() + "/preview") }>Open standalone preview →</a></div>
+			if e.Standalone() {
+				@components.EmptyState(components.EmptyStateProps{Title: "Give the layout a full page", Message: "This component owns document or application landmarks. Open its standalone preview to see it in context."}) {
+					@components.Link(components.LinkProps{Text: "Open layout preview", Href: e.URL() + "/preview"})
+				}
+			} else {
+				<div class="catalog-preview">@e.Example()</div>
+			}
+		</section>
+		<section aria-labelledby="catalog-notes-title">
+			<h2 id="catalog-notes-title">Use it well.</h2>
+			<p>{ e.Notes }</p><a href={ templ.URL(e.Demo) }>Explore the full demo →</a>
+		</section>
+		<section aria-labelledby="catalog-source-title">
+			<div class="catalog-section-heading"><h2 id="catalog-source-title">Templ example</h2><a href={ templ.URL(e.URL() + "/example.templ") }>Download example.templ</a></div>
+			<p><small>This is the source compiled for the preview. Select the text to copy it, or download the file. Change the package name and demo routes for your application.</small></p>
+			<pre class="catalog-source" tabindex="0" aria-label={ e.Name + " templ source" }><code>{ source }</code></pre>
+		</section>
+	</main>
+	@demoFooter()
+}
+
+templ catalogPreviewPage(e catalogEntry) {
+	<main id="main">
+		<p><a href={ templ.URL(e.URL()) }>← Back to { e.Name }</a></p>
+		<h1>{ e.Name } preview</h1>
+		<div class="catalog-preview">@e.Example()</div>
+	</main>
+}
+
+templ demoHead() {
+	<link rel="stylesheet" href="/demo.css"/>
+}

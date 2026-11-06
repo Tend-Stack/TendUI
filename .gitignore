@@ -1,2 +1,4 @@
 /tests/results/*
 !/tests/results/.gitkeep
+
+/tests/browser/node_modules/

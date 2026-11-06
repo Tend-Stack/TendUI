@@ -63,7 +63,7 @@ go run ./examples/basic -open
 ```
 
 The `-open` flag opens `http://127.0.0.1:8080/playground` in your default Linux
-browser. See [the demo guide](examples/basic/README.md) for all pages and test
+browser. See [the demo guide](examples/site/README.md) for all pages and test
 scenarios. The example deliberately blocks scripts with its
 Content Security Policy. Theme switching and the form work with JavaScript
 disabled.
@@ -92,7 +92,7 @@ components/
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
 render/                   buffered page/fragment HTTP responses
-examples/basic/           thirteen demo pages, searchable catalog, preference cookies and downloads
+examples/site/            thirteen demo pages, searchable catalog, preference cookies and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -224,7 +224,7 @@ Use `AppShell` as the body inside `Layout`, with page content as templ children.
 It owns the main landmark; do not nest another main or application shell inside
 it. `MainID` defaults to `main` and connects the skip link. Sidebar navigation
 uses a native disclosure that works on desktop and mobile without JavaScript.
-See `/workspace` and `examples/basic/workspace.templ` for a complete example.
+See `/workspace` and `examples/site/workspace.templ` for a complete example.
 
 ## Native interactions and navigation
 
@@ -367,7 +367,7 @@ selection to the application. HTMX headers are presentation hints, never proof
 of identity or permission. For cacheable pages, use representation-specific ETags.
 Buffering is intended for bounded UI pages/fragments, not streaming responses.
 
-The [inline editing example](examples/basic/editing.go) pairs native form actions
+The [inline editing example](examples/site/editing.go) pairs native form actions
 and link destinations with `HxPost`/`HxGet`, `HxTarget` and `HxSwap`. It returns
 303 after a successful native POST and 200 with the updated panel for an HTMX
 request. Invalid native submissions return 422. Invalid HTMX submissions return
