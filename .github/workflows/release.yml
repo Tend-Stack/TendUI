@@ -1,0 +1,89 @@
+name: Release GothUI
+on:
+  push:
+    tags: ['v2026.*']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: gothui-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GOTOOLCHAIN: local
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+        with:
+          go-version: '1.27.3'
+          cache: false
+      - name: Require native, security, and browser checks for this exact commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = v2026.1.0
+          mkdir -p tests/results/release
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&per_page=100" > tests/results/release/checks.json
+          python3 - <<'PY'
+          import json, os
+          runs = json.load(open('tests/results/release/checks.json'))['workflow_runs']
+          for name in ['Verify GothUI', 'Browser verification']:
+              matching = [r for r in runs if r['head_sha'] == os.environ['GITHUB_SHA'] and r['name'] == name]
+              if not matching or max(matching, key=lambda r:r['id'])['conclusion'] != 'success':
+                  raise SystemExit('Missing passing exact-commit checks: ' + name)
+              print(name + ': passed at ' + os.environ['GITHUB_SHA'])
+          PY
+      - name: Install and test the actual GitHub tag in a fresh consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_consumer=$(mktemp -d)
+          trap 'go clean -modcache; rm -rf "$release_consumer"' EXIT
+          export GOMODCACHE="$release_consumer/modules"
+          export GOPRIVATE=github.com/Tend-Stack/GothUI
+          export GOPROXY=https://proxy.golang.org,direct
+          export GOWORK=off
+          export GIT_TERMINAL_PROMPT=0
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          echo "::add-mask::$auth"
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
+          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth"
+          cp tests/release/consumer_test.go.txt "$release_consumer/consumer_test.go"
+          cd "$release_consumer"
+          go mod init example.com/gothui-release-consumer
+          go get "github.com/Tend-Stack/GothUI/v2026@$GITHUB_REF_NAME"
+          go mod tidy
+          go test -v ./... | tee "$GITHUB_WORKSPACE/tests/results/release/consumer.log"
+          go mod verify
+          go list -m -json github.com/Tend-Stack/GothUI/v2026 > "$GITHUB_WORKSPACE/tests/results/release/module.json"
+          python3 - <<'PY'
+          import json, os
+          p = os.environ['GITHUB_WORKSPACE'] + '/tests/results/release/module.json'
+          m = json.load(open(p))
+          assert m['Version'] == os.environ['GITHUB_REF_NAME'] and 'Replace' not in m, m
+          print('Published tag installed without a local replacement or templ generation.')
+          PY
+      - name: Publish release notes after installation succeeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "GothUI $GITHUB_REF_NAME" --notes-file docs/releases/2026.1.0.md
+          fi
+      - name: Retain release installation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: release-consumer-evidence
+          path: tests/results/release
+          retention-days: 7

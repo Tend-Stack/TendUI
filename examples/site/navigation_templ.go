@@ -28,7 +28,7 @@ func demoHeader(active string) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header><a href=\"#main\">Skip to content</a><nav aria-label=\"Demo pages\"><a href=\"/\" aria-label=\"GothUI home\"><strong>◈ GothUI</strong></a><ul>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header><a class=\"skip-link\" href=\"#main\">Skip to content</a><nav aria-label=\"Demo pages\"><a href=\"/\" aria-label=\"GothUI home\"><strong>◈ GothUI</strong></a><ul>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

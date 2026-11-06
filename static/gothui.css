@@ -646,6 +646,7 @@ article[data-surface="gradient"] {
   }
   *, *::before, *::after { animation: none !important; transition: none !important; translate: none !important; }
   article { box-shadow: none; break-inside: avoid; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
   article[data-surface="gradient"] { background: none; border-color: currentColor; }
   .app-shell { display: block; min-block-size: 0; }
   .app-sidebar, .skip-link, .theme-toggle, .gothui-dialog, .gothui-popover, .pagination { display: none; }

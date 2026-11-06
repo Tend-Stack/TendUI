@@ -1,0 +1,33 @@
+package consumer
+
+import (
+    "bytes"
+    "context"
+    "net/http/httptest"
+    "strings"
+    "testing"
+
+    "github.com/Tend-Stack/GothUI/v2026"
+    "github.com/Tend-Stack/GothUI/v2026/components"
+    "github.com/Tend-Stack/GothUI/v2026/render"
+)
+
+func TestPublishedModule(t *testing.T) {
+    if gothui.Version != "2026.1.0" { t.Fatalf("unexpected version %q", gothui.Version) }
+    var output bytes.Buffer
+    button := components.Button(components.ButtonProps{Text: "Published <Go>", Primary: true})
+    page := components.Layout(components.LayoutProps{Title: "Consumer", Language: "en", Theme: components.ThemeDark}, button)
+    if err := page.Render(context.Background(), &output); err != nil { t.Fatal(err) }
+    for _, want := range []string{"Published &lt;Go&gt;", `data-theme="dark"`, gothui.StylesheetURL} {
+        if !strings.Contains(output.String(), want) { t.Fatalf("missing %q", want) }
+    }
+    if strings.Contains(output.String(), "<script") { t.Fatal("unexpected bundled script") }
+    css := httptest.NewRecorder()
+    gothui.AssetHandler().ServeHTTP(css, httptest.NewRequest("GET", gothui.StylesheetURL, nil))
+    if css.Code != 200 || !strings.Contains(css.Body.String(), "--gothui-primary") { t.Fatal("embedded asset not available") }
+    request := httptest.NewRequest("GET", "/", nil)
+    request.Header.Set("HX-Request", "true")
+    fragment := httptest.NewRecorder()
+    if err := render.HTML(fragment, request, 200, page, button); err != nil { t.Fatal(err) }
+    if strings.Contains(fragment.Body.String(), "<html") || !strings.Contains(fragment.Header().Get("Vary"), "HX-Request") { t.Fatal("fragment contract failed") }
+}
