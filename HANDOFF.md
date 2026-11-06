@@ -1,5 +1,59 @@
 # GothUI implementation handoff
 
+## Public API baseline and migration milestone (2026-11-06)
+
+Added the Go-only `gothui-dev api` command and included it in `check`. It records
+compiler-resolved declarations for the root, components and render packages in
+api/public.json: 212 declarations/method-set entries at this initial development
+baseline. This is not a comparison with an earlier published or archived API.
+No public library declarations, CSS, templates, runtime dependencies or demo
+behavior changed in this milestone.
+
+The internal/apiguard package captures exact constant values, function and
+variable types, type definitions/aliases, generic constraints, struct fields and
+tags, reachable local private types, and value/pointer method sets including
+promoted methods. Generic instances do not overwrite their declaration's method
+signatures. Deterministic comparison flags every difference, including additions.
+Package discovery rejects new public import packages until the explicit package
+list is extended; internal, cmd, examples and tests are intentionally excluded.
+Imported type internals, behavior, CSS/HTML semantics and cross-platform results
+are outside this declaration guard's proof.
+
+The command writes api-current.json, api-changes.json and (only on a match)
+api.json under tests/results/validation, with revision/dirty/toolchain/target
+provenance on reports. It clears stale API evidence before each attempt and never
+rewrites the checked-in baseline. docs/api-compatibility.md documents intentional
+baseline review, consumer migration and annual module versioning. README,
+development guide and roadmap distinguish declaration agreement from semantic
+compatibility and retain browser/consumer/release gates.
+
+Validation: the full seven-package race suite and vet passed. After the final
+public-package lookup refactor, the affected command package passed race tests
+and vet again. Fixtures cover removals/additions, fields/order/tags, constants and
+iota, aliases, variadics, interfaces, generic constraints/instances, pointer and
+promoted methods, inferred variables, recursive/private result types and package
+changes. Body/comment-only changes and equivalent constant expressions compare
+equal. A temporary real Go module/Git repository proves compiler-export loading,
+baseline matching, rejection of an int-for-string field change, stale-success
+removal, baseline preservation and rejection of an unreviewed public package.
+Fixture repositories are automatically removed by testing.T.TempDir.
+
+The existing f0f1f42 icon-demo binary is retained because this milestone changes
+developer tooling only; its version remains truthful to the UI it contains.
+No unnecessary demo rebuild, template generation or recipe recompilation was
+performed. Their prior reports still identify their actual source revision.
+The final standalone API check records the committed tooling revision. Remove
+initial bootstrap/focused logs superseded by the completed suite and the task's
+/tmp/gothui-api-cache after verification. Keep bounded validation evidence, one
+review binary, the icon contact sheet and prior browser/TCP failure logs; the
+continuing developer owns their replacement or removal after review. No user
+process, shared cache, reference source, remote branch or release tag changed.
+
+The broad goal remains active. Outstanding evidence includes browser and
+assistive-technology behavior, optional HTMX consumer execution, supported Go/
+platform CI, repository reconciliation and clean published installation. The
+API gate is progress toward a stable library, not a completed release claim.
+
 ## Inline icons and action composition milestone (2026-11-05)
 
 Added Icon as the 33rd public templ component, with 24 original geometric SVG

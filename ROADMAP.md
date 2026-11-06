@@ -38,6 +38,10 @@ generated-source reproducibility and independent catalog recipe compilation. It
 records rendering/HTTP benchmarks and enforces CSS/demo size budgets, with Git
 version stamping and checked atomic replacement of the review executable.
 See docs/development.md and docs/performance.md for current evidence and limits.
+A compiler-resolved public API baseline now guards 212 declarations/method-set
+entries across the three public packages. It flags additions and changes for
+review without claiming semantic compatibility; docs/api-compatibility.md defines
+the update and migration process.
 
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
@@ -62,8 +66,9 @@ is pending. The active broad goal remains unfinished.
    layouts in browsers as well as the retained static drawing contact sheet.
 4. **Developer experience.** Native catalog search, category filters, preview
    pages, copyable/downloadable recipes and public templ coverage checks are
-   implemented. Next: API compatibility checks, package documentation and
-   versioned migration guidance. Keep demos runnable from one binary.
+   implemented. A conservative public API change guard and migration process are
+   also in place. Next: release-specific migration guidance and broader consumer
+   compatibility evidence. Keep demos runnable from one binary.
 5. **Evidence and release.** Local benchmarks, asset/binary size budgets and
    generated-source consistency checks are implemented. Next: browser matrix
    and visual regression baselines; keyboard/screen-reader/contrast checks;

@@ -13,7 +13,8 @@ uses the toolchain that compiled it, and requires no frontend tools.
 
 | Command | Evidence |
 | --- | --- |
-| `go run ./cmd/gothui-dev check` | Go formatting, production dependency boundaries, CSS size, all race tests and vet |
+| `go run ./cmd/gothui-dev check` | Go formatting, production dependency boundaries, CSS size, public API baseline, all race tests and vet |
+| `go run ./cmd/gothui-dev api` | Compiler-resolved public declarations, candidate snapshot and reviewed-baseline comparison |
 | `go run ./cmd/gothui-dev generated` | Matching templ version and byte-identical generated Go for every template; rejects orphan output |
 | `go run ./cmd/gothui-dev recipes` | Each downloadable catalog recipe generated and compiled in an independent package |
 | `go run ./cmd/gothui-dev bench` | Three samples per server-side benchmark, allocation counts and environment metadata |
@@ -80,8 +81,8 @@ Before a release, validate the supported Go versions and operating systems,
 browser/keyboard/accessibility behavior, optional HTMX integration in a consumer
 fixture, clean published installation and matching repository histories. Passing
 local HTTP tests does not establish any of those results. Public API changes
-also need migration guidance; automated API compatibility comparison remains a
-separate roadmap item.
+also need migration guidance. The [API review guard](api-compatibility.md) detects
+declaration drift; it does not prove behavioral or visual compatibility.
 
 Keep only current validation reports, the review executable and evidence for
 unresolved failures. The continuing developer owns their replacement or removal
