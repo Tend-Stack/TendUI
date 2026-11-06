@@ -44,8 +44,9 @@ templ dashboard(d dashboardOptions) {
 			@components.Card(components.CardProps{}) {
 				<p role="status">{ strconv.Itoa(d.Total) } projects match your filters.</p>
 				if len(d.Projects) == 0 {
-					<h3>No matching projects.</h3>
-					<p>Try “design,” switch the status, or clear your filters.</p><a href="/dashboard">Show all projects</a>
+					@components.EmptyState(components.EmptyStateProps{Title: "No matching projects.", Message: "Try “design,” switch the status, or clear your filters."}) {
+						<a href="/dashboard">Show all projects</a>
+					}
 				} else {
 					<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable projects table">
 						<table>

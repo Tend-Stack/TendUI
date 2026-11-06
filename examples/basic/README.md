@@ -1,6 +1,6 @@
 # GothUI demos
 
-Eight connected pages, served by one Go executable. All pages use the embedded
+Nine connected pages, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -8,6 +8,13 @@ From the repository root:
 
 ```sh
 go run ./examples/basic -open
+```
+
+To build a self-contained executable with the stylesheet embedded:
+
+```sh
+CGO_ENABLED=0 go build -trimpath -o gothui-demo ./examples/basic
+./gothui-demo -open
 ```
 
 `-open` opens the playground in the default Linux browser using `xdg-open`,
@@ -24,6 +31,7 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Workspace | http://127.0.0.1:8080/workspace | Reusable app header/sidebar/main layout, native collapsible navigation, feedback and cards |
 | Interactions | http://127.0.0.1:8080/interactions | Automatic/manual popovers, native modal, confirmation POST, ordinary-page fallback, breadcrumbs |
 | Inline editing | http://127.0.0.1:8080/editing | Edit, save, cancel, restore, linked validation errors and optional fragment responses |
+| Motion & surfaces | http://127.0.0.1:8080/motion | Replay entrances, compare motion off, card surfaces, skeleton/empty/metric states and overlay entrances |
 
 The playground uses GET controls: click **Apply settings** to refresh the preview.
 Its URL preserves settings so you can bookmark a test case. The preview button
@@ -95,6 +103,13 @@ consumer's default HTMX response handling can display them. Neither writes a
 cookie. Successful native saves redirect; successful HTMX saves return the panel
 and a cookie. The library helper does not choose this application status policy.
 
+Motion & surfaces uses one-shot CSS entrances and short hover/focus feedback.
+Use **Apply & replay entrances** to reload with a chosen mode and theme. The
+skeleton is clearly labeled as a preview with no request running; decoration
+stops after three cycles. Motion follows OS reduced motion unless explicitly
+turned off, and the Appearance page saves the setting across demos. Surface
+variants preserve opaque text backgrounds. See [the motion guide](../../docs/motion.md).
+
 ## Manual review
 
 1. Test at desktop width and at 375 px. Cards should stack; only the table should
@@ -130,6 +145,11 @@ and a cookie. The library helper does not choose this application status policy.
     it and cancel. Check that the saved value remains. Clear the name, use Test
     server validation, follow the error link, then correct and save. Restore the
     sample, then check another browser session has independent values.
+
+15. On Motion & surfaces, compare Follow system and Off, then enable OS reduced
+    motion. Watch entrances finish, keyboard-focus the gradient card link, and
+    open/close overlays. Check that skeleton decoration stops after three cycles.
+    Repeat in dark mode, forced colors, print preview and a narrow viewport.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:

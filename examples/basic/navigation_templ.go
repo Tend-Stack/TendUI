@@ -32,7 +32,7 @@ func demoHeader(active string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, page := range []struct{ Path, Label string }{{"/", "Overview"}, {"/playground", "Playground"}, {"/forms", "Form lab"}, {"/dashboard", "Dashboard"}, {"/settings", "Appearance"}, {"/workspace", "Workspace"}, {"/interactions", "Interactions"}, {"/editing", "Inline editing"}} {
+		for _, page := range []struct{ Path, Label string }{{"/", "Overview"}, {"/playground", "Playground"}, {"/forms", "Form lab"}, {"/dashboard", "Dashboard"}, {"/settings", "Appearance"}, {"/workspace", "Workspace"}, {"/interactions", "Interactions"}, {"/editing", "Inline editing"}, {"/motion", "Motion & surfaces"}} {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<li><a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

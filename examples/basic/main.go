@@ -110,6 +110,9 @@ func newHandler() http.Handler {
 			options := readPlayground(r.URL.Query())
 			options.Appearance = appearance(r)
 			body = playground(options)
+		case "/motion":
+			title = "Motion & surfaces · GothUI"
+			body = motionStudio(appearance(r), themeName(theme(r)))
 		case "/interactions":
 			title = "Native interactions · GothUI"
 			body = interactions(r.URL.Query().Get("confirmed") == "1", r.URL.Query().Get("view"))
@@ -137,7 +140,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion":
 		return true
 	}
 	return false

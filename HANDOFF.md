@@ -1,5 +1,48 @@
 # GothUI implementation handoff
 
+## Motion and expressive surfaces milestone (2026-11-05)
+
+The broader user goal is now active: build an elegant, comprehensive Go-native
+UI library in a single binary, extending beyond Pico. `ROADMAP.md` preserves the
+full objective, development tracks and release gates. This milestone advances
+that goal; it does not establish feature parity, superiority, accessibility
+conformance or release completion.
+
+Added typed card surfaces (tinted, outlined, gradient), one-shot fade/rise/scale
+entrances with bounded delays, a Reveal wrapper, two-pixel hover/focus lift,
+short control transitions and native overlay opening effects. Text remains on
+opaque surfaces. MotionSystem respects OS reduced motion; MotionOff zeroes all
+motion durations/delays and hover displacement, including CSS/Go exports and
+saved preferences. Reduced-motion and print styles disable animations. No JS,
+external assets or new dependencies were introduced.
+
+Added Skeleton (bounded decorative shapes, visible status, three pulse cycles),
+EmptyState (recovery action slot) and Stat (description-list metric). Dashboard
+empty results use the new component. The ninth demo, `/motion`, provides replay,
+motion/theme/preset controls, all new surfaces/states, and native overlays.
+`docs/motion.md` documents semantics, duration tokens, usage and manual checks.
+The operator's PureCSS-Animations repository was reviewed as visual reference;
+the authored token-based styles do not bundle its source or its JS carousel.
+
+Verification: templ formatting/generation completed, `go test -race ./...` passed
+for all four packages and `go vet ./...` passed. Tests cover safe props, bounded
+placeholder output, semantic labels/escaping, motion preference save/preview/
+export, native route behavior and CSS policy guards. Embedded stylesheet size is
+27,791 bytes at this milestone. CSS-string tests do not prove browser behavior.
+An actual installed headless Chromium launch failed before rendering with
+`sandbox_host_linux.cc: shutdown: Operation not permitted`; browser compatibility,
+visual, keyboard and assistive-technology gates remain pending.
+
+The review binary is rebuilt with CGO_ENABLED=0 and replaced atomically at
+`tests/results/demos/gothui-demo`, preserving any user-owned running process.
+Restart it from a normal terminal and visit `/motion`. Retain the current motion
+validation/build logs and browser-launch failure, plus the earlier TCP failure;
+remove superseded editing logs and the task-specific Go cache. The continuing
+developer owns these artifacts until review or replacement. No extra worktree,
+backup, test database, server process or release tag was created. Remote delivery
+remains pending under the documented network restrictions. Next work should
+follow ROADMAP.md, especially reusable data/navigation patterns and browser gates.
+
 ## Pages, fragments, and inline editing milestone (2026-11-05)
 
 Added the standard-library-only `render` package. `render.HTML` accepts templ

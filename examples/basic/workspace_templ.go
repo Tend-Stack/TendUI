@@ -181,6 +181,7 @@ func workspace() templ.Component {
 				{Label: "Form lab", Href: "/forms"},
 				{Label: "Native interactions", Href: "/interactions"},
 				{Label: "Inline editing", Href: "/editing"},
+				{Label: "Motion & surfaces", Href: "/motion"},
 				{Label: "GothUI home", Href: "/"},
 			},
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)

@@ -57,7 +57,7 @@ func main() {
 ```
 
 Run the local demos, including a component playground, form lab, dashboard,
-appearance editor, workspace, native interactions, inline editing, and theme endpoint:
+appearance editor, workspace, native interactions, inline editing, motion and surfaces, and theme endpoint:
 
 ```sh
 go run ./examples/basic -open
@@ -85,10 +85,12 @@ components/
   shell.templ             application header, sidebar, main content
   overlays.templ          native dialog and popover panels
   navigation.templ        breadcrumbs and bounded pagination
+  motion.templ            typed one-shot entrance effects
+  states.templ            loading placeholders, empty states and metrics
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
 render/                   buffered page/fragment HTTP responses
-examples/basic/           eight demo pages, preference cookies, and downloads
+examples/basic/           nine demo pages, preference cookies, and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -366,6 +368,21 @@ flow and HTTP fragment contract are testable separately. Applications enabling
 HTMX must supply their own runtime and appropriate CSP; this project neither
 loads nor bundles it. The example cookie is unsigned cosmetic sample data,
 validated and escaped on every read. It is not an account/session implementation.
+
+## Motion, surfaces and useful states
+
+Cards now accept typed `Surface`, `Entry`, `Delay` and `HoverLift` options.
+Choose tinted, outlined or gradient borders; use fade, rise or scale entrances.
+`Reveal` wraps other content with the same entrance system. `Skeleton`,
+`EmptyState` and `Stat` cover loading, recovery and metric presentation.
+
+`Appearance.Motion` accepts `MotionSystem` (default) or `MotionOff`. System mode
+respects OS reduced motion. Off also disables hover displacement; CSS/Go exports
+include the choice. Entrances run once, and loading decoration stops after three
+cycles. All styling stays in the embedded CSS, with no runtime dependency.
+
+See [the motion guide](docs/motion.md), try `/motion`, and track the broader
+[product roadmap](ROADMAP.md). Browser validation remains a release gate.
 
 ## Maintaining the library
 
