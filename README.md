@@ -85,12 +85,14 @@ components/
   shell.templ             application header, sidebar, main content
   overlays.templ          native dialog and popover panels
   navigation.templ        breadcrumbs and bounded pagination
+  tables.templ            data tables with column/row contracts and state slots
+  wayfinding.templ        page tabs, progress steps and native disclosures
   motion.templ            typed one-shot entrance effects
   states.templ            loading placeholders, empty states and metrics
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
 render/                   buffered page/fragment HTTP responses
-examples/basic/           nine demo pages, preference cookies, and downloads
+examples/basic/           ten demo pages, preference cookies, and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -383,6 +385,17 @@ cycles. All styling stays in the embedded CSS, with no runtime dependency.
 
 See [the motion guide](docs/motion.md), try `/motion`, and track the broader
 [product roadmap](ROADMAP.md). Browser validation remains a release gate.
+
+## Data tables and navigation patterns
+
+`DataTable` provides semantic headers/row scopes, application-owned sort URLs,
+cell component slots, striped/compact styles, and loading/empty states. The
+Dashboard uses it for bidirectional sorting and native checkbox selection review.
+`Tabs` supplies ordinary page navigation; `Steps` labels application-owned
+progress; `Disclosure` uses native details/summary with optional grouping.
+
+See the [data and navigation guide](docs/data-navigation.md) and `/patterns`
+for composition rules, working examples and validation boundaries.
 
 ## Maintaining the library
 

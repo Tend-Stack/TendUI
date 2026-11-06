@@ -1,6 +1,6 @@
 # GothUI demos
 
-Nine connected pages, served by one Go executable. All pages use the embedded
+Ten connected pages, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -32,6 +32,7 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Interactions | http://127.0.0.1:8080/interactions | Automatic/manual popovers, native modal, confirmation POST, ordinary-page fallback, breadcrumbs |
 | Inline editing | http://127.0.0.1:8080/editing | Edit, save, cancel, restore, linked validation errors and optional fragment responses |
 | Motion & surfaces | http://127.0.0.1:8080/motion | Replay entrances, compare motion off, card surfaces, skeleton/empty/metric states and overlay entrances |
+| Patterns | http://127.0.0.1:8080/patterns | Page tabs, step walkthrough, table loading/empty states and grouped native disclosures |
 
 The playground uses GET controls: click **Apply settings** to refresh the preview.
 Its URL preserves settings so you can bookmark a test case. The preview button
@@ -110,6 +111,18 @@ stops after three cycles. Motion follows OS reduced motion unless explicitly
 turned off, and the Appearance page saves the setting across demos. Surface
 variants preserve opaque text backgrounds. See [the motion guide](../../docs/motion.md).
 
+The Dashboard now uses the reusable DataTable. Click a sortable column header to
+change direction; the links preserve query settings and restart at page one.
+Status tabs offer another way to filter. Select rows on the current page and
+choose **Review selected projects** for a read-only receipt. Selection is not
+saved across pages. Unknown names and excessive submissions are rejected; a
+blank selection produces a useful error. No project is changed or sent anywhere.
+
+Patterns contains link-based tabs, a three-step reading guide, loading/empty
+table previews and native grouped disclosures. Loading is labeled as a preview;
+no request is running. The walkthrough URL chooses its step and saves no data.
+See [the composition guide](../../docs/data-navigation.md) for the public APIs.
+
 ## Manual review
 
 1. Test at desktop width and at 375 px. Cards should stack; only the table should
@@ -150,6 +163,13 @@ variants preserve opaque text backgrounds. See [the motion guide](../../docs/mot
     motion. Watch entrances finish, keyboard-focus the gradient card link, and
     open/close overlays. Check that skeleton decoration stops after three cycles.
     Repeat in dark mode, forced colors, print preview and a narrow viewport.
+
+16. On Dashboard, toggle each sortable header twice. Verify the arrow, order and
+    active sort agree. Use status tabs with a search query and move between pages.
+    Select two sample projects and review; repeat with no selection.
+17. On Patterns, navigate through all three sections and walkthrough steps with
+    the keyboard. Check current markers, unavailable future steps, grouped details,
+    table loading/empty content, narrow layouts and screen-reader labels.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:

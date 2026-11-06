@@ -25,18 +25,20 @@ Implemented and covered by Go tests: embedded asset HTTP behavior; forms and
 validation feedback; typed appearance settings/exports; application shells;
 breadcrumbs and pagination; native dialogs/popovers; full-page/fragment helpers;
 inline editing with native fallback; short CSS motion; card surfaces; loading,
-empty and metric states. Nine example pages exercise these APIs.
+empty and metric states; reusable DataTable with native selection review; page
+tabs, step indicators and grouped disclosures. Ten example pages exercise these APIs.
 
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
 
 ## Next development tracks
 
-1. **Composition and information density.** Reusable data-table contracts with
-   accessible sorting, empty/loading states, responsive layouts, filters, and
-   selection/action patterns that have working native form paths. Navigation
-   tabs, step indicators, and well-labeled disclosure groups. Avoid decorative
-   controls that suggest unsupported behavior.
+1. **Composition and information density.** Table contracts, bidirectional sort
+   navigation, loading/empty states, native selection review, page tabs, steps
+   and disclosures are implemented. Next: richer layout recipes and composable
+   application actions with explicit server ownership; prove responsive and
+   keyboard behavior in browsers. Avoid decorative controls that suggest
+   unsupported behavior.
 2. **Forms for real applications.** Composable field groups, descriptions/error
    associations, input addons, constrained file-selection examples, multi-step
    server forms and recoverable submission states. Document validation and CSRF

@@ -106,7 +106,7 @@ func TestDashboardFilters(t *testing.T) {
 	for _, tc := range []struct{ query, want, absent string }{
 		{"?q=portal&status=active", "Customer portal", "Studio website"},
 		{"?status=paused", "Billing integration", "Customer portal"},
-		{"?q=does-not-exist", "No matching projects.", "<tbody>"},
+		{"?q=does-not-exist", "No matching projects.", `name="project"`},
 	} {
 		w := httptest.NewRecorder()
 		h.ServeHTTP(w, httptest.NewRequest("GET", "/dashboard"+tc.query, nil))

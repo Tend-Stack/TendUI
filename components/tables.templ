@@ -1,0 +1,95 @@
+package components
+
+import "strconv"
+
+// DataTable preserves native table semantics. The scroll region is keyboard reachable.
+// Supply only the current page of rows; filtering, sorting and pagination belong to Go handlers.
+templ DataTable(props DataTableProps) {
+	{{
+		if err := validateTable(props); err != nil {
+			return err
+		}
+	}}
+	if props.Loading {
+		<p role="status">{ fallback(props.LoadingLabel, "Loading rows…") }</p>
+	}
+	<div class="table-scroll" tabindex="0" role="region" aria-label={ props.Caption }>
+		<table
+			class={ "data-table", templ.KV("table-striped", props.Striped), templ.KV("table-compact", props.Compact) }
+			if props.Loading {
+				aria-busy="true"
+			}
+		>
+			<caption>{ props.Caption }</caption>
+			<thead>
+				<tr>
+					for _, col := range props.Columns {
+						<th
+							scope="col"
+							data-align={ tableAlignment(col.Alignment) }
+							if col.Sort != SortNone {
+								aria-sort={ string(col.Sort) }
+							}
+						>
+							if col.SortURL != "" {
+								<a class="table-sort" href={ templ.URL(col.SortURL) } aria-label={ fallback(col.SortLabel, "Sort by "+col.Label) }>
+									{ col.Label }
+									<span aria-hidden="true">
+										if col.Sort == SortAscending {
+											↑
+										} else if col.Sort == SortDescending {
+											↓
+										} else {
+											↕
+										}
+									</span>
+								</a>
+							} else {
+								{ col.Label }
+							}
+						</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				if props.Loading {
+					<tr><td colspan={ strconv.Itoa(len(props.Columns)) }><span class="muted">{ fallback(props.LoadingLabel, "Loading rows…") }</span></td></tr>
+				} else if len(props.Rows) == 0 {
+					<tr>
+						<td colspan={ strconv.Itoa(len(props.Columns)) }>
+							if props.Empty != nil {
+								@props.Empty
+							} else {
+								<p>No rows to display.</p>
+							}
+						</td>
+					</tr>
+				} else {
+					for _, row := range props.Rows {
+						<tr
+							if row.Selected {
+								data-selected="true"
+							}
+						>
+							for i, cell := range row.Cells {
+								if props.Columns[i].RowHeader {
+									<th scope="row" data-align={ tableAlignment(props.Columns[i].Alignment) }>@tableCell(cell)</th>
+								} else {
+									<td data-align={ tableAlignment(props.Columns[i].Alignment) }>@tableCell(cell)</td>
+								}
+							}
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+templ tableCell(cell TableCell) {
+	if cell.Content != nil {
+		@cell.Content
+	} else {
+		{ cell.Text }
+	}
+}

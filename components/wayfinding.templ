@@ -1,0 +1,160 @@
+package components
+
+import "fmt"
+import "strconv"
+import "strings"
+
+type TabItem struct {
+	Label    string
+	Href     string
+	Current  bool
+	Disabled bool
+}
+type TabsProps struct {
+	Label string
+	Items []TabItem
+}
+
+func validateTabs(items []TabItem) error {
+	current := 0
+	for _, item := range items {
+		if strings.TrimSpace(item.Label) == "" {
+			return fmt.Errorf("gothui: tabs require labels")
+		}
+		if item.Current {
+			current++
+			if item.Disabled {
+				return fmt.Errorf("gothui: current tab cannot be disabled")
+			}
+		}
+		if !item.Current && !item.Disabled && item.Href == "" {
+			return fmt.Errorf("gothui: available tabs require a URL")
+		}
+	}
+	if current > 1 {
+		return fmt.Errorf("gothui: tabs permit only one current page")
+	}
+	return nil
+}
+
+// Tabs is page navigation styled as tabs, not a client-side ARIA tablist.
+// Native Tab/Enter navigation applies; no scripted arrow-key behavior is implied.
+templ Tabs(props TabsProps) {
+	{{
+		if err := validateTabs(props.Items); err != nil {
+			return err
+		}
+	}}
+	if len(props.Items) > 0 {
+		<nav class="tabs" aria-label={ fallback(props.Label, "Sections") }>
+			<ul>
+				for _, item := range props.Items {
+					<li>
+						if item.Disabled {
+							<span aria-disabled="true">{ item.Label }</span>
+						} else if item.Href != "" {
+							<a
+								href={ templ.URL(item.Href) }
+								if item.Current {
+									aria-current="page"
+								}
+							>{ item.Label }</a>
+						} else {
+							<span aria-current="page">{ item.Label }</span>
+						}
+					</li>
+				}
+			</ul>
+		</nav>
+	}
+}
+
+type StepItem struct {
+	Label     string
+	Href      string
+	Current   bool
+	Completed bool
+}
+type StepsProps struct {
+	Label          string
+	CompletedLabel string
+	Items          []StepItem
+}
+
+func validateSteps(items []StepItem) error {
+	current := 0
+	for _, item := range items {
+		if strings.TrimSpace(item.Label) == "" {
+			return fmt.Errorf("gothui: steps require labels")
+		}
+		if item.Current {
+			current++
+			if item.Completed {
+				return fmt.Errorf("gothui: a step cannot be current and completed")
+			}
+		}
+	}
+	if current > 1 {
+		return fmt.Errorf("gothui: steps permit only one current step")
+	}
+	return nil
+}
+
+// Steps describes application-owned progress. Omit Href for unavailable steps.
+templ Steps(props StepsProps) {
+	{{
+		if err := validateSteps(props.Items); err != nil {
+			return err
+		}
+	}}
+	if len(props.Items) > 0 {
+		<nav class="steps" aria-label={ fallback(props.Label, "Progress") }>
+			<ol>
+				for i, item := range props.Items {
+					<li
+						if item.Current {
+							aria-current="step"
+						}
+						if item.Completed {
+							data-completed="true"
+						}
+					>
+						<span class="step-number" aria-hidden="true">{ strconv.Itoa(i+1) }</span>
+						<span>
+							if item.Completed {
+								<span class="sr-only">{ fallback(props.CompletedLabel, "Completed") }: </span>
+							}
+							if item.Href != "" {
+								<a href={ templ.URL(item.Href) }>{ item.Label }</a>
+							} else {
+								{ item.Label }
+							}
+						</span>
+					</li>
+				}
+			</ol>
+		</nav>
+	}
+}
+
+type DisclosureProps struct {
+	Summary string
+	// Name groups native details elements in supporting browsers. Use a unique name per group.
+	Name string
+	Open bool
+}
+
+// Disclosure uses native details/summary behavior. Do not place controls inside Summary.
+templ Disclosure(props DisclosureProps) {
+	<details
+		class="disclosure"
+		open?={ props.Open }
+		if props.Name != "" {
+			name={ props.Name }
+		}
+	>
+		<summary>{ fallback(props.Summary, "Details") }</summary>
+		<div class="disclosure-body">{ children... }
+</div>
+	</details>
+}

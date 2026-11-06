@@ -1,5 +1,53 @@
 # GothUI implementation handoff
 
+## Data and navigation composition milestone (2026-11-05)
+
+Added DataTable with required captions/column labels, row shape validation,
+escaped text or templ component cells, a single active sort header and optional
+row header column, alignment, compact/striped styles, visual selected rows,
+loading status outside the busy table, and an empty-state slot. It retains native
+table semantics inside a labeled keyboard-reachable scroll region. Sorting and
+selection remain application-owned; no client data model or runtime was added.
+
+Added Tabs (ordinary page links/current/disabled state), Steps (ordered progress,
+current step, completed labels and application-owned destinations), and Disclosure
+(native details/summary with optional group name). Contradictory navigation state
+fails rendering. The new tenth demo `/patterns` provides page sections, a stateless
+three-step reading guide, table loading/empty previews and grouped disclosures.
+`docs/data-navigation.md` documents APIs, accessibility contracts and boundaries.
+
+The dashboard now composes DataTable and status Tabs. Header links toggle both
+sort directions and preserve query/filter settings while returning to page one.
+Native checkboxes submit the visible-page selection to `/dashboard/selection`.
+That bounded, cross-origin-protected POST validates known sample names,
+deduplicates and produces a read-only receipt. No data, cookie or project changes
+occur; empty selection returns 422, invalid/excessive input 400 and wrong methods
+405. A production action would need authorization and persistent record IDs.
+
+Validation: all four packages pass `go test -race ./...`; `go vet ./...` passes.
+Tests cover column/row invariants, safe cells/URLs, navigation semantics/conflicts,
+loading/empty markup, sorting directions, query preservation, native selection
+validation/no mutation, cross-origin rejection and new demo request methods.
+An old filter test assumed empty results removed the whole table; it now checks
+that empty results have no selectable rows, matching the intentional retained
+caption/header/empty-cell structure. A CSS review fixed inherited semantic stripes
+so DataTable.Striped=false really removes striping. CSS is 30,549 bytes.
+
+The review binary is rebuilt statically with CGO_ENABLED=0 and replaced atomically
+at `tests/results/demos/gothui-demo`. Existing user processes are left alone;
+restart from a normal terminal and visit `/dashboard` and `/patterns`. Current
+data-suite/build logs supersede successful motion logs. Retain the unresolved
+motion-browser.log and TCP demo-launch.log evidence. The continuing developer
+owns the one binary/current logs until review or replacement; this task's Go cache
+is removed after building. No new worktree, database, backup or daemon was created.
+
+This is verified local progress toward the active broad goal, not completion.
+Browser/assistive-technology validation and remote publication remain outstanding.
+Prior sandbox browser/socket failures are unchanged and have not been relabeled
+as passing checks. Next roadmap work includes composable fields and a real native
+multi-step form, followed by a searchable component catalog and measured release
+gates. Keep ROADMAP.md's full acceptance criteria intact.
+
 ## Motion and expressive surfaces milestone (2026-11-05)
 
 The broader user goal is now active: build an elegant, comprehensive Go-native
