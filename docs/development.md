@@ -56,9 +56,13 @@ go run ./cmd/gothui-dev build
 ./tests/results/demos/gothui-demo -open
 ```
 
+On Windows the retained executable is `tests/results/demos/gothui-demo.exe`.
+
 Builds use `CGO_ENABLED=0`, `-trimpath` and stripped debug symbols. The command
-checks the candidate executable before atomically replacing the single retained
-review binary. Linux builds must have no ELF interpreter; all builds must record
+checks the candidate executable before replacing the single retained review
+binary (atomic rename on Unix). Windows replacement can fail while an executable
+is in use; the tool does not delete the old binary first. Linux builds must have
+no ELF interpreter; all builds must record
 CGO disabled and print the expected version without starting an HTTP listener.
 The report records byte size and SHA-256. An existing demo process is left alone;
 restart it to see new code. Native builds are intended here: the version smoke
@@ -83,6 +87,9 @@ fixture, clean published installation and matching repository histories. Passing
 local HTTP tests does not establish any of those results. Public API changes
 also need migration guidance. The [API review guard](api-compatibility.md) detects
 declaration drift; it does not prove behavioral or visual compatibility.
+
+The [CI guide](ci.md) describes the prepared six-job native verification matrix,
+local cross-compilation evidence and pending remote execution.
 
 Keep only current validation reports, the review executable and evidence for
 unresolved failures. The continuing developer owns their replacement or removal

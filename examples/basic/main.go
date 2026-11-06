@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os/exec"
+	"runtime"
 	"time"
 
 	"github.com/Tend-Stack/GothUI/v2026"
@@ -222,10 +223,23 @@ func main() {
 	log.Printf("GothUI %s at %s/playground", version, address)
 	if *open {
 		go func() {
-			if err := exec.Command("xdg-open", address+"/playground").Run(); err != nil {
+			program, args := browserOpener(runtime.GOOS, address+"/playground")
+			if err := exec.Command(program, args...).Run(); err != nil {
 				log.Printf("Open %s/playground in your browser (%v)", address, err)
 			}
 		}()
 	}
 	log.Fatal(server.Serve(listener))
+}
+
+// Pass the generated local URL as an argument, never through a command shell.
+func browserOpener(goos, url string) (string, []string) {
+	switch goos {
+	case "windows":
+		return "rundll32.exe", []string{"url.dll,FileProtocolHandler", url}
+	case "darwin":
+		return "open", []string{url}
+	default:
+		return "xdg-open", []string{url}
+	}
 }
