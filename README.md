@@ -57,7 +57,7 @@ func main() {
 ```
 
 Run the local demos, including a component playground, form lab, dashboard,
-appearance editor, workspace, and theme endpoint:
+appearance editor, workspace, native interactions, and theme endpoint:
 
 ```sh
 go run ./examples/basic -open
@@ -83,9 +83,11 @@ components/
   controls.templ          textareas, radio groups, switches, file inputs
   feedback.templ          alerts, badges, linked error summaries
   shell.templ             application header, sidebar, main content
+  overlays.templ          native dialog and popover panels
+  navigation.templ        breadcrumbs and bounded pagination
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
-examples/basic/           six demo pages, preference cookies, and downloads
+examples/basic/           seven demo pages, preference cookies, and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -212,6 +214,69 @@ It owns the main landmark; do not nest another main or application shell inside
 it. `MainID` defaults to `main` and connects the skip link. Sidebar navigation
 uses a native disclosure that works on desktop and mobile without JavaScript.
 See `/workspace` and `examples/basic/workspace.templ` for a complete example.
+
+## Native interactions and navigation
+
+`Dialog` and `Popover` use native HTML. Supply a nonempty ID with no whitespace;
+invalid IDs return a render error. IDs must be unique within the document, and
+their `-title` and `-description` suffixes are reserved for accessible labels.
+
+```templ
+@components.Button(components.ButtonProps{
+    Text: "Review request",
+    CommandFor: "review-request",
+    Command: components.DialogShowModal,
+})
+@components.Dialog(components.DialogProps{
+    ID: "review-request", Title: "Review request",
+    Description: "Check the details before submitting.",
+}) {
+    @components.Form(components.FormProps{
+        Action: "/requests/approve", Method: components.MethodPost,
+    }) {
+        @components.Button(components.ButtonProps{
+            Text: "Approve", Type: components.ButtonTypeSubmit,
+        })
+    }
+}
+```
+
+Keep dialogs outside other forms. The dialog includes a native `method="dialog"`
+close form and initially focuses that non-destructive close control. Closing a
+dialog does not submit an application request; use a separate normal form for
+an action that must reach Go. Native opener/closer fields on Button always force
+`type="button"`, even if Type was set to submit. Unsupported command values
+produce an inert button. Do not combine native commands and HTMX requests on
+the same control.
+
+Modal opening uses the newer `commandfor`/`command="show-modal"` attributes.
+Provide an ordinary-page alternative for unsupported browsers, as `/interactions`
+does. No JavaScript fallback is injected. See the browser's
+[native dialog commands](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#modal_dialogs_using_invoker_commands).
+
+For popovers, use `ButtonProps{PopoverTarget: "help"}` and
+`Popover(PopoverProps{ID: "help", Title: "Help"})` with templ children. The default
+automatic mode supports dismissal outside the panel; `Mode: PopoverManual`
+requires an explicit close/toggle action. Both variants include a close button.
+`PopoverAction` supports Toggle, Show, and Hide. Panels are non-modal, centered
+by default, and do not claim ARIA menu semantics. Unsupported browsers may show
+the content inline. See the [native popover attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover).
+
+`Breadcrumbs(BreadcrumbsProps{Items: ...})` renders ancestor links and a final,
+non-linked current page. Separators are hidden from assistive technology.
+
+`Pagination(PaginationProps{Page: page, TotalPages: total, URLForPage: pageURL})`
+renders normal links, current/disabled states, and a bounded page window with
+ellipses. Zero/one-page results omit the navigation. Current page numbers are
+clamped to range; a missing URL callback for multiple pages returns a render
+error. The application supplies totals, page data, and URLs that retain its
+filters. No database, router, or query convention is imposed by the component.
+Labels can be localized through the props.
+
+The dashboard example demonstrates filter → sort → paginate on a request-owned
+copy of sample records. Page URLs preserve search, status, sorting, page size,
+and appearance query settings. Invalid or excessive page numbers are normalized;
+empty results keep their recovery link.
 
 ## Themes and the zero-JavaScript contract
 

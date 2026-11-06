@@ -1,6 +1,6 @@
 # GothUI demos
 
-Six connected pages, served by one Go executable. All pages use the embedded
+Seven connected pages, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -19,9 +19,10 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Overview | http://127.0.0.1:8080/ | Component introduction and links to each demo |
 | Playground | http://127.0.0.1:8080/playground | Themes, button labels/variants, disabled/invalid/read-only states, card header/footer, checked controls |
 | Form lab | http://127.0.0.1:8080/forms | Required fields, invalid email, server validation, reset, success receipt |
-| Dashboard | http://127.0.0.1:8080/dashboard | Search, status filters, empty results, responsive cards and scrollable tables |
+| Dashboard | http://127.0.0.1:8080/dashboard | Search, status filters, sorting, page size, pagination, empty results and scrollable tables |
 | Appearance | http://127.0.0.1:8080/settings | Presets, spacing, corners, typography, text size, width, shadows, saved preferences, CSS/Go downloads |
 | Workspace | http://127.0.0.1:8080/workspace | Reusable app header/sidebar/main layout, native collapsible navigation, feedback and cards |
+| Interactions | http://127.0.0.1:8080/interactions | Automatic/manual popovers, native modal, confirmation POST, ordinary-page fallback, breadcrumbs |
 
 The playground uses GET controls: click **Apply settings** to refresh the preview.
 Its URL preserves settings so you can bookmark a test case. The preview button
@@ -54,8 +55,20 @@ email, role, consent, and message length and limits request bodies to 16 KB.
 **Reset edits** restores values from the current document; **Start a fresh test**
 clears the form. Successful submissions show an escaped, in-memory receipt.
 
-Dashboard data is fixed sample content. Filters work on the server, and portfolio
-totals intentionally remain independent of the filtered table.
+Dashboard data is fixed sample content. Filters, sorting, and pagination work on
+the server, and portfolio totals intentionally remain independent of the filtered
+table. The default page size is two projects; choose five to see all records.
+Page links preserve search, status, sorting, size, and appearance query settings.
+Submitting filters starts again at the first page. Sorting never mutates shared
+sample records. Due-date sorting is specific to this sample's November dates.
+
+Interactions use native HTML with no scripts. Automatic popovers support
+light dismissal; manual popovers require their Close button or another toggle.
+The dialog opens using native invoker commands and includes a non-destructive
+close control. The approval form POSTs to `/interactions/confirm` and redirects
+to a success message without changing or saving records. The ordinary-page
+confirmation link exercises the same handler in browsers without dialog command
+support. Native browser behavior still needs manual compatibility testing.
 
 ## Manual review
 
@@ -79,6 +92,14 @@ totals intentionally remain independent of the filtered table.
 10. Test the workspace skip link and collapse/expand sidebar navigation at
     desktop and phone widths. Test radio arrow keys, switch Space toggling,
     textarea editing, and disabled file selection in the playground.
+11. On Interactions, use Enter/Space to open each panel, Tab through its controls,
+    Escape to dismiss the automatic popover/modal, and the Close button for the
+    manual popover. Verify modal focus containment and return to its opener.
+12. Approve a demo request inside the dialog and through the ordinary-page
+    confirmation. Both should show the success message. Canceling/closing should
+    perform no POST. Repeat with JavaScript disabled.
+13. On Dashboard, change sort order, use page 2/3, change the page size, and filter
+    the results. Verify link URLs retain filters and pagination stays in bounds.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:

@@ -43,6 +43,7 @@ func newHandler() http.Handler {
 	mux.Handle(gothui.AssetPath, gothui.AssetHandler())
 	mux.HandleFunc("/appearance.css", exportAppearance)
 	mux.HandleFunc("/appearance.go", exportAppearance)
+	mux.HandleFunc("/interactions/confirm", confirmDemo)
 	mux.HandleFunc("/api/theme/toggle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
 		if r.Method != http.MethodPost {
@@ -108,6 +109,9 @@ func newHandler() http.Handler {
 			options := readPlayground(r.URL.Query())
 			options.Appearance = appearance(r)
 			body = playground(options)
+		case "/interactions":
+			title = "Native interactions · GothUI"
+			body = interactions(r.URL.Query().Get("confirmed") == "1", r.URL.Query().Get("view"))
 		case "/settings":
 			title = "Appearance · GothUI"
 			body = appearancePage(appearance(r), themeName(theme(r)), r.URL.Query().Get("saved") == "1")
@@ -132,7 +136,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions":
 		return true
 	}
 	return false

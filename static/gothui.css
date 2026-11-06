@@ -372,3 +372,41 @@ button, .button { max-inline-size: 100%; overflow-wrap: anywhere; }
   .app-shell { display: block; }
   .app-sidebar, .skip-link { display: none; }
 }
+
+/* Native overlays. Leave display to the browser so closed dialogs/popovers stay hidden.
+   On browsers without popover support the panel remains readable inline. */
+.gothui-dialog, .gothui-popover {
+  padding: 0;
+  border: 1px solid var(--gothui-border);
+  border-radius: var(--gothui-radius);
+  background: var(--gothui-surface);
+  color: var(--gothui-text);
+  box-shadow: var(--gothui-shadow);
+  inline-size: min(40rem, calc(100% - 2rem));
+  max-block-size: calc(100dvh - 2rem);
+  overflow: auto;
+}
+.gothui-popover { inline-size: min(28rem, calc(100% - 2rem)); margin: auto; }
+.gothui-dialog::backdrop { background: rgb(0 0 0 / 60%); }
+.overlay-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--gothui-space); padding: var(--gothui-card-padding); border-block-end: 1px solid var(--gothui-border); }
+.overlay-header h2 { margin: 0; font-size: 1.35rem; overflow-wrap: anywhere; }
+.overlay-close-form { margin: 0; }
+.overlay-body, .overlay-footer { padding: var(--gothui-card-padding); }
+.overlay-body > :last-child, .overlay-footer > :last-child { margin-block-end: 0; }
+.overlay-footer { border-block-start: 1px solid var(--gothui-border); }
+
+/* Navigation is ordinary links, including without HTMX or any scripting. */
+.breadcrumbs { margin-block-end: 1.5rem; font-size: .9rem; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 0; padding: 0; }
+.breadcrumbs li { display: flex; gap: .5rem; align-items: baseline; }
+.breadcrumb-separator { color: var(--gothui-muted); }
+.pagination { margin-block-start: 1.25rem; }
+.pagination ul { gap: .4rem; }
+.pagination li > a, .pagination li > span { display: inline-flex; align-items: center; justify-content: center; min-block-size: var(--gothui-control-height); min-inline-size: 2.5rem; padding: var(--gothui-control-y) .8rem; border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); text-decoration: none; }
+.pagination [aria-current="page"] { background: var(--gothui-primary); border-color: var(--gothui-primary); color: var(--gothui-on-primary); font-weight: 650; }
+.pagination [aria-disabled="true"] { color: var(--gothui-muted); border-style: dashed; }
+.pagination .pagination-gap { border: 0; min-inline-size: 1rem; padding-inline: .25rem; }
+.pagination a:hover { background: var(--gothui-subtle); }
+@media print {
+  .gothui-dialog, .gothui-popover, .pagination { display: none; }
+}
