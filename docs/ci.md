@@ -43,7 +43,41 @@ The official Actions are pinned to commit IDs, verified on November 6, 2026:
 | setup-go v7.0.0 | [b7ad1dad31e0](https://github.com/actions/setup-go/commit/b7ad1dad31e06c5925ef5d2fc7ad053ef454303e) |
 | upload-artifact v7.0.2 | [cf430e030ddb](https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9) |
 
-These are CI orchestration dependencies, not GothUI runtime or frontend assets.
+## Known-vulnerability job
+
+A separate `security` job runs on Ubuntu with Go 1.27.3 and pinned
+`golang.org/x/vuln/cmd/govulncheck@v1.9.0`. It scans reachable source code in all
+packages, including the example and developer tool, against the live Go
+vulnerability database. It records the exact source revision, compiler/target
+and scanner output. Scan errors and reachable findings fail the job; evidence
+is retained for seven days through an `always()` artifact step. No suppressions,
+continue-on-error or fabricated successful report is used.
+
+The enforcing scan uses **text mode**. The scanner's
+[documented JSON/SARIF/OpenVEX modes](https://pkg.go.dev/golang.org/x/vuln@v1.9.0/cmd/govulncheck#hdr-Exit_codes)
+can return success even when findings exist. A local synthetic conversion fixture
+with one symbol-level finding verified exit 3 for text and exit 0 for JSON using
+the pinned scanner. That validates exit handling only, not the absence of real
+vulnerabilities. `go run` may wrap a nonzero tool exit as exit 1; either fails CI.
+
+The actual local scan could load the project, then failed while fetching the
+vulnerability database because this sandbox denies the DNS socket. Its partial
+JSON output is **not** a clean scan. The remote security job is prepared but has
+not executed, just like the six compatibility jobs. Inspect all seven results
+at the exact published SHA. Source analysis also has limits around reflection,
+unsafe calls and other build configurations; see the
+[Go vulnerability-management guide](https://go.dev/doc/security/vuln/).
+
+Go 1.26.0 remains a minimum-language/toolchain compatibility test, not a deployment
+recommendation. Use patched compilers for deployed binaries. As verified on
+November 6, 2026, the official
+[release history](https://go.dev/doc/devel/release) lists Go 1.26.10 and 1.27.3 as
+the patched releases on those lines. The local demo uses Go 1.27.3. Recheck this
+policy when preparing a release; it is not an evergreen claim about the latest
+version.
+
+These are CI orchestration dependencies and a Go development-time scanner,
+not GothUI runtime or frontend assets.
 The application remains a Go binary with embedded CSS and no bundled JavaScript.
 
 ## Native build details
@@ -75,12 +109,15 @@ arm64, macOS arm64 and Windows amd64, with target build metadata and ELF/Mach-O/
 architecture headers checked. Those disposable foreign executables were removed.
 Evidence is retained under `tests/results/validation/` and `tests/results/platform/`.
 Cross-compilation cannot prove foreign execution, race behavior or browser UI.
-No minimum-version or non-Linux runtime pass is claimed yet.
+No minimum-version or non-Linux runtime pass is claimed yet. No Go 1.26 compiler
+was found in the current local installations. A fresh Firefox headless attempt
+with an isolated temporary profile also failed under the sandbox namespace
+restriction; its profile was removed. Chromium/browser results remain unverified.
 
 Shell Git access currently fails DNS resolution for both configured remotes.
 The GitHub connector reports the import repository as private, unarchived and
 or publication automation has been configured by this workflow.
 
-After publication, inspect all six job results and their exact source SHA before
-calling the matrix verified. Release installation, optional HTMX execution and
+After publication, inspect all six compatibility results plus the security job
+at the exact source SHA before calling the matrix verified. Release installation, optional HTMX execution and
 browser/accessibility checks remain independent acceptance gates.

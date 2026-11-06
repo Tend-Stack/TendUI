@@ -1,5 +1,54 @@
 # GothUI implementation handoff
 
+## Compatibility recheck and prepared security job (2026-11-06)
+
+Rechecked release gates instead of adding more UI surface. Only Go 1.27.3 was
+found locally; the Go module/toolchain caches, SDK and usual installation roots
+Firefox headless attempt used a new isolated /tmp profile, kept default browser
+sandboxing, and failed with unshare(CLONE_NEWPID): EPERM followed by exit -11.
+No screenshot was produced. The process was terminal and no remaining process
+owned that profile, so the profile and unrendered HTML fixture were removed.
+Retain the small run manifest and failure log in tests/results/browser-smoke.
+These are fresh failures, not browser or minimum-version proof.
+
+The installed govulncheck v1.9.0 (built with Go 1.27.3) loaded the source packages
+but could not fetch vuln.go.dev/index/modules.json.gz: the DNS socket is denied.
+Its exit was 1. Retain explicit completed=false status, error log and partial JSON
+under tests/results/security. Partial config/SBOM/progress output is not a clean
+vulnerability result. No current scan or external publication has succeeded.
+
+Added a separate prepared security job to .github/workflows/verify.yml, using
+Go 1.27.3 and the pinned govulncheck v1.9.0 Go tool. It scans all source packages
+in text mode, propagates nonzero exit, has no continue-on-error/suppressions, and
+retains exact source/toolchain/target metadata and logs for seven days even after
+failure. Existing six-job compatibility coverage is unchanged. No write
+permissions, new Actions, runtime dependency, deployment or tag was added.
+Official scanner documentation and local source show that JSON/SARIF/OpenVEX
+modes return success even with findings. A synthetic symbol-level converter
+fixture independently verified text exit 3 versus JSON exit 0 with the actual
+pinned scanner. The first handcrafted fixture lacked database_specific metadata;
+the scanner's text converter rejected it by panic. Adding the required URL made
+the valid-fixture exit test pass; this was fixture construction, not an app scan.
+The retained fixture and results are clearly labeled synthetic.
+
+Local validation: PyYAML parsing, bash -n for each run script, and structural
+checks confirm the seven jobs, pinned scanner/Actions, current compiler selection,
+read-only permissions, enforced exit and bounded artifact retention. This is not
+actionlint or execution on GitHub. docs/ci.md distinguishes compatibility minimum
+Go 1.26.0 from deployment on patched compilers (official release history checked
+for Go 1.26.10/1.27.3 on this date), and documents live-scan limitations and commands.
+Go sources, API, CSS, templates and dependencies are unchanged; prior race/vet,
+generation, recipe and binary evidence remains valid without repeating it.
+
+Keep the one existing demo binary at source version
+2026.1.0-dev-g71a1b272941c; its runtime sources are unchanged by this CI/docs commit.
+Do not relabel it as built from the new commit. Clean only the task-owned
+/tmp/gothui-compat-cache after retaining the failure evidence. Temporary converter
+database directories clean up automatically. The continuing developer owns
+browser/security evidence until replaced by an authoritative run or operator
+review. No new checkout, worktree, database or permanent binary was created.
+The goal remains active: browser/native compatibility, live vulnerability scan,
+
 ## Palette and print reliability milestone (2026-11-06)
 
 Expanded the source-color audit from primary buttons/links on one background to

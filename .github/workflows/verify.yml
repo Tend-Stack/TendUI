@@ -60,3 +60,39 @@ jobs:
           path: tests/results/validation/
           retention-days: 7
           if-no-files-found: warn
+
+  security:
+    name: Known vulnerabilities / Go 1.27.3
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Select patched Go compiler
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.27.3'
+          cache-dependency-path: go.sum
+      - name: Download and verify module dependencies
+        run: |
+          go mod download
+          go mod verify
+      - name: Scan reachable code with pinned govulncheck
+        shell: bash
+        run: |
+          mkdir -p tests/results/security
+          git rev-parse HEAD > tests/results/security/revision.txt
+          go version > tests/results/security/toolchain.txt
+          go env GOOS GOARCH GOTOOLCHAIN > tests/results/security/target.txt
+          # Text mode returns failure for reachable findings. JSON mode does not.
+          go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 -show verbose ./... > tests/results/security/govulncheck.log 2>&1
+      - name: Retain bounded security evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: security-go1.27.3-${{ github.sha }}
+          path: tests/results/security/
+          retention-days: 7
+          if-no-files-found: warn
