@@ -41,7 +41,7 @@ generated-source reproducibility and independent catalog recipe compilation. It
 records rendering/HTTP benchmarks and enforces CSS/demo size budgets, with Git
 version stamping and checked atomic replacement of the review executable.
 See docs/development.md and docs/performance.md for current evidence and limits.
-A compiler-resolved public API baseline now guards 240 declarations/method-set
+A compiler-resolved public API baseline now guards 242 declarations/method-set
 entries across the three public packages. It flags additions and changes for
 review without claiming semantic compatibility; docs/api-compatibility.md defines
 the update and migration process.

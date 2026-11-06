@@ -24,7 +24,8 @@ func themeToggleProps(options []ThemeToggleProps) ThemeToggleProps {
 }
 
 // ThemeToggle retains the requested HTMX contract. For reliable root theming,
-// an HTMX-aware endpoint should respond with HX-Refresh: true (see examples/basic).
+// an HTMX-aware endpoint should respond with HX-Redirect to a validated page URL
+// without a theme preview parameter that would override the saved cookie.
 func ThemeToggle(options ...ThemeToggleProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -55,7 +56,7 @@ func ThemeToggle(options ...ThemeToggleProps) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.CSRFToken).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/theme.templ`, Line: 23, Col: 65}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/theme.templ`, Line: 24, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 			if templ_7745c5c3_Err != nil {
@@ -73,7 +74,7 @@ func ThemeToggle(options ...ThemeToggleProps) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fallback(props.Label, "Toggle theme"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/theme.templ`, Line: 26, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/theme.templ`, Line: 27, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {

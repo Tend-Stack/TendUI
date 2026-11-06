@@ -1,5 +1,32 @@
 # GothUI implementation handoff
 
+## HTMX theme navigation correction (2026-11-06)
+
+The release-gate audit found a server contract bug: HX-Refresh reloaded a URL
+such as /playground?theme=dark after setting a light cookie, so the query preview
+overrode the freshly saved preference. The new regression failed on the old
+handler (theme-before.log). The endpoint now returns 200 with HX-Redirect to the
+same cleaned local destination used by native POST/303. It removes every theme
+query value while retaining other settings. No HTMX runtime or client script
+was added, and the component's native form and optional attributes are unchanged.
+
+For HTMX requests, a same-origin known-page HX-Current-URL takes precedence over
+Referer, accommodating client-side history. Invalid, external, wrong-scheme/port,
+userinfo, relative and unknown-page values fall back to validated Referer, then
+the homepage. Non-HTMX requests ignore HX-Current-URL. These presentation hints
+do not bypass cross-origin protection. New tests follow the destination with the
+saved cookie, verify the rendered theme, retain other preview settings and prove
+cross-origin requests cannot set a cookie or request a navigation.
+
+All seven packages pass race tests and vet; the 242-entry API baseline matches
+and templ regeneration passes. Focused before/after logs and canonical validation
+reports retain the evidence. README and the ThemeToggle comment now describe
+HX-Redirect, checked against official HTMX documentation. These are HTTP tests,
+not actual HTMX browser execution; all browser/native compatibility/security/
+publication gates remain pending. Rebuild the single demo at the clean commit,
+then remove only /tmp/gothui-theme-cache. No extra worktree, database, dependency,
+tag, remote write or active-process restart was created.
+
 ## Surface elevation milestone (2026-11-06)
 
 Extended the existing elevation scale with subtle and floating alongside flat

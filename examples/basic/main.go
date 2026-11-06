@@ -62,7 +62,7 @@ func newHandler() http.Handler {
 			return
 		}
 		current := theme(r)
-		if ref := demoReferer(r); ref != nil {
+		if ref := themePageURL(r); ref != nil {
 			pageRequest := r.Clone(r.Context())
 			pageRequest.URL = ref
 			current = theme(pageRequest)
@@ -82,7 +82,9 @@ func newHandler() http.Handler {
 		if r.Header.Get("HX-Request") == "true" {
 			// A real navigation updates the root attribute and head reliably.
 			// Use a non-redirect status: HTMX does not process headers on 3xx.
-			w.Header().Set("HX-Refresh", "true")
+			// Refreshing the current URL would keep a theme preview that overrides
+			// the new cookie. Navigate to the same cleaned destination as native POST.
+			w.Header().Set("HX-Redirect", themeReturnPath(r))
 			w.WriteHeader(http.StatusOK)
 			return
 		}
@@ -160,7 +162,7 @@ func demoPath(path string) bool {
 
 // Only return to a known same-origin demo; never redirect to a supplied external host.
 func themeReturnPath(r *http.Request) string {
-	u := demoReferer(r)
+	u := themePageURL(r)
 	if u == nil {
 		return "/"
 	}
@@ -170,13 +172,24 @@ func themeReturnPath(r *http.Request) string {
 	return u.RequestURI()
 }
 
-func demoReferer(r *http.Request) *url.URL {
-	u, err := url.Parse(r.Referer())
+// HTMX's current URL follows client-side history changes. Treat it as untrusted
+// presentation input, validate it like Referer, and never use it for authorization.
+func themePageURL(r *http.Request) *url.URL {
+	if r.Header.Get("HX-Request") == "true" {
+		if u := sameOriginDemoURL(r, r.Header.Get("HX-Current-URL")); u != nil {
+			return u
+		}
+	}
+	return sameOriginDemoURL(r, r.Referer())
+}
+
+func sameOriginDemoURL(r *http.Request, value string) *url.URL {
+	u, err := url.Parse(value)
 	scheme := "http"
 	if r.TLS != nil {
 		scheme = "https"
 	}
-	if err != nil || u.Host != r.Host || u.Scheme != scheme || !demoPath(u.Path) {
+	if err != nil || u.User != nil || u.Host != r.Host || u.Scheme != scheme || !demoPath(u.Path) {
 		return nil
 	}
 	return u
