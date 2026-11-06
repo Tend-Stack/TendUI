@@ -18,8 +18,9 @@ go run ./cmd/gothui-dev build
 ./tests/results/demos/gothui-demo -open
 ```
 
-`-open` opens the playground in the default Linux browser using `xdg-open`,
-after the listener starts. Without that flag, open the links below manually.
+`-open` opens the playground after the listener starts, using `xdg-open` on Linux,
+`open` on macOS or the Windows URL handler. Without that flag, open the links
+below manually. On Windows, the built executable is `gothui-demo.exe`.
 Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 The build command checks size and version before replacing the review binary.
 `-version` prints the embedded Git identifier and exits without listening.

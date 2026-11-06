@@ -43,7 +43,7 @@ func main() {
 	if err != nil || !bytes.Contains(mod, []byte("module "+modulePath+"\n")) {
 		fatal(errors.New("run gothui-dev from the repository root"))
 	}
-	r := runner{root: root, results: filepath.Join(root, "tests/results/validation"), goTool: filepath.Join(runtime.GOROOT(), "bin", "go"), templTool: os.Getenv("TEMPL")}
+	r := runner{root: root, results: filepath.Join(root, "tests/results/validation"), goTool: goExecutable(), templTool: os.Getenv("TEMPL")}
 	if r.templTool == "" {
 		r.templTool = "templ"
 	}
@@ -83,6 +83,17 @@ func main() {
 }
 
 func fatal(err error) { fmt.Fprintln(os.Stderr, err); os.Exit(1) }
+
+func executableName(name, goos string) string {
+	if goos == "windows" {
+		return name + ".exe"
+	}
+	return name
+}
+
+func goExecutable() string {
+	return filepath.Join(runtime.GOROOT(), "bin", executableName("go", runtime.GOOS))
+}
 
 func (r runner) command(dir, program string, args ...string) *exec.Cmd {
 	cmd := exec.Command(program, args...)
@@ -348,7 +359,7 @@ func (r runner) build() error {
 	if err := os.MkdirAll(output, 0755); err != nil {
 		return err
 	}
-	f, err := os.CreateTemp(output, ".gothui-build-*")
+	f, err := os.CreateTemp(output, executableName(".gothui-build-*", runtime.GOOS))
 	if err != nil {
 		return err
 	}
@@ -414,10 +425,11 @@ func (r runner) build() error {
 	if err != nil {
 		return err
 	}
-	if err := os.Rename(temp, filepath.Join(output, "gothui-demo")); err != nil {
+	name := executableName("gothui-demo", runtime.GOOS)
+	if err := os.Rename(temp, filepath.Join(output, name)); err != nil {
 		return err
 	}
-	return r.report("build.json", map[string]any{"version": version, "bytes": info.Size(), "budget_bytes": demoBudget, "sha256": fmt.Sprintf("%x", hash.Sum(nil)), "go": embedded.GoVersion, "os": runtime.GOOS, "arch": runtime.GOARCH, "cgo": false, "version_smoke": true, "stripped": true})
+	return r.report("build.json", map[string]any{"version": version, "executable": name, "bytes": info.Size(), "budget_bytes": demoBudget, "sha256": fmt.Sprintf("%x", hash.Sum(nil)), "go": embedded.GoVersion, "os": runtime.GOOS, "arch": runtime.GOARCH, "cgo": false, "version_smoke": true, "stripped": true})
 }
 
 func (r runner) report(name string, v map[string]any) error {

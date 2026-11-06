@@ -42,6 +42,9 @@ A compiler-resolved public API baseline now guards 212 declarations/method-set
 entries across the three public packages. It flags additions and changes for
 review without claiming semantic compatibility; docs/api-compatibility.md defines
 the update and migration process.
+A six-job GitHub verification matrix is prepared for Go 1.26.0/1.27.3 on Linux,
+macOS and Windows. Local foreign-target builds pass, but the remote matrix has
+not executed; docs/ci.md distinguishes compilation evidence from native results.
 
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
@@ -72,6 +75,7 @@ is pending. The active broad goal remains unfinished.
 5. **Evidence and release.** Local benchmarks, asset/binary size budgets and
    generated-source consistency checks are implemented. Next: browser matrix
    and visual regression baselines; keyboard/screen-reader/contrast checks;
+   history reconciliation; versioned
    release documentation and installation proof. Profile table allocations
    before considering rendering changes, and retain semantic/escaping contracts.
 

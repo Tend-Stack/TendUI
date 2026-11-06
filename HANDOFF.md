@@ -1,5 +1,59 @@
 # GothUI implementation handoff
 
+## Native platform preparation and CI milestone (2026-11-06)
+
+Added .github/workflows/verify.yml with six native jobs: Go 1.26.0 and 1.27.3 on
+ubuntu-24.04, macos-15 and windows-2025. GOTOOLCHAIN=local prevents silent compiler
+upgrades. Each job downloads/verifies modules, runs the standard check (including
+the public API baseline, race suite and vet), checks pinned templ generation,
+compiles recipes and executes the native demo's version smoke check. Jobs have
+20-minute timeouts, read-only contents permission, no persistent checkout
+credentials and seven-day report retention. No binaries, releases, tags or mirror
+writes are published by the workflow. Official Actions release commit pins and
+runner labels were verified through GitHub sources; docs/ci.md links provenance.
+The workflow is prepared locally and has not run remotely. Local PyYAML parsing
+and structural checks are not an actionlint pass or GitHub execution result.
+
+The developer builder now uses .exe on Windows for the Go tool, candidate and
+retained demo. It checks the candidate before replacement and records its actual
+filename. Windows rename can fail when the old file is in use; it is never
+pre-deleted. The existing Unix rename behavior remains. An integration test builds
+and executes a temporary module under a path with spaces, then changes its source
+and verifies a dirty-version replacement without candidate-file leftovers. The
+test is included in the native CI matrix and has passed locally on Linux only.
+
+The demo's -open now dispatches to Linux xdg-open, macOS open or the Windows URL
+handler via rundll32.exe. The generated local URL remains a process argument,
+never shell-interpolated. Desktop launches remain unverified. .gitattributes
+normalizes text checkout line endings for native generated-source comparison.
+No public API, CSS, templates or Go dependencies changed.
+
+Validation: the full seven-package race suite and vet passed. After adding the
+native build integration fixture, the affected command package passed race tests
+and vet again. All 212 public API entries still match. The demo cross-compiled
+with Go 1.27.3/CGO disabled for Linux arm64 (8,192,160 bytes), macOS arm64
+(8,407,570 bytes), and Windows amd64 (9,249,792 bytes). Go build metadata and
+ELF/Mach-O/PE architecture headers were verified. These are compilation/format
+results, not execution on those foreign systems. The foreign artifacts were
+removed immediately, and concise results remain under tests/results/platform.
+The native demo is rebuilt once after the local commit to stamp its final source
+revision; its version smoke result and size/hash remain in validation/build.json.
+
+Delivery recheck: shell Git access to both remotes fails DNS resolution, and the
+unarchived repository; its commits endpoint returns 409 "Git Repository is empty."
+
+Housekeeping: test-owned module/Git fixtures and cross-build directories clean up
+automatically. Remove the task-owned /tmp/gothui-platform-cache after final native
+build. Retain one review binary, the icon contact sheet, current validation and
+platform reports, and prior browser/TCP failure evidence. Superseded successful
+API-command-only logs are removed after replacement checks. The continuing
+developer owns retained evidence until review or replacement. No active user
+process, reference source, shared cache, worktree or database was changed.
+
+The broad goal remains active: minimum-version and non-Linux native CI, browser/
+assistive-technology evidence, optional HTMX consumer execution, repository
+publication and a clean published install still need proof.
+
 ## Public API baseline and migration milestone (2026-11-06)
 
 Added the Go-only `gothui-dev api` command and included it in `check`. It records

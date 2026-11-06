@@ -28,7 +28,7 @@ func TestBuildVersionUsesGitAndIncludesUntrackedWork(t *testing.T) {
 	}
 	git("add", "source")
 	git("commit", "-qm", "Initial test commit")
-	r := runner{root: dir, results: t.TempDir(), goTool: filepath.Join(runtime.GOROOT(), "bin", "go")}
+	r := runner{root: dir, results: t.TempDir(), goTool: goExecutable()}
 	version, err := r.buildVersion()
 	if err != nil || !strings.Contains(version, "-dev-g") || strings.HasSuffix(version, "-dirty") {
 		t.Fatal(version, err)

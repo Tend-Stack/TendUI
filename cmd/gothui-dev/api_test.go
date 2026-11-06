@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -39,7 +38,7 @@ func TestAPICheckUsesCompiledExportsAndRejectsDrift(t *testing.T) {
 	git("init", "-q")
 	git("add", ".")
 	git("commit", "-qm", "API fixture")
-	r := runner{root: root, results: filepath.Join(root, "tests/results/validation"), goTool: filepath.Join(runtime.GOROOT(), "bin", "go")}
+	r := runner{root: root, results: filepath.Join(root, "tests/results/validation"), goTool: goExecutable()}
 	if err := os.MkdirAll(r.results, 0755); err != nil {
 		t.Fatal(err)
 	}
