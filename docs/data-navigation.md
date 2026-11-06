@@ -1,6 +1,6 @@
 # Data and navigation patterns
 
-GothUI's table and navigation components preserve native HTML semantics. The Go
+TendUI's table and navigation components preserve native HTML semantics. The Go
 application chooses data, sort order, destinations and progress. No browser-side
 model, reflection layer, JavaScript runtime or external asset is required.
 

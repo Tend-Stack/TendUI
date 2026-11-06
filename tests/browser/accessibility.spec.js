@@ -5,8 +5,8 @@ const path = require('node:path');
 const source = fs.readFileSync(path.resolve(__dirname, '../../examples/site/catalog.go'), 'utf8');
 const names = [...source.matchAll(/^\s*\{"([A-Z][A-Za-z]+)",/gm)].map(m => m[1].toLowerCase());
 
-test('catalog test inventory covers all 36 components', async () => {
-  expect(new Set(names).size).toBe(36);
+test('catalog test inventory covers all 37 components', async () => {
+  expect(new Set(names).size).toBe(37);
 });
 
 for (const mode of ['light', 'dark']) {
@@ -70,7 +70,7 @@ test('print palette overrides a dark page and produces a review PDF', async ({ p
   await page.goto('/dashboard?theme=dark');
   await page.emulateMedia({ media: 'print' });
   const colors = await page.locator('html').evaluate(e => {
-    const s = getComputedStyle(e); return [s.getPropertyValue('--gothui-background').trim(), s.getPropertyValue('--gothui-text').trim()];
+    const s = getComputedStyle(e); return [s.getPropertyValue('--tendui-background').trim(), s.getPropertyValue('--tendui-text').trim()];
   });
   expect(colors).toEqual(['#ffffff', '#000000']);
   if (browserName === 'chromium') {

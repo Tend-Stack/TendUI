@@ -17,11 +17,11 @@ func TestMotionPreferencesAndSafeAttributes(t *testing.T) {
 		}
 	}
 	for _, prop := range []string{"duration-fast", "duration-enter", "duration-loading", "stagger-step"} {
-		if !strings.Contains(a.CSS(), "--gothui-"+prop+": 0ms") {
+		if !strings.Contains(a.CSS(), "--tendui-"+prop+": 0ms") {
 			t.Errorf("motion export did not disable %s", prop)
 		}
 	}
-	if !strings.Contains(a.CSS(), "--gothui-lift-distance: 0px") {
+	if !strings.Contains(a.CSS(), "--tendui-lift-distance: 0px") {
 		t.Fatal("off export still moves hover cards")
 	}
 	html = render(t, Card(CardProps{Entry: "bad", Delay: "bad", Surface: "bad"}))
@@ -57,7 +57,7 @@ func TestLoadingAndEmptyStateSemantics(t *testing.T) {
 
 func TestMotionStylesHaveBoundedDecorativeLoops(t *testing.T) {
 	css := stylesheet(t)
-	for _, required := range []string{"@media (prefers-reduced-motion: no-preference)", "@media (prefers-reduced-motion: reduce)", "animation: none !important", "gothui-loading var(--gothui-duration-loading) ease-in-out 3", "animation-iteration-count: 1", "@media (forced-colors: active)"} {
+	for _, required := range []string{"@media (prefers-reduced-motion: no-preference)", "@media (prefers-reduced-motion: reduce)", "animation: none !important", "tendui-loading var(--tendui-duration-loading) ease-in-out 3", "animation-iteration-count: 1", "@media (forced-colors: active)"} {
 		if !strings.Contains(css, required) {
 			t.Errorf("missing motion contract %q", required)
 		}

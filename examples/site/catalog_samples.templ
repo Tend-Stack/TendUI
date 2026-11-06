@@ -1,13 +1,13 @@
 package site
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 // These marked recipes are compiled for previews and embedded for source downloads.
 // Keep each marked block self-contained, with only the components import.
 
 // catalog:Layout
 templ ExampleLayout() {
-	@components.Layout(components.LayoutProps{Title: "A GothUI page", Language: "en", Theme: components.ThemeLight}, exampleLayoutBody())
+	@components.Layout(components.LayoutProps{Title: "A TendUI page", Language: "en", Theme: components.ThemeLight}, exampleLayoutBody())
 }
 
 templ exampleLayoutBody() {
@@ -21,6 +21,35 @@ templ ExampleAppShell() {
 	@components.AppShell(components.AppShellProps{Brand: "Studio", BrandHref: "/catalog", Title: "A place for your work", Navigation: []components.NavItem{{Label: "Catalog", Href: "/catalog", Current: true}, {Label: "Dashboard", Href: "/dashboard"}}}) {
 		<p>Use one application shell inside a Layout. Its native sidebar disclosure remains keyboard operable.</p><a href="/catalog/appshell">Back to AppShell</a>
 	}
+}
+
+// catalog:end
+
+// catalog:SiteHeader
+templ ExampleSiteHeader() {
+	@components.SiteHeader(components.SiteHeaderProps{
+		Brand:      exampleSiteHeaderBrand(),
+		BrandLabel: "Studio home",
+		BrandHref:  "/catalog",
+		Items: []components.SiteHeaderItem{
+			{Label: "Docs", Href: "/catalog"},
+			{Label: "Components", Href: "/catalog/siteheader", Current: true},
+			{Label: "Examples", Href: "/dashboard", AllLabel: "All examples", Groups: []components.NavGroup{
+				{Title: "Layouts", Items: []components.NavItem{{Label: "Dashboard", Href: "/dashboard"}, {Label: "Workspace", Href: "/workspace"}}},
+				{Title: "Forms", Items: []components.NavItem{{Label: "Form lab", Href: "/forms"}, {Label: "Form wizard", Href: "/wizard"}}},
+			}},
+			{Label: "Playground", Href: "/playground"},
+		},
+		Actions: components.ThemeToggle(components.ThemeToggleProps{IconOnly: true}),
+	})
+	<main id="main">
+		<p>One sticky header for every page. Narrow the window to see the compact menu.</p>
+		<a href="/catalog/siteheader">Back to SiteHeader</a>
+	</main>
+}
+
+templ exampleSiteHeaderBrand() {
+	<span>Studio</span>
 }
 
 // catalog:end
@@ -257,7 +286,7 @@ templ ExampleDataTable() {
 
 // catalog:Breadcrumbs
 templ ExampleBreadcrumbs() {
-	@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "GothUI", Href: "/"}, {Label: "Catalog", Href: "/catalog"}, {Label: "Breadcrumbs"}}})
+	@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "TendUI", Href: "/"}, {Label: "Catalog", Href: "/catalog"}, {Label: "Breadcrumbs"}}})
 }
 
 // catalog:end

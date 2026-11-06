@@ -12,7 +12,7 @@ func TestCardElevationAndFallbacks(t *testing.T) {
 			if a.Normalize().Elevation != elevation || a.Attributes()["data-elevation"] != string(elevation) {
 				t.Fatal("page preference lost")
 			}
-			if !strings.Contains(a.CSS(), "--gothui-shadow: var(--gothui-elevation-"+string(elevation)+")") {
+			if !strings.Contains(a.CSS(), "--tendui-shadow: var(--tendui-elevation-"+string(elevation)+")") {
 				t.Fatal("export differs from page preference")
 			}
 			html := render(t, Card(CardProps{Elevation: elevation, ID: "outer", Body: Card(CardProps{ID: "inner"})}))
@@ -43,10 +43,10 @@ func TestElevationStyleContracts(t *testing.T) {
 	for _, level := range []string{"flat", "subtle", "raised", "floating"} {
 		selector := `article:where([data-card-elevation="` + level + `"])`
 		body := paletteBody(t, css, selector)
-		if !strings.Contains(body, "box-shadow: var(--gothui-elevation-"+level+");") || strings.Contains(body, "--gothui-shadow:") {
+		if !strings.Contains(body, "box-shadow: var(--tendui-elevation-"+level+");") || strings.Contains(body, "--tendui-shadow:") {
 			t.Fatal("card override must not replace an inherited token", body)
 		}
-		if !strings.Contains(css, "--gothui-elevation-"+level+":") {
+		if !strings.Contains(css, "--tendui-elevation-"+level+":") {
 			t.Fatal("missing elevation token", level)
 		}
 	}
@@ -61,7 +61,7 @@ func TestElevationStyleContracts(t *testing.T) {
 	// This rule is inside forced-colors and after all card override selectors.
 	forced := "@media (forced-colors: active) {\n  article[data-surface=\"gradient\"]"
 	_, forcedCSS, found := strings.Cut(css, forced)
-	if !found || !strings.Contains(paletteBody(t, forcedCSS, "article, .gothui-dialog, .gothui-popover"), "box-shadow: none;") {
+	if !found || !strings.Contains(paletteBody(t, forcedCSS, "article, .tendui-dialog, .tendui-popover"), "box-shadow: none;") {
 		t.Fatal("forced colors must suppress card and overlay shadows")
 	}
 }

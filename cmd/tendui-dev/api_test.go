@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Tend-Stack/GothUI/v2026/internal/apiguard"
+	"github.com/Tend-Stack/TendUI/v2026/internal/apiguard"
 )
 
 func TestAPICheckUsesCompiledExportsAndRejectsDrift(t *testing.T) {
@@ -24,12 +24,12 @@ func TestAPICheckUsesCompiledExportsAndRejectsDrift(t *testing.T) {
 		}
 	}
 	write("go.mod", "module "+modulePath+"\n\ngo 1.26.0\n")
-	write("gothui.go", "package gothui\nconst Version=\"2026.1.0\"\n")
+	write("tendui.go", "package tendui\nconst Version=\"2026.1.0\"\n")
 	write("components/components.go", "package components\ntype Props struct{Label string}\n")
 	write("render/render.go", "package render\nfunc HTML(){}\n")
 	git := func(args ...string) {
 		t.Helper()
-		cmd := exec.Command("git", append([]string{"-c", "user.name=GothUI API test", "-c", "user.email=test@example.invalid"}, args...)...)
+		cmd := exec.Command("git", append([]string{"-c", "user.name=TendUI API test", "-c", "user.email=test@example.invalid"}, args...)...)
 		cmd.Dir = root
 		if b, err := cmd.CombinedOutput(); err != nil {
 			t.Fatalf("git: %v %s", err, b)

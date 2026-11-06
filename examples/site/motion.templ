@@ -1,11 +1,11 @@
 package site
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 templ motionStudio(a components.Appearance, mode string) {
 	@demoHeader("/motion")
 	<main id="main">
-		@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "GothUI", Href: "/"}, {Label: "Motion & surfaces"}}})
+		@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "TendUI", Href: "/"}, {Label: "Motion & surfaces"}}})
 		<section>
 			<p class="muted">A LITTLE LIFE, BUILT IN</p>
 			<h1>Quietly expressive.</h1>
@@ -49,7 +49,7 @@ templ motionStudio(a components.Appearance, mode string) {
 					<p>A small shadow for quiet separation from the page.</p>
 				}
 				@components.Card(components.CardProps{Elevation: components.ElevationRaised, Header: cardHeading("Raised")}) {
-					<p>The familiar GothUI default, with room around its edges.</p>
+					<p>The familiar TendUI default, with room around its edges.</p>
 				}
 				@components.Card(components.CardProps{Elevation: components.ElevationFloating, Header: cardHeading("Floating")}) {
 					<p>A layered shadow for a surface that needs more emphasis.</p>

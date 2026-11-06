@@ -1,13 +1,13 @@
 # Performance evidence
 
-GothUI benchmarks separate rendering from HTTP response construction. They do not
+TendUI benchmarks separate rendering from HTTP response construction. They do not
 measure browser paint, CSS animation smoothness, network latency, database work,
 concurrent request throughput or application startup.
 
 Reproduce the local suite with:
 
 ```sh
-go run ./cmd/gothui-dev bench
+go run ./cmd/tendui-dev bench
 ```
 
 The command runs three 200 ms samples per case with `GOMAXPROCS=2` and allocation
@@ -56,13 +56,13 @@ measured candidate for profiling, not justification for bypassing safety checks.
 At the initial baseline the embedded library CSS was 32,260 bytes, below its
 65,536-byte review ceiling. Current size is recorded by the `check` command.
 Catalog-only styles remain in the example app. The stripped demo has a
-16,777,216-byte ceiling; `go run ./cmd/gothui-dev build` records its exact size,
+16,777,216-byte ceiling; `go run ./cmd/tendui-dev build` records its exact size,
 hash, version and toolchain in `tests/results/validation/build.json`.
 The first measured Linux amd64 build was 8,949,920 bytes (8.54 MiB), with CGO
 disabled and no ELF interpreter. Size varies with platform and Go toolchain.
 
 These measurements are not comparisons with Tailwind or JavaScript frameworks.
-GothUI's single-binary delivery and native interactions are architectural
+TendUI's single-binary delivery and native interactions are architectural
 properties; competitive performance and accessibility claims need relevant
 browser and application evidence that this suite does not supply.
 

@@ -42,5 +42,5 @@ func reviewSelection(w http.ResponseWriter, r *http.Request) {
 	if len(projects) == 0 {
 		status, message = http.StatusUnprocessableEntity, "Select at least one project on the dashboard, then try again."
 	}
-	renderPage(w, r, "Selection review · GothUI", selectionReceipt(projects, message), status)
+	renderPage(w, r, "Selection review · TendUI", selectionReceipt(projects, message), status)
 }

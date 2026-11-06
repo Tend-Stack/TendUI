@@ -20,7 +20,7 @@ Go policy. Runner labels were checked against the official
 1. Checks out the triggering source with complete version history and without
    persisting repository credentials.
 2. Selects Go and verifies downloaded module checksums.
-3. Runs `gothui-dev check`: formatting, dependency boundaries, CSS size, public
+3. Runs `tendui-dev check`: formatting, dependency boundaries, CSS size, public
    API comparison, race tests and vet.
 4. Installs the pinned templ generator, compares generated source, and compiles
    every catalog download independently.
@@ -87,7 +87,7 @@ policy when preparing a release; it is not an evergreen claim about the latest
 version.
 
 These are CI orchestration dependencies and a Go development-time scanner,
-not GothUI runtime or frontend assets.
+not TendUI runtime or frontend assets.
 The application remains a Go binary with embedded CSS and no bundled JavaScript.
 
 ## Native build details
@@ -113,7 +113,7 @@ desktop browser launch remains a separate manual check.
 
 GitHub is the collaboration and publication source. Fetch and integrate `main`
 before delivery; preserve concurrent work and push without rewriting history.
-Inspect [Verify GothUI](https://github.com/Tend-Stack/GothUI/actions/workflows/verify.yml)
+Inspect [Verify TendUI](https://github.com/Tend-Stack/TendUI/actions/workflows/verify.yml)
 at the exact release SHA and require all six native compatibility jobs and the
 security job to pass. A previous green commit does not validate a later release.
 

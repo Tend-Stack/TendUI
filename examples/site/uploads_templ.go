@@ -10,7 +10,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/components"
 	"strconv"
 )
 

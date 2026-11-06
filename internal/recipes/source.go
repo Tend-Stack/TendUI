@@ -31,5 +31,5 @@ func Source(source, name string) (string, error) {
 	if end < 0 || strings.Contains(body[:end], "// catalog:") {
 		return "", fmt.Errorf("unterminated recipe %s", name)
 	}
-	return "package examples\n\nimport \"github.com/Tend-Stack/GothUI/v2026/components\"\n\n" + strings.TrimSpace(body[:end]) + "\n", nil
+	return "package examples\n\nimport \"github.com/Tend-Stack/TendUI/v2026/components\"\n\n" + strings.TrimSpace(body[:end]) + "\n", nil
 }

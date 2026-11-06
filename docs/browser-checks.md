@@ -12,7 +12,7 @@ response-status handling. It checks fragment editing, validation forms returned
 with 200, and the theme redirect contract. Native invalid submissions use 422.
 The fixture is under `tests/browser/fixture`; the normal example handler never
 loads this runtime. The browser suite's Node packages are development tooling,
-not a requirement to build, consume, or deploy GothUI.
+not a requirement to build, consume, or deploy TendUI.
 
 ## Run locally
 

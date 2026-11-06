@@ -42,7 +42,7 @@ const (
 	MotionOff          MotionPreference = "off"
 )
 
-// Appearance configures independent CSS tokens. Its zero value preserves GothUI's defaults.
+// Appearance configures independent CSS tokens. Its zero value preserves TendUI's defaults.
 // Normalize untrusted preferences before persistence; Layout always normalizes them too.
 type Appearance struct {
 	Preset     Preset           `json:"preset"`
@@ -88,21 +88,21 @@ func (a Appearance) Attributes() templ.Attributes {
 	}
 }
 
-// CSS exports overrides referencing the canonical tokens in gothui.css; no colors are duplicated.
-// Load after gothui.css. Root attributes and these exports use the same specificity.
+// CSS exports overrides referencing the canonical tokens in tendui.css; no colors are duplicated.
+// Load after tendui.css. Root attributes and these exports use the same specificity.
 func (a Appearance) CSS() string {
 	a = a.Normalize()
 	var b strings.Builder
-	b.WriteString("/* GothUI appearance. Load after gothui.css. */\n:root {\n")
+	b.WriteString("/* TendUI appearance. Load after tendui.css. */\n:root {\n")
 	for _, part := range []string{"light", "hover-light", "dark", "hover-dark", "on-dark"} {
-		fmt.Fprintf(&b, "  --gothui-accent-%s: var(--gothui-preset-%s-%s);\n", part, a.Preset, part)
+		fmt.Fprintf(&b, "  --tendui-accent-%s: var(--tendui-preset-%s-%s);\n", part, a.Preset, part)
 	}
 	for _, part := range []string{"space", "control-y", "control-x", "control-height", "card-padding", "grid-gap"} {
-		fmt.Fprintf(&b, "  --gothui-%s: var(--gothui-density-%s-%s);\n", part, a.Density, part)
+		fmt.Fprintf(&b, "  --tendui-%s: var(--tendui-density-%s-%s);\n", part, a.Density, part)
 	}
-	fmt.Fprintf(&b, "  --gothui-radius: var(--gothui-corners-%s);\n  --gothui-font: var(--gothui-font-%s);\n  --gothui-text-size: var(--gothui-size-%s);\n  --gothui-content-width: var(--gothui-width-%s);\n  --gothui-shadow: var(--gothui-elevation-%s);\n}\n", a.Corners, a.Typography, a.TextSize, a.Width, a.Elevation)
+	fmt.Fprintf(&b, "  --tendui-radius: var(--tendui-corners-%s);\n  --tendui-font: var(--tendui-font-%s);\n  --tendui-text-size: var(--tendui-size-%s);\n  --tendui-content-width: var(--tendui-width-%s);\n  --tendui-shadow: var(--tendui-elevation-%s);\n}\n", a.Corners, a.Typography, a.TextSize, a.Width, a.Elevation)
 	if a.Motion == MotionOff {
-		b.WriteString(":root { --gothui-duration-fast: 0ms; --gothui-duration-enter: 0ms; --gothui-duration-loading: 0ms; --gothui-stagger-step: 0ms; --gothui-lift-distance: 0px; }\n")
+		b.WriteString(":root { --tendui-duration-fast: 0ms; --tendui-duration-enter: 0ms; --tendui-duration-loading: 0ms; --tendui-stagger-step: 0ms; --tendui-lift-distance: 0px; }\n")
 	}
 	return b.String()
 }

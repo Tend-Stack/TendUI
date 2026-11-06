@@ -1,6 +1,6 @@
 # Accessibility and print review
 
-GothUI supplies semantic HTML, native controls, visible keyboard focus and
+TendUI supplies semantic HTML, native controls, visible keyboard focus and
 appearance tokens. An accessible application also depends on its content,
 headings, labels, navigation, validation flow and any custom CSS or optional
 HTMX behavior. Passing the checks below is not a WCAG conformance claim.
@@ -38,7 +38,7 @@ Run the palette checks with:
 go test ./components -run 'Test(ScreenPalette|SystemDark|PrintPalette|PresetText)' -v
 ```
 
-They also run through `go run ./cmd/gothui-dev check` with the full race suite.
+They also run through `go run ./cmd/tendui-dev check` with the full race suite.
 
 ## Print behavior
 
@@ -55,7 +55,7 @@ without a fill. Switches use their native checkbox appearance so checked state d
 not rely on a colored CSS thumb. This avoids requiring background graphics just
 to read a label or identify a checked control. Browsers and users may adjust
 printed colors; see [MDN's print-color-adjust reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/print-color-adjust).
-GothUI does not force `print-color-adjust: exact` or override print-dialog choices.
+TendUI does not force `print-color-adjust: exact` or override print-dialog choices.
 
 The print rules are consolidated at the end of the stylesheet. Animation and
 hover displacement stop, shadows disappear, the application shell becomes a
@@ -66,7 +66,7 @@ and form controls remain available. Printing does not fetch hidden pages,
 expand all disclosures or include closed overlays; applications should offer a
 separate complete document when that is needed.
 
-Custom print styling can override GothUI's important print palette with matching
+Custom print styling can override TendUI's important print palette with matching
 important declarations in a later print stylesheet. Review the result with both
 background-graphics settings. The tests guard source rules and palette ratios;
 the v2026.1.0 dashboard PDF was also reviewed for pagination, readable controls

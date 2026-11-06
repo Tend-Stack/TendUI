@@ -54,31 +54,31 @@ type DataTableProps struct {
 
 func validateTable(p DataTableProps) error {
 	if strings.TrimSpace(p.Caption) == "" || len(p.Columns) == 0 {
-		return fmt.Errorf("gothui: DataTable requires a caption and columns")
+		return fmt.Errorf("tendui: DataTable requires a caption and columns")
 	}
 	sorted, rowHeaders := 0, 0
 	for _, c := range p.Columns {
 		if strings.TrimSpace(c.Label) == "" {
-			return fmt.Errorf("gothui: table columns require labels")
+			return fmt.Errorf("tendui: table columns require labels")
 		}
 		switch c.Sort {
 		case SortNone:
 		case SortAscending, SortDescending:
 			sorted++
 		default:
-			return fmt.Errorf("gothui: invalid table sort direction")
+			return fmt.Errorf("tendui: invalid table sort direction")
 		}
 		if c.RowHeader {
 			rowHeaders++
 		}
 	}
 	if sorted > 1 || rowHeaders > 1 {
-		return fmt.Errorf("gothui: table permits one sorted column and one row header column")
+		return fmt.Errorf("tendui: table permits one sorted column and one row header column")
 	}
 	if !p.Loading {
 		for i, row := range p.Rows {
 			if len(row.Cells) != len(p.Columns) {
-				return fmt.Errorf("gothui: table row %d has %d cells; expected %d", i, len(row.Cells), len(p.Columns))
+				return fmt.Errorf("tendui: table row %d has %d cells; expected %d", i, len(row.Cells), len(p.Columns))
 			}
 		}
 	}

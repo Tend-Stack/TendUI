@@ -63,7 +63,7 @@ func TestModuleArchiveOmitsDirectoriesAndPreservesFiles(t *testing.T) {
 }
 
 func TestConsumerProxyLocations(t *testing.T) {
-	if got := proxyModulePath(modulePath); got != "github.com/!tend-!stack/!goth!u!i/v2026" {
+	if got := proxyModulePath(modulePath); got != "github.com/!tend-!stack/!tend!u!i/v2026" {
 		t.Fatal(got)
 	}
 	path := filepath.Join(t.TempDir(), "cache with spaces # and %")
@@ -90,7 +90,7 @@ func TestConsumerRejectsDirtySourcesWithoutChangingThem(t *testing.T) {
 			dir := t.TempDir()
 			git := func(args ...string) {
 				t.Helper()
-				cmd := exec.Command("git", append([]string{"-c", "user.name=GothUI test", "-c", "user.email=test@example.invalid"}, args...)...)
+				cmd := exec.Command("git", append([]string{"-c", "user.name=TendUI test", "-c", "user.email=test@example.invalid"}, args...)...)
 				cmd.Dir = dir
 				if output, err := cmd.CombinedOutput(); err != nil {
 					t.Fatalf("git %v: %v: %s", args, err, output)

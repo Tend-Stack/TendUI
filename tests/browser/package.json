@@ -1,8 +1,8 @@
 {
-  "name": "gothui-browser-verification",
+  "name": "tendui-browser-verification",
   "private": true,
   "version": "2026.1.0",
-  "description": "Development-only browser verification; never shipped with GothUI.",
+  "description": "Development-only browser verification; never shipped with TendUI.",
   "scripts": {"test": "playwright test"},
   "devDependencies": {
     "@playwright/test": "1.65.0",

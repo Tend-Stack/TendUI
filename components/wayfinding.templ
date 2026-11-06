@@ -19,20 +19,20 @@ func validateTabs(items []TabItem) error {
 	current := 0
 	for _, item := range items {
 		if strings.TrimSpace(item.Label) == "" {
-			return fmt.Errorf("gothui: tabs require labels")
+			return fmt.Errorf("tendui: tabs require labels")
 		}
 		if item.Current {
 			current++
 			if item.Disabled {
-				return fmt.Errorf("gothui: current tab cannot be disabled")
+				return fmt.Errorf("tendui: current tab cannot be disabled")
 			}
 		}
 		if !item.Current && !item.Disabled && item.Href == "" {
-			return fmt.Errorf("gothui: available tabs require a URL")
+			return fmt.Errorf("tendui: available tabs require a URL")
 		}
 	}
 	if current > 1 {
-		return fmt.Errorf("gothui: tabs permit only one current page")
+		return fmt.Errorf("tendui: tabs permit only one current page")
 	}
 	return nil
 }
@@ -85,17 +85,17 @@ func validateSteps(items []StepItem) error {
 	current := 0
 	for _, item := range items {
 		if strings.TrimSpace(item.Label) == "" {
-			return fmt.Errorf("gothui: steps require labels")
+			return fmt.Errorf("tendui: steps require labels")
 		}
 		if item.Current {
 			current++
 			if item.Completed {
-				return fmt.Errorf("gothui: a step cannot be current and completed")
+				return fmt.Errorf("tendui: a step cannot be current and completed")
 			}
 		}
 	}
 	if current > 1 {
-		return fmt.Errorf("gothui: steps permit only one current step")
+		return fmt.Errorf("tendui: steps permit only one current step")
 	}
 	return nil
 }

@@ -1,4 +1,4 @@
-# GothUI product roadmap
+# TendUI product roadmap
 
 The objective is an elegant Go-native UI library that ships in a single Go binary,
 with the breadth, polish and developer experience expected of modern UI systems.

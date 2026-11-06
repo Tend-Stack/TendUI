@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: gothui-browser-${{ github.ref }}
+  group: tendui-browser-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   browser:

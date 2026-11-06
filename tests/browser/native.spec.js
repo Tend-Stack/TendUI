@@ -89,13 +89,13 @@ test('catalog search and downloadable source work natively', async ({ page }) =>
 
 test('grouped menu and playground scenarios work without scripts', async ({ page }) => {
   await page.goto('/catalog');
-  const menu = page.locator('.demo-menu > summary');
+  const menu = page.locator('.site-menu > summary');
   await menu.focus();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('link', { name: 'Form lab', exact: true })).toBeVisible();
   await page.getByRole('link', { name: 'Form lab', exact: true }).click();
   await expect(page).toHaveURL(/\/forms$/);
-  await page.getByRole('navigation', { name: 'Demo pages', exact: true }).getByRole('link', { name: 'Playground', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Primary', exact: true }).getByRole('link', { name: 'Playground', exact: true }).click();
   await page.getByRole('navigation', { name: 'Try a scenario' }).getByRole('link', { name: 'Validation errors' }).click();
   await expect(page.getByLabel('Example text field', { exact: true })).toHaveAttribute('aria-invalid', 'true');
   await page.getByLabel('Button label', { exact: true }).fill('Send sample');

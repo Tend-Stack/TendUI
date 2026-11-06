@@ -54,23 +54,23 @@ without changing their values:
 
 | Token | Default |
 | --- | --- |
-| `--gothui-leading-body` | `1.6` |
-| `--gothui-leading-heading` | `1.2` |
-| `--gothui-heading-1` | `clamp(2.25rem, 5vw, 4rem)` |
-| `--gothui-heading-2` | `clamp(1.65rem, 3vw, 2.4rem)` |
-| `--gothui-heading-3` | `1.35rem` |
+| `--tendui-leading-body` | `1.6` |
+| `--tendui-leading-heading` | `1.2` |
+| `--tendui-heading-1` | `clamp(2.25rem, 5vw, 4rem)` |
+| `--tendui-heading-2` | `clamp(1.65rem, 3vw, 2.4rem)` |
+| `--tendui-heading-3` | `1.35rem` |
 
-Reading-specific tokens are `--gothui-prose-narrow`, `--gothui-prose-standard`,
-`--gothui-prose-wide`, `--gothui-prose-leading`, `--gothui-prose-space` (1.25rem)
-and `--gothui-prose-heading-gap` (2.25rem). Override them in a stylesheet loaded
-after GothUI. Reading rhythm intentionally does not shrink with compact control
+Reading-specific tokens are `--tendui-prose-narrow`, `--tendui-prose-standard`,
+`--tendui-prose-wide`, `--tendui-prose-leading`, `--tendui-prose-space` (1.25rem)
+and `--tendui-prose-heading-gap` (2.25rem). Override them in a stylesheet loaded
+after TendUI. Reading rhythm intentionally does not shrink with compact control
 density; use the dedicated tokens if your document needs a different rhythm.
 Prose adds no color palette and follows the existing light/dark/print tokens.
 
 ## Embedded components and content structure
 
 Wrap a widget in `data-prose="off"` to exclude it and its subtree from the prose
-descendant typography rules. The rest of GothUI's component CSS still applies,
+descendant typography rules. The rest of TendUI's component CSS still applies,
 and the wrapper remains within the reading column. It does not create a full
 CSS reset or let content escape that width. Put a new Prose outside an opted-out
 subtree if you want its reading styles again. First/last direct children still
