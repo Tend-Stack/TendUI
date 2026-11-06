@@ -29,6 +29,9 @@ func theme(r *http.Request) components.Theme {
 		return components.ThemeSystem
 	}
 	cookie, err := r.Cookie("gothui_theme")
+	if err == nil && cookie.Value == "system" {
+		return components.ThemeSystem
+	}
 	if err == nil && cookie.Value == string(components.ThemeDark) {
 		return components.ThemeDark
 	}
@@ -38,6 +41,8 @@ func theme(r *http.Request) components.Theme {
 func newHandler() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle(gothui.AssetPath, gothui.AssetHandler())
+	mux.HandleFunc("/appearance.css", exportAppearance)
+	mux.HandleFunc("/appearance.go", exportAppearance)
 	mux.HandleFunc("/api/theme/toggle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
 		if r.Method != http.MethodPost {
@@ -78,13 +83,17 @@ func newHandler() http.Handler {
 			http.NotFound(w, r)
 			return
 		}
+		if r.URL.Path == "/settings" && r.Method == http.MethodPost {
+			saveAppearance(w, r)
+			return
+		}
 		if r.URL.Path == "/forms" && r.Method == http.MethodPost {
 			submitForm(w, r)
 			return
 		}
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			allowed := "GET, HEAD"
-			if r.URL.Path == "/forms" {
+			if r.URL.Path == "/forms" || r.URL.Path == "/settings" {
 				allowed += ", POST"
 			}
 			w.Header().Set("Allow", allowed)
@@ -96,7 +105,15 @@ func newHandler() http.Handler {
 		switch r.URL.Path {
 		case "/playground":
 			title = "Component playground · GothUI"
-			body = playground(readPlayground(r.URL.Query()))
+			options := readPlayground(r.URL.Query())
+			options.Appearance = appearance(r)
+			body = playground(options)
+		case "/settings":
+			title = "Appearance · GothUI"
+			body = appearancePage(appearance(r), themeName(theme(r)), r.URL.Query().Get("saved") == "1")
+		case "/workspace":
+			title = "Workspace · GothUI"
+			body = workspace()
 		case "/forms":
 			title = "Form lab · GothUI"
 			body = formLab(formData{Errors: map[string]string{}})
@@ -115,7 +132,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace":
 		return true
 	}
 	return false
@@ -147,7 +164,7 @@ func demoReferer(r *http.Request) *url.URL {
 
 func renderPage(w http.ResponseWriter, r *http.Request, title string, body templ.Component, status int) {
 	page := components.Layout(components.LayoutProps{
-		Title: title, Language: "en", Theme: theme(r),
+		Title: title, Language: "en", Theme: theme(r), Appearance: appearance(r),
 		Description: "Interactive GothUI demos: semantic components, native forms, and layouts.",
 	}, body)
 	var buf bytes.Buffer

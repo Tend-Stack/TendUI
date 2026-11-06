@@ -1,5 +1,46 @@
 # GothUI implementation handoff
 
+## Appearance and application components milestone (2026-11-05)
+
+Implemented independent typed appearance settings: four accent presets
+(Indigo/Neutral/Forest/Rose), density, corners, system font family, text size,
+content width, and card shadows. Defaults preserve the original appearance.
+CSS tokens are shared by attribute styling and downloadable CSS overrides.
+Layout accepts Appearance and an optional trusted Head slot.
+
+New components: Badge, Alert, ErrorSummary, Textarea, RadioGroup, Switch,
+FileInput, and AppShell. Checkbox gains error/description attributes; Form
+supports multipart encoding. The form lab now uses the reusable textarea,
+checkbox validation attributes, and linked error summary. No JS or new Go
+dependencies were introduced.
+
+The demo now has six pages. `/settings` previews/saves/resets preferences and
+exports CSS/Go settings; `/workspace` demonstrates the app shell. The playground
+exposes appearance settings and all new controls, badges, and alerts. Preferences
+are normalized before use; there is no library-owned state or storage. Settings
+POSTs share the example's cross-origin protection. File selection is a local
+preview only, not an upload service.
+
+Race-enabled tests pass for rendering, escaping, control semantics, preference
+cookies, normalization, overrides, exports, and cross-origin protection. Preset
+button/link color pairs are checked for at least 4.5:1 contrast in normal/hover
+light/dark states; this is not a full accessibility audit. Generated source and
+CSS token references are checked. Browser/layout review remains outstanding
+because this session cannot bind sockets. The operator's earlier positive
+browser review covered the prior demos, not this milestone.
+
+The single retained review binary at `tests/results/demos/gothui-demo` is
+replaced with this milestone's build. An already-running older binary is not
+stopped; the operator must restart it to load new embedded CSS and routes.
+The continuing developer owns removal/replacement of this binary after review.
+Temporary compilation caches are removed at handoff; concise local evidence
+remains under `tests/results/` for the next review/run.
+
+Repository publication remains pending under the earlier delivery notes. This
+milestone covers appearance, feedback, controls, and shell foundations. Advanced
+HTMX interactions, dialogs/popovers, richer table abstractions, and other items
+from the broader roadmap are not included in this milestone.
+
 ## Demo expansion (2026-11-05)
 
 The basic example now serves four connected pages: overview (`/`), component

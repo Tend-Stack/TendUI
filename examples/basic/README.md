@@ -1,6 +1,6 @@
 # GothUI demos
 
-Four connected pages, served by one Go executable. All pages use the embedded
+Six connected pages, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -20,11 +20,25 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Playground | http://127.0.0.1:8080/playground | Themes, button labels/variants, disabled/invalid/read-only states, card header/footer, checked controls |
 | Form lab | http://127.0.0.1:8080/forms | Required fields, invalid email, server validation, reset, success receipt |
 | Dashboard | http://127.0.0.1:8080/dashboard | Search, status filters, empty results, responsive cards and scrollable tables |
+| Appearance | http://127.0.0.1:8080/settings | Presets, spacing, corners, typography, text size, width, shadows, saved preferences, CSS/Go downloads |
+| Workspace | http://127.0.0.1:8080/workspace | Reusable app header/sidebar/main layout, native collapsible navigation, feedback and cards |
 
 The playground uses GET controls: click **Apply settings** to refresh the preview.
 Its URL preserves settings so you can bookmark a test case. The preview button
 submits a native form and confirms the click. Its fields demonstrate visual and
 native interaction states; the form lab tests actual submission validation.
+
+Expand **Appearance settings** to combine visual options without saving them.
+The added component section shows textareas, radio groups, switches, file inputs,
+all five badge tones, and alerts. Choosing a file remains local to your browser.
+
+The Appearance page has **Preview changes**, **Save preferences**, and **Restore
+defaults**. Preview affects only the URL; saving stores preferences in HttpOnly,
+SameSite=Strict cookies, with Secure enabled over TLS. The library itself stores
+no settings. Downloads reflect the currently displayed preview, so apply or save
+edits before downloading. CSS overrides require the base GothUI stylesheet; the
+Go export also includes light/dark/system mode. The Workspace page uses the
+reusable `components.AppShell` and the same saved preferences as other demos.
 
 Theme selection in the playground previews light, dark, or system preferences.
 The navigation toggle saves a cookie, removes the preview override, and returns
@@ -57,6 +71,14 @@ totals intentionally remain independent of the filtered table.
    and angle brackets in name/message text.
 6. Search for `portal`, filter `paused`, and search for a nonexistent project.
 7. Confirm no external assets are requested and no script is loaded.
+8. On Appearance, try Forest/compact, Rose/soft corners, Neutral/monospace,
+   large text, narrow/wide content, and flat/raised cards in both light and dark.
+   Save preferences, navigate to Workspace and Form lab, then restore defaults.
+9. Download CSS and Go settings after previewing changes. Load CSS after the
+   base stylesheet, or use the exported Appearance and Mode with LayoutProps.
+10. Test the workspace skip link and collapse/expand sidebar navigation at
+    desktop and phone widths. Test radio arrow keys, switch Space toggling,
+    textarea editing, and disabled file selection in the playground.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:
@@ -70,3 +92,7 @@ The demos must be launched from a normal local terminal for browser review.
 A single review binary may be retained at `tests/results/demos/gothui-demo`;
 run it with `-open` to avoid recompilation. The next demo build can replace it,
 and it can be removed after review.
+
+After a rebuild, stop your running demo with Ctrl+C and start that executable
+again. Refreshing the browser alone cannot update CSS embedded in an older
+running binary. The build does not terminate your existing process.

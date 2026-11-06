@@ -16,6 +16,8 @@ type FormProps struct {
 	HxTarget    string
 	HxSwap      string
 	HxIndicator string
+	// Multipart enables native file uploads; the application must validate and bound their size.
+	Multipart bool
 }
 
 func formMethod(method FormMethod) string {
@@ -29,6 +31,9 @@ templ Form(props FormProps) {
 	<form
 		action={ templ.URL(props.Action) }
 		method={ formMethod(props.Method) }
+		if props.Multipart {
+			enctype="multipart/form-data"
+		}
 		if props.ID != "" {
 			id={ props.ID }
 		}
@@ -147,13 +152,15 @@ templ Select(props SelectProps) {
 }
 
 type CheckboxProps struct {
-	ID       string
-	Name     string
-	Label    string
-	Value    string
-	Checked  bool
-	Required bool
-	Disabled bool
+	ID          string
+	Name        string
+	Label       string
+	Value       string
+	Checked     bool
+	Required    bool
+	Disabled    bool
+	Invalid     bool
+	DescribedBy string
 }
 
 templ Checkbox(props CheckboxProps) {
@@ -166,6 +173,12 @@ templ Checkbox(props CheckboxProps) {
 				id={ props.ID }
 			}
 			checked?={ props.Checked }
+			if props.Invalid {
+				aria-invalid="true"
+			}
+			if props.DescribedBy != "" {
+				aria-describedby={ props.DescribedBy }
+			}
 			required?={ props.Required }
 			disabled?={ props.Disabled }
 		/>

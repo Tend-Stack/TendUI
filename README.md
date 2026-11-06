@@ -57,7 +57,7 @@ func main() {
 ```
 
 Run the local demos, including a component playground, form lab, dashboard,
-and theme endpoint:
+appearance editor, workspace, and theme endpoint:
 
 ```sh
 go run ./examples/basic -open
@@ -80,8 +80,12 @@ components/
   buttons.templ           buttons and button-styled links
   cards.templ             article with optional header, body, footer
   forms.templ             forms, inputs, selects, checkboxes, grids
+  controls.templ          textareas, radio groups, switches, file inputs
+  feedback.templ          alerts, badges, linked error summaries
+  shell.templ             application header, sidebar, main content
+  appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
-examples/basic/           four demo pages, playground, and cookie handler
+examples/basic/           six demo pages, preference cookies, and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -136,6 +140,78 @@ can be combined. Raw buttons use the primary color by default.
 `CardProps` accepts `Header`, `Body`, and `Footer` components. Cards also accept
 templ children after Body. Forms and grids use templ children. Pass ordinary
 components rather than `templ.Raw` for untrusted content.
+
+## Appearance and application components
+
+Appearance choices are independent. The zero value preserves the original
+Indigo, comfortable, rounded defaults:
+
+```go
+appearance := components.Appearance{
+    Preset:     components.PresetForest,
+    Density:    components.DensityCompact,
+    Corners:    components.CornersSoft,
+    Typography: components.TypographySans,
+    TextSize:   components.TextStandard,
+    Width:      components.WidthWide,
+    Elevation:  components.ElevationFlat,
+}
+page := components.Layout(components.LayoutProps{
+    Title: "My workspace",
+    Theme: components.ThemeDark,
+    Appearance: appearance,
+}, body)
+```
+
+Available presets: Indigo, Neutral, Forest, Rose. Choose comfortable/compact
+spacing, rounded/nearly-square/soft corners, system sans/serif/monospace fonts,
+standard/large text, narrow/standard/wide content, and raised/flat cards.
+No font downloads are needed. Light/dark/system mode remains an independent
+`LayoutProps.Theme` setting.
+
+`Appearance.Normalize()` validates preferences and falls back to defaults.
+`Attributes()` produces native `data-*` attributes for applications that own
+their document shell. `CSS()` exports overrides referencing GothUI's canonical
+tokens, so it **requires gothui.css** and must be loaded after it. CSS exports
+configure appearance; keep light/dark/system mode on the root HTML element.
+`LayoutProps.Head` accepts trusted application components after the base
+stylesheet, for custom stylesheet links or metadata.
+
+Open `/settings` in the demo to preview, save, reset, and download appearance
+settings. `/appearance.css` and `/appearance.go` export the selected settings.
+The library owns no persistence; the example uses bounded, validated preference
+cookies. Query previews take precedence over saved preferences without changing
+them. Cookie data never controls authorization or application behavior.
+
+New components:
+
+| Component | Contract |
+| --- | --- |
+| `Badge(BadgeProps)` | Text plus neutral/info/success/warning/danger tone |
+| `Alert(AlertProps)` | Title, message, optional children; `Live` opts into announcements |
+| `ErrorSummary(ErrorSummaryProps)` | Error messages linked to application-supplied field IDs |
+| `Textarea(TextareaProps)` | Label, value, rows, maximum length, required/disabled/read-only/error states |
+| `RadioGroup(RadioGroupProps)` | Native fieldset/legend and labeled options sharing one name |
+| `Switch(SwitchProps)` | Native checkbox with switch semantics and keyboard interaction |
+| `FileInput(FileInputProps)` | Native file chooser with accept/multiple/required states |
+| `AppShell(AppShellProps)` | Brand, actions, sidebar links, optional footer, and one main landmark |
+
+`CheckboxProps` now also supports `Invalid` and `DescribedBy`. Use
+`FormProps{Method: components.MethodPost, Multipart: true}` for actual uploads.
+Applications must validate file types, bound request sizes, and handle storage;
+the `accept` attribute is only a browser hint. The playground file picker does
+not upload data.
+
+Static alerts do not create live regions. Set `Live: true` for inserted feedback:
+danger uses `role="alert"`; other tones use `role="status"`. These attributes
+do not guarantee announcements on a full page navigation, so visible error
+summaries and linked field errors remain available.
+
+Use `AppShell` as the body inside `Layout`, with page content as templ children.
+It owns the main landmark; do not nest another main or application shell inside
+it. `MainID` defaults to `main` and connects the skip link. Sidebar navigation
+uses a native disclosure that works on desktop and mobile without JavaScript.
+See `/workspace` and `examples/basic/workspace.templ` for a complete example.
 
 ## Themes and the zero-JavaScript contract
 

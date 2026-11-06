@@ -1,0 +1,80 @@
+package components
+
+type Tone string
+
+const (
+	ToneNeutral Tone = "neutral"
+	ToneInfo    Tone = "info"
+	ToneSuccess Tone = "success"
+	ToneWarning Tone = "warning"
+	ToneDanger  Tone = "danger"
+)
+
+func tone(t Tone) string {
+	return string(allowed(t, ToneNeutral, ToneNeutral, ToneInfo, ToneSuccess, ToneWarning, ToneDanger))
+}
+
+type BadgeProps struct {
+	Text string
+	Tone Tone
+}
+
+templ Badge(props BadgeProps) {
+	<span class="badge" data-tone={ tone(props.Tone) }>{ props.Text }</span>
+}
+
+// Live opts into announcements for inserted feedback. Static page content is not a live region.
+type AlertProps struct {
+	Title   string
+	Message string
+	Tone    Tone
+	Live    bool
+}
+
+templ Alert(props AlertProps) {
+	<div
+		class="alert"
+		data-tone={ tone(props.Tone) }
+		if props.Live && props.Tone == ToneDanger {
+			role="alert"
+		}
+		if props.Live && props.Tone != ToneDanger {
+			role="status"
+		}
+	>
+		if props.Title != "" {
+			<p><strong>{ props.Title }</strong></p>
+		}
+		if props.Message != "" {
+			<p>{ props.Message }</p>
+		}
+		{ children... }
+	</div>
+}
+
+type FieldError struct {
+	ID      string
+	Message string
+}
+type ErrorSummaryProps struct {
+	Title  string
+	Errors []FieldError
+}
+
+templ ErrorSummary(props ErrorSummaryProps) {
+	if len(props.Errors) > 0 {
+		@Alert(AlertProps{Title: fallback(props.Title, "Please check the following fields"), Tone: ToneDanger, Live: true}) {
+			<ul>
+				for _, err := range props.Errors {
+					<li>
+						if err.ID != "" {
+							<a href={ templ.URL("#" + err.ID) }>{ err.Message }</a>
+						} else {
+							{ err.Message }
+						}
+					</li>
+				}
+			</ul>
+		}
+	}
+}

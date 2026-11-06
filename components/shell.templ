@@ -1,0 +1,65 @@
+package components
+
+type NavItem struct {
+	Label   string
+	Href    string
+	Current bool
+	Badge   string
+}
+
+type AppShellProps struct {
+	Brand      string
+	BrandHref  string
+	Title      string
+	Navigation []NavItem
+	Actions    templ.Component
+	Footer     templ.Component
+	MainID     string
+}
+
+// AppShell is a document body, with one main landmark. Place inside Layout; do not nest shells.
+// Navigation is a native disclosure that remains operable without a scripting runtime.
+templ AppShell(props AppShellProps) {
+	<div class="app-shell">
+		<a class="skip-link" href={ templ.URL("#" + fallback(props.MainID, "main")) }>Skip to content</a>
+		<header class="app-header">
+			<a class="app-brand" href={ templ.URL(fallback(props.BrandHref, "/")) }>{ props.Brand }</a>
+			if props.Actions != nil {
+				<div class="cluster">@props.Actions</div>
+			}
+		</header>
+		<aside class="app-sidebar">
+			<details open>
+				<summary>Navigation</summary>
+				<nav aria-label="Application">
+					<ul>
+						for _, item := range props.Navigation {
+							<li>
+								<a
+									href={ templ.URL(item.Href) }
+									if item.Current {
+										aria-current="page"
+									}
+								>
+									<span>{ item.Label }</span>
+									if item.Badge != "" {
+										@Badge(BadgeProps{Text: item.Badge})
+									}
+								</a>
+							</li>
+						}
+					</ul>
+				</nav>
+			</details>
+			if props.Footer != nil {
+				<footer>@props.Footer</footer>
+			}
+		</aside>
+		<main id={ fallback(props.MainID, "main") } tabindex="-1" class="app-main">
+			if props.Title != "" {
+				<h1>{ props.Title }</h1>
+			}
+			{ children... }
+		</main>
+	</div>
+}
