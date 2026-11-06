@@ -1,5 +1,29 @@
 # GothUI implementation handoff
 
+## Approved email correction and repository delivery (2026-11-06)
+
+is preserved at archive/pre-email-privacy-20261106, pointing to
+8130dfad1b9c4d6ce056201d5c1992951a86295a. It is operator-owned recovery evidence;
+retain until an explicit cleanup decision after verified delivery. The original
+objects, not in the corrected GitHub ancestry.
+
+Corrected author/committer emails on the 26 affected commits to the account's
+GitHub no-reply identity. The 27th commit already used it and only needed its
+parent reference updated. Every file tree, name, date and message was verified
+unchanged against the approved mapping. The corrected tip is
+expected-old-SHA force-with-lease, then pushed the same main to GitHub. Both remote
+refs were independently verified. No other remote branch or privacy setting was
+changed; the original archive branch was not sent to GitHub. The checkout's local
+user.email now uses no-reply for future commits.
+
+GitHub accepted the history and started Verify GothUI. Inspect the workflow for
+the final source SHA, including all six native matrix jobs and the vulnerability
+job; do not infer success from a started run. tests/results/delivery records the
+applied mapping, archive and remote verification. Older milestones below record
+historical blockers that this entry supersedes. Browser review, optional HTMX
+browser execution and published tagged-version installation still require their
+own evidence. No release tag was created.
+
 ## Official security snapshot and native minimum compiler (2026-11-06)
 
 The complete official vuln.go.dev/vulndb.zip downloaded through the available

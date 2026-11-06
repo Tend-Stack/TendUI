@@ -48,11 +48,12 @@ the update and migration process.
 A six-job GitHub verification matrix is prepared for Go 1.26.0/1.27.3 on Linux,
 macOS and Windows. Local native Linux checks pass on both Go versions, including
 the minimum compiler's API, consumer installation and executable smoke checks.
-Foreign-target builds pass, but the remote matrix has not executed; docs/ci.md
-distinguishes compilation evidence from native results. A separate pinned
+Foreign-target builds pass; GitHub runs the native matrix for pushed source.
+Require its success at the release SHA; docs/ci.md distinguishes compilation
+evidence from native results. A separate pinned
 vulnerability job uses text-mode failure semantics. A full official database
 snapshot scan completed locally with no known findings on Go 1.27.3/Linux amd64;
-docs/ci.md records its dated scope and pending remote execution.
+docs/ci.md records its dated scope and the separate remote security job.
 Allocation profiling removed redundant table-cell wrappers and attribute
 conversion: the local 100-row benchmark uses 618 allocations instead of 1,821,
 with unchanged output across the captured parity fixtures. See docs/performance.md.
@@ -66,8 +67,9 @@ Expanded asset HTTP coverage verifies content-derived ETags, stale validators,
 HEAD, single/multipart ranges and concurrent readers. docs/assets.md records the
 stable-URL cache contract and distinguishes in-process checks from live delivery.
 
-Current evidence is local. Browser review is incomplete and remote publication
-is pending. The active broad goal remains unfinished.
+Development history is published to both intended remotes. Browser review,
+the remote release checks and tagged-version publication remain release gates.
+The broad goal remains unfinished.
 
 Versioned packaging also passes in an isolated consumer through a local file
 proxy: no `replace`, no templ generator, embedded CSS and components tested,

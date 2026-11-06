@@ -115,8 +115,8 @@ local HTTP tests does not establish any of those results. Public API changes
 also need migration guidance. The [API review guard](api-compatibility.md) detects
 declaration drift; it does not prove behavioral or visual compatibility.
 
-The [CI guide](ci.md) describes the prepared six-job native verification matrix,
-local cross-compilation evidence and pending remote execution.
+The [CI guide](ci.md) describes the six-job native verification matrix, local
+cross-compilation evidence and how to check remote results at the release SHA.
 
 Keep only current validation reports, the review executable and evidence for
 unresolved failures. The continuing developer owns their replacement or removal

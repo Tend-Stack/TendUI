@@ -73,8 +73,8 @@ The snapshot's database modification time is 2026-11-05T23:49:57Z. Its SHA-256 i
 `0a54b7eb56bf031dc214fc4f29ca6db71073ab324595c3de9485f97a334e9e22`.
 All 4,789 indexed OSV reports were present; no subset or suppressions were used.
 This is a dated snapshot result, not an evergreen security guarantee. The
-remote security job remains unexecuted, just like the six compatibility jobs.
-Inspect all seven results at the exact published SHA. Source analysis also has
+remote security job independently reads the live database. Inspect all seven
+results at the exact published SHA. Source analysis also has
 limits around reflection, unsafe calls and other build configurations; see the
 [Go vulnerability-management guide](https://go.dev/doc/security/vuln/).
 
@@ -111,8 +111,10 @@ desktop browser launch remains a separate manual check.
 
 ## Current evidence and publication boundary
 
-The workflow parses locally and its matrix, commit pins, read permission and
-retention settings were inspected. It has **not run on GitHub**. Local native
+The workflow's matrix, commit pins, read permission and retention settings were
+inspected locally. Remote results are available in
+[Verify GothUI](https://github.com/Tend-Stack/GothUI/actions/workflows/verify.yml);
+require all seven jobs to pass for the intended release SHA. Local native
 race/vet checks pass with Go 1.26.0 and Go 1.27.3. The minimum compiler was
 downloaded temporarily from Go's official distribution and its published SHA-256
 and archive size verified before execution. The API baseline, versioned local
@@ -133,11 +135,13 @@ continues to use Go 1.27.3. A Firefox headless attempt
 with an isolated temporary profile also failed under the sandbox namespace
 restriction; its profile was removed. Chromium/browser results remain unverified.
 
-history and its main SHA was verified. GitHub remains private, unarchived and
-empty: its push rejected the private author email with GH007. A metadata-only
-correction for 26 commits is prepared and awaits operator approval because it
-preserved if that correction is approved. No privacy setting has been disabled,
-has been configured by this workflow.
+history, GitHub rejected its private author email with GH007. With operator
+approval, 26 commits' author/committer emails were corrected to the GitHub no-reply
+identity. Names, dates, messages and every file tree were preserved; the descendant
+commit already using no-reply only changed its parent reference. The original
+operator and retained until an explicit cleanup decision after verified delivery.
+history was accepted by GitHub. GitHub remains private; its email-privacy setting
+was not disabled. This checkout uses no-reply for future commits. No release tag,
 
 After publication, inspect all six compatibility results plus the security job
 at the exact source SHA before calling the matrix verified. Release installation, optional HTMX execution and
