@@ -41,7 +41,12 @@ func patterns(p patternOptions) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if p.Section == "composition" {
+		if p.Section == "reading" {
+			templ_7745c5c3_Err = readingPattern(p.Measure).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else if p.Section == "composition" {
 			templ_7745c5c3_Err = compositionPattern().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -95,7 +100,7 @@ func patterns(p patternOptions) templ.Component {
 					var templ_7745c5c3_Var3 string
 					templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.URL("/patterns?step=" + strconv.Itoa(p.Step-1))).ResolveURL(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/patterns.templ`, Line: 34, Col: 70}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/basic/patterns.templ`, Line: 36, Col: 70}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 					if templ_7745c5c3_Err != nil {

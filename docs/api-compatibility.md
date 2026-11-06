@@ -125,3 +125,18 @@ wrap list/table children in divs; preserve their HTML content model. See
 [the layout guide](layout.md) for defaults, nested gaps and semantics. Adding
 these names is a reviewed development change, not evidence of a published release
 or browser compatibility.
+
+
+## Development addition: Prose
+
+Prose, ProseProps, TextMeasure and its three measure constants add six reviewed
+entries, bringing the baseline to 240. Existing declarations and struct shapes
+are unchanged; adoption is opt-in. The component wraps trusted application HTML
+without parsing or sanitizing it. Unknown measures use Standard, and embedded
+widgets can opt out of descendant typography with data-prose=off. See
+[reading content](prose.md) before migrating existing article markup.
+
+Global heading/line-height declarations now reference five named tokens with the
+same previous default values. Prose-specific reading styles apply only inside
+its wrapper. Existing Go callers need no import or props changes; visual browser
+review remains required when adopting it or overriding the new typography tokens.

@@ -431,6 +431,13 @@ preserve document order, and compose with Grid, Card and native forms. Existing
 CSS utilities retain their behavior. Try `/patterns?section=composition` or read
 [the layout guide](docs/layout.md) for spacing tokens, semantics and examples.
 
+## Reading content
+
+`Prose` styles application-owned HTML for help pages, guides and release notes.
+Choose a typed reading measure, use native headings/lists/code, and opt embedded
+widgets out of prose typography. Try `/patterns?section=reading` and see the
+[reading-content guide](docs/prose.md) for tokens, semantics and examples.
+
 ## Inline icons
 
 The Icon component provides 24 original SVG drawings, compiled into Go and
@@ -442,7 +449,7 @@ hidden from assistive technology. Explore `/catalog/icon` and the
 
 ## Searchable component catalog
 
-Open `/catalog` to browse all 35 public templ components by name, category or
+Open `/catalog` to browse all 36 public templ components by name, category or
 usage notes. Each entry provides a preview, guidance and a downloadable `.templ`
 recipe drawn from the same source compiled for that preview. Layouts open as
 standalone pages to preserve document landmarks. Search and pagination use Go
