@@ -3,7 +3,7 @@
 TendUI is the new name of this library. Install the renamed preview explicitly:
 
 ```sh
-go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.1
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
 ```
 
 The historical `v2026.1.0` tag retains its original module path and is not a

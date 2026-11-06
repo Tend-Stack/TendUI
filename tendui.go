@@ -16,7 +16,7 @@ const (
 	// StylesheetURL is the stylesheet used by components.Layout.
 	StylesheetURL = AssetPath + "tendui.css"
 	// Version identifies the current release line; development binaries should use git describe.
-	Version = "2026.2.0-preview.1"
+	Version = "2026.2.0-preview.2"
 )
 
 //go:embed static

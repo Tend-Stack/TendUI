@@ -5,7 +5,7 @@
       "AssetHandler": "func github.com/Tend-Stack/TendUI/v2026.AssetHandler() net/http.Handler",
       "AssetPath": "const github.com/Tend-Stack/TendUI/v2026.AssetPath untyped string = \"/tendui/static/\"",
       "StylesheetURL": "const github.com/Tend-Stack/TendUI/v2026.StylesheetURL untyped string = \"/tendui/static/tendui.css\"",
-      "Version": "const github.com/Tend-Stack/TendUI/v2026.Version untyped string = \"2026.2.0-preview.1\""
+      "Version": "const github.com/Tend-Stack/TendUI/v2026.Version untyped string = \"2026.2.0-preview.2\""
     },
     "github.com/Tend-Stack/TendUI/v2026/components": {
       "(*Appearance).Attributes": "func() github.com/a-h/templ.Attributes",

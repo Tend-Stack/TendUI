@@ -31,7 +31,7 @@ module, and this version does not support Go 1.21.
 Install the pinned TendUI preview (API changes remain possible before a stable release):
 
 ```sh
-go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.1
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
 ```
 
 Generated `*_templ.go` files ship with the module, so consumers do not need
@@ -526,12 +526,12 @@ intentional updates and the limits of this check.
 The [CI matrix](docs/ci.md) checks native Linux, macOS and Windows with Go 1.26.0
 and 1.27.3, plus a vulnerability scan. Browser checks cover Chromium, Firefox and
 WebKit. These jobs must pass on the preview source; see
-[preview release notes](docs/releases/2026.2.0-preview.1.md). The older
+[preview release notes](docs/releases/2026.2.0-preview.2.md). The older
 [release verification](docs/release-verification.md) documents the pre-rename
 release only and is not evidence for the current preview.
 
 Versions follow `YEAR.RELEASE.FIX`, with SemVer prerelease suffixes for previews:
-`v2026.2.0-preview.1`. Install the explicit tag; a preview is not a stable API promise.
+`v2026.2.0-preview.2`. Install the explicit tag; a preview is not a stable API promise.
 Development builds use `git describe --tags --long --dirty`.
 
 Go treats 2026 as the semantic major version, so the module path ends in
