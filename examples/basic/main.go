@@ -45,6 +45,7 @@ func newHandler() http.Handler {
 	mux.HandleFunc("/appearance.go", exportAppearance)
 	mux.HandleFunc("/interactions/confirm", confirmDemo)
 	mux.HandleFunc("/editing", editingDemo)
+	mux.HandleFunc("/dashboard/selection", reviewSelection)
 	mux.HandleFunc("/api/theme/toggle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
 		if r.Method != http.MethodPost {
@@ -110,6 +111,9 @@ func newHandler() http.Handler {
 			options := readPlayground(r.URL.Query())
 			options.Appearance = appearance(r)
 			body = playground(options)
+		case "/patterns":
+			title = "Application patterns · GothUI"
+			body = patterns(readPatterns(r.URL.Query()))
 		case "/motion":
 			title = "Motion & surfaces · GothUI"
 			body = motionStudio(appearance(r), themeName(theme(r)))
@@ -140,7 +144,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns":
 		return true
 	}
 	return false
