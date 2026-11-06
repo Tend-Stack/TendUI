@@ -63,8 +63,8 @@ func TestThemeHTMXAndRequestBoundaries(t *testing.T) {
 			if w.Code != tc.code {
 				t.Fatalf("got %d, want %d", w.Code, tc.code)
 			}
-			if tc.hx != "" && (w.Header().Get("HX-Refresh") != "true" || !w.Result().Cookies()[0].Secure) {
-				t.Fatal("HTMX refresh or secure cookie missing")
+			if tc.hx != "" && (w.Header().Get("HX-Redirect") != "/" || !w.Result().Cookies()[0].Secure) {
+				t.Fatal("HTMX navigation or secure cookie missing")
 			}
 			if tc.method == "HEAD" && w.Body.Len() != 0 {
 				t.Fatal("HEAD body emitted")

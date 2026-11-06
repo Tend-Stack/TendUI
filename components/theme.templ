@@ -15,7 +15,8 @@ func themeToggleProps(options []ThemeToggleProps) ThemeToggleProps {
 }
 
 // ThemeToggle retains the requested HTMX contract. For reliable root theming,
-// an HTMX-aware endpoint should respond with HX-Refresh: true (see examples/basic).
+// an HTMX-aware endpoint should respond with HX-Redirect to a validated page URL
+// without a theme preview parameter that would override the saved cookie.
 templ ThemeToggle(options ...ThemeToggleProps) {
 	{{ props := themeToggleProps(options) }}
 	<form method="post" action="/api/theme/toggle" class="theme-toggle">

@@ -317,11 +317,17 @@ Consumers that already use it can use the hooks without writing custom JS.
 
 A document root swap is not a reliable way to replace a page's root attributes
 and head. The example detects `HX-Request: true` and sends **200 plus
-`HX-Refresh: true`** after setting the cookie. That performs a full navigation,
-not an instant partial swap; the new document then has the correct theme.
+`HX-Redirect` to the cleaned demo URL** after setting the cookie. This requests a
+full navigation. Both native and HTMX paths remove the `theme` query parameter
+so a previous preview cannot override the new cookie, while preserving other
+settings. For HTMX, a validated same-origin `HX-Current-URL` takes precedence over
+Referer; invalid values fall back to a validated Referer, then the homepage.
+Only known demo pages are accepted. These headers control presentation, not access.
 HTMX does not process its response headers on 3xx responses. See the upstream
-[response header documentation](https://htmx.org/docs/#response-headers) and
+[redirect header documentation](https://htmx.org/headers/hx-redirect/) and
 [swap reference](https://htmx.org/attributes/hx-swap/).
+Automated tests follow the returned destination with the saved cookie; actual
+navigation with a consumer-supplied HTMX runtime still requires browser testing.
 
 ## Full pages and optional HTMX fragments
 
