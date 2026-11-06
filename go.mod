@@ -1,4 +1,4 @@
-module github.com/Tend-Stack/GothUI/v2026
+module github.com/Tend-Stack/TendUI/v2026
 
 go 1.26.0
 

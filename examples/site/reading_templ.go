@@ -9,7 +9,7 @@ package site
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 func readingPattern(measure components.TextMeasure) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -105,7 +105,7 @@ func readingPattern(measure components.TextMeasure) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("mux.Handle(\"/gothui/static/\", gothui.AssetHandler())\n// Your application owns routing and page content.")
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("mux.Handle(\"/tendui/static/\", tendui.AssetHandler())\n// Your application owns routing and page content.")
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `examples/site/reading.templ`, Line: 38, Col: 182}
 			}

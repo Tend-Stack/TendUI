@@ -1,6 +1,6 @@
 package components
 
-import "github.com/Tend-Stack/GothUI/v2026"
+import "github.com/Tend-Stack/TendUI/v2026"
 
 type Theme string
 
@@ -36,7 +36,7 @@ templ Layout(props LayoutProps, body templ.Component) {
 			if props.Description != "" {
 				<meta name="description" content={ props.Description }/>
 			}
-			<link rel="stylesheet" href={ gothui.StylesheetURL }/>
+			<link rel="stylesheet" href={ tendui.StylesheetURL }/>
 			if props.Head != nil {
 				@props.Head
 			}

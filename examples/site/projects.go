@@ -2,7 +2,7 @@ package site
 
 import (
 	"cmp"
-	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/components"
 	"net/url"
 	"sort"
 	"strconv"

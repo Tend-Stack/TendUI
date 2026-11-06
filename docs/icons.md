@@ -1,6 +1,6 @@
 # Icons that travel with your Go binary
 
-GothUI includes 24 original geometric SVG drawings. The paths compile into the
+TendUI includes 24 original geometric SVG drawings. The paths compile into the
 component package and render inline, so they need no image server, icon font,
 sprite download or JavaScript. They use a shared 24-unit grid, two-unit rounded
 strokes and `currentColor` to follow surrounding text, button and theme colors.
@@ -73,7 +73,7 @@ sizes fall back to medium. There is no icon animation or hover transformation.
 `IconNone` emits nothing. An unknown nonempty name returns an error instead of
 silently showing an unrelated symbol. Values cannot become remote URLs or SVG
 markup. As with other component errors, use buffered rendering when sending
-HTTP responses; GothUI's `render.HTML` handles errors without sending partial
+HTTP responses; TendUI's `render.HTML` handles errors without sending partial
 pages. Directional icons are literal: an application with RTL navigation chooses
 the corresponding left/right drawing for its own meaning.
 
@@ -86,7 +86,7 @@ the corresponding left/right drawing for its own meaning.
 | Status and theme | `IconInfo`, `IconWarning`, `IconSun`, `IconMoon` |
 | Content | `IconUser`, `IconFolder`, `IconFile`, `IconCalendar` |
 
-These drawings are shipped under GothUI's project license. They are authored in
+These drawings are shipped under TendUI's project license. They are authored in
 `components/icons.go`; no third-party icon collection was copied or added.
 
 ## Evidence and remaining review

@@ -44,7 +44,7 @@ func (p FieldProps) ControlAttributes() templ.Attributes {
 
 func validateField(p FieldProps) error {
 	if p.ID == "" || strings.IndexFunc(p.ID, unicode.IsSpace) >= 0 || strings.TrimSpace(p.Label) == "" {
-		return fmt.Errorf("gothui: Field requires a unique non-whitespace ID and a label")
+		return fmt.Errorf("tendui: Field requires a unique non-whitespace ID and a label")
 	}
 	return nil
 }

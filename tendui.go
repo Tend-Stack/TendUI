@@ -1,5 +1,5 @@
-// Package gothui serves embedded, semantic CSS without external assets or build tools.
-package gothui
+// Package tendui serves embedded, semantic CSS without external assets or build tools.
+package tendui
 
 import (
 	"bytes"
@@ -12,9 +12,9 @@ import (
 
 const (
 	// AssetPath is the default mount point for AssetHandler.
-	AssetPath = "/gothui/static/"
+	AssetPath = "/tendui/static/"
 	// StylesheetURL is the stylesheet used by components.Layout.
-	StylesheetURL = AssetPath + "gothui.css"
+	StylesheetURL = AssetPath + "tendui.css"
 	// Version identifies the current release line; development binaries should use git describe.
 	Version = "2026.1.0"
 )
@@ -23,13 +23,13 @@ const (
 var assets embed.FS
 
 // AssetHandler serves the embedded stylesheet at StylesheetURL. Mount directly:
-// mux.Handle(gothui.AssetPath, gothui.AssetHandler()). No StripPrefix is needed.
+// mux.Handle(tendui.AssetPath, tendui.AssetHandler()). No StripPrefix is needed.
 // Each request has its own reader, making a shared handler safe for concurrent use.
 // Unknown assets and directory listings return 404; only GET and HEAD are allowed.
 func AssetHandler() http.Handler {
-	css, err := assets.ReadFile("static/gothui.css")
+	css, err := assets.ReadFile("static/tendui.css")
 	if err != nil {
-		panic("gothui: embedded stylesheet missing: " + err.Error())
+		panic("tendui: embedded stylesheet missing: " + err.Error())
 	}
 	etag := fmt.Sprintf(`"%x"`, sha256.Sum256(css))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -46,6 +46,6 @@ func AssetHandler() http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Cache-Control", "public, max-age=0, must-revalidate")
 		w.Header().Set("ETag", etag)
-		http.ServeContent(w, r, "gothui.css", time.Time{}, bytes.NewReader(css))
+		http.ServeContent(w, r, "tendui.css", time.Time{}, bytes.NewReader(css))
 	})
 }

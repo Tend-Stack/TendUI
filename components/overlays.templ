@@ -44,7 +44,7 @@ func nativeButtonAttrs(props ButtonProps) templ.Attributes {
 
 func validateOverlayID(id string) error {
 	if id == "" || strings.IndexFunc(id, unicode.IsSpace) >= 0 {
-		return fmt.Errorf("gothui: overlay ID must be nonempty and contain no whitespace")
+		return fmt.Errorf("tendui: overlay ID must be nonempty and contain no whitespace")
 	}
 	return nil
 }
@@ -67,7 +67,7 @@ templ Dialog(props DialogProps) {
 	}}
 	<dialog
 		id={ props.ID }
-		class="gothui-dialog"
+		class="tendui-dialog"
 		aria-labelledby={ props.ID + "-title" }
 		if props.Description != "" {
 			aria-describedby={ props.ID + "-description" }
@@ -106,7 +106,7 @@ templ Popover(props PopoverProps) {
 			return err
 		}
 	}}
-	<section id={ props.ID } class="gothui-popover" popover={ string(allowed(props.Mode, PopoverAuto, PopoverAuto, PopoverManual)) } aria-labelledby={ props.ID + "-title" }>
+	<section id={ props.ID } class="tendui-popover" popover={ string(allowed(props.Mode, PopoverAuto, PopoverAuto, PopoverManual)) } aria-labelledby={ props.ID + "-title" }>
 		<header class="overlay-header">
 			<h2 id={ props.ID + "-title" }>{ fallback(props.Title, "Details") }</h2>
 			@Button(ButtonProps{Text: fallback(props.CloseLabel, "Close"), Outline: true, PopoverTarget: props.ID, PopoverAction: PopoverHide})

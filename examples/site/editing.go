@@ -7,11 +7,11 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/Tend-Stack/GothUI/v2026/components"
-	"github.com/Tend-Stack/GothUI/v2026/render"
+	"github.com/Tend-Stack/TendUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/render"
 )
 
-const profileCookie = "gothui_demo_profile"
+const profileCookie = "tendui_demo_profile"
 
 type demoProfile struct {
 	Name string `json:"name"`
@@ -116,7 +116,7 @@ func editingDemo(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderEditing(w http.ResponseWriter, r *http.Request, d editingData, status int) {
-	renderResponse(w, r, "Inline editing · GothUI", editingPage(d), profilePanel(d), status)
+	renderResponse(w, r, "Inline editing · TendUI", editingPage(d), profilePanel(d), status)
 }
 
 func profileError(d editingData, id string) string {

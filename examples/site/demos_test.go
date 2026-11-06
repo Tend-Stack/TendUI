@@ -18,7 +18,7 @@ func TestDemoPages(t *testing.T) {
 				t.Fatalf("status %d", w.Code)
 			}
 			html := w.Body.String()
-			for _, want := range []string{`id="main"`, `href="/playground"`, `href="/forms"`, `href="/dashboard"`, `/gothui/static/gothui.css`} {
+			for _, want := range []string{`id="main"`, `href="/playground"`, `href="/forms"`, `href="/dashboard"`, `/tendui/static/tendui.css`} {
 				if !strings.Contains(html, want) {
 					t.Errorf("missing %s", want)
 				}
@@ -135,7 +135,7 @@ func TestThemeReturnsToDemo(t *testing.T) {
 	}
 	r := httptest.NewRequest("POST", "https://example.com/api/theme/toggle", nil)
 	r.Header.Set("Referer", "https://example.com/playground?theme=system")
-	r.AddCookie(&http.Cookie{Name: "gothui_theme", Value: "dark"})
+	r.AddCookie(&http.Cookie{Name: "tendui_theme", Value: "dark"})
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, r)
 	if w.Code != 303 || w.Result().Cookies()[0].Value != "light" {

@@ -1,4 +1,4 @@
-name: Release GothUI
+name: Release TendUI
 on:
   push:
     tags: ['v2026.*']
@@ -7,7 +7,7 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: gothui-release-${{ github.ref }}
+  group: tendui-release-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   publish:
@@ -36,7 +36,7 @@ jobs:
           python3 - <<'PY'
           import json, os
           runs = json.load(open('tests/results/release/checks.json'))['workflow_runs']
-          for name in ['Verify GothUI', 'Browser verification']:
+          for name in ['Verify TendUI', 'Browser verification']:
               matching = [r for r in runs if r['head_sha'] == os.environ['GITHUB_SHA'] and r['name'] == name]
               if not matching or max(matching, key=lambda r:r['id'])['conclusion'] != 'success':
                   raise SystemExit('Missing passing exact-commit checks: ' + name)
@@ -49,7 +49,7 @@ jobs:
           release_consumer=$(mktemp -d)
           trap 'go clean -modcache; rm -rf "$release_consumer"' EXIT
           export GOMODCACHE="$release_consumer/modules"
-          export GOPRIVATE=github.com/Tend-Stack/GothUI
+          export GOPRIVATE=github.com/Tend-Stack/TendUI
           export GOPROXY=https://proxy.golang.org,direct
           export GOWORK=off
           export GIT_TERMINAL_PROMPT=0
@@ -60,12 +60,12 @@ jobs:
           export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth"
           cp tests/release/consumer_test.go.txt "$release_consumer/consumer_test.go"
           cd "$release_consumer"
-          go mod init example.com/gothui-release-consumer
-          go get "github.com/Tend-Stack/GothUI/v2026@$GITHUB_REF_NAME"
+          go mod init example.com/tendui-release-consumer
+          go get "github.com/Tend-Stack/TendUI/v2026@$GITHUB_REF_NAME"
           go mod tidy
           go test -v ./... | tee "$GITHUB_WORKSPACE/tests/results/release/consumer.log"
           go mod verify
-          go list -m -json github.com/Tend-Stack/GothUI/v2026 > "$GITHUB_WORKSPACE/tests/results/release/module.json"
+          go list -m -json github.com/Tend-Stack/TendUI/v2026 > "$GITHUB_WORKSPACE/tests/results/release/module.json"
           python3 - <<'PY'
           import json, os
           p = os.environ['GITHUB_WORKSPACE'] + '/tests/results/release/module.json'
@@ -78,7 +78,7 @@ jobs:
         run: |
           set -euo pipefail
           if ! gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
-            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "GothUI $GITHUB_REF_NAME" --notes-file docs/releases/2026.1.0.md
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "TendUI $GITHUB_REF_NAME" --notes-file docs/releases/2026.1.0.md
           fi
       - name: Retain release installation evidence
         if: always()

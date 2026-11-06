@@ -1,4 +1,4 @@
-// Package components provides typed templ components for GothUI's embedded CSS.
+// Package components provides typed templ components for TendUI's embedded CSS.
 //
 // Layout supplies the document shell and stylesheet link. Children and explicit
 // templ.Component slots provide composition; ordinary text is escaped by templ.

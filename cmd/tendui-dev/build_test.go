@@ -28,7 +28,7 @@ func TestNativeBuildExecutesBeforeReplacingReviewBinary(t *testing.T) {
 		}
 	}
 	for _, args := range [][]string{{"init", "-q"}, {"add", "."}, {"commit", "-qm", "Build fixture"}} {
-		cmd := exec.Command("git", append([]string{"-c", "user.name=GothUI build test", "-c", "user.email=test@example.invalid"}, args...)...)
+		cmd := exec.Command("git", append([]string{"-c", "user.name=TendUI build test", "-c", "user.email=test@example.invalid"}, args...)...)
 		cmd.Dir = root
 		if b, err := cmd.CombinedOutput(); err != nil {
 			t.Fatalf("git: %v %s", err, b)
@@ -38,7 +38,7 @@ func TestNativeBuildExecutesBeforeReplacingReviewBinary(t *testing.T) {
 	if err := os.MkdirAll(r.results, 0755); err != nil {
 		t.Fatal(err)
 	}
-	name := "gothui-demo"
+	name := "tendui-demo"
 	if runtime.GOOS == "windows" {
 		name += ".exe"
 	}

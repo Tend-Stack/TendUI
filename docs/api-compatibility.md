@@ -1,6 +1,6 @@
 # Public API review and migration
 
-GothUI's public Go surface is recorded in `api/public.json`. The initial
+TendUI's public Go surface is recorded in `api/public.json`. The initial
 development baseline contained 212 declarations and method-set entries across
 the root asset package, `components` and `render`. This is a baseline of the
 current implementation, not a comparison with a published release or the archived
@@ -9,10 +9,10 @@ project. No release has been declared by creating this file.
 ## Run the guard
 
 ```sh
-go run ./cmd/gothui-dev api
+go run ./cmd/tendui-dev api
 ```
 
-The standard `go run ./cmd/gothui-dev check` includes the same API guard before
+The standard `go run ./cmd/tendui-dev check` includes the same API guard before
 the race suite and vet. Ordinary `go test ./...` tests the guard but does not
 compare the library with the checked-in baseline; use the developer command for
 that comparison.
@@ -53,7 +53,7 @@ report looking current. The guard never rewrites `api/public.json`.
    ```sh
    cp tests/results/validation/api-current.json api/public.json
    git diff -- api/public.json
-   go run ./cmd/gothui-dev check
+   go run ./cmd/tendui-dev check
    ```
 
 5. Commit the reviewed baseline together with the implementation, tests and
@@ -63,7 +63,7 @@ The baseline is intentionally small in scope: public library packages only.
 The example server, internal helpers, tests and developer command are not
 supported consumer APIs. Package discovery rejects new packages outside those
 directories until they are added to the explicit public package list in
-`cmd/gothui-dev/api.go`. Document their contracts and update the baseline too.
+`cmd/tendui-dev/api.go`. Document their contracts and update the baseline too.
 
 ## What a matching result does not prove
 
@@ -153,3 +153,19 @@ intentional pre-release API addition, not a claim of source compatibility for
 positional literals. The shared shadow tokens and per-card attribute are described
 in [motion and surfaces](motion.md#elevation). Outlined, print and forced-color
 styles suppress shadows regardless of the requested elevation.
+
+## Development addition: SiteHeader
+
+`SiteHeader`, `SiteHeaderProps`, `SiteHeaderItem` and `NavGroup` add a sticky
+site-wide header: brand, primary links, an optional grouped menu, actions and a
+compact sheet for narrow screens. Both menus are native `details` elements, so
+the header works without scripts. `AppShellProps.Header` optionally replaces the
+built-in AppShell header, and `ThemeToggleProps.IconOnly` renders the toggle as
+an icon button named by its label. The toggle now shows sun/moon icons instead
+of the former text glyph in both variants.
+
+Existing keyed literals keep their behavior when the new fields are omitted.
+Unkeyed `AppShellProps` or `ThemeToggleProps` literals need keyed fields. The
+`.site-*` classes are opt-in. `examples/site` gains `HandlerWithOptions` so a
+host site can supply its own header and default theme; that package remains an
+example, not a stable API.
