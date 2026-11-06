@@ -31,7 +31,8 @@ a native three-step form with final revalidation; and a searchable catalog
 covering all 33 public templ components with compiled/downloadable recipes.
 The Icon component includes 24 original inline SVG drawings and optional
 button/link adornments with explicit accessible naming for icon-only actions.
-Twelve demo areas exercise these APIs.
+A bounded CSV upload preview exercises native multipart forms and Go validation
+without persisting files. Thirteen demo areas exercise these APIs.
 
 The Go-only developer command now checks runtime dependency boundaries, race/vet,
 generated-source reproducibility and independent catalog recipe compilation. It
@@ -60,9 +61,9 @@ is pending. The active broad goal remains unfinished.
    application actions with explicit server ownership; prove responsive and
    keyboard behavior in browsers. Avoid decorative controls that suggest
    unsupported behavior.
-2. **Forms for real applications.** Field label/help/error bindings, input addons
-   and native multi-step form validation are implemented. Next: constrained file
-   handling recipes and application-owned mutation/idempotency examples where
+2. **Forms for real applications.** Field label/help/error bindings, input addons,
+   native multi-step form validation and a bounded CSV upload preview are
+   implemented. Next: application-owned mutation/idempotency examples where
    useful. Validate keyboard and assistive-technology behavior. Keep validation,
    storage and request protection separate from the library.
 3. **Visual language.** Inline SVG icons with typed names and accessible action

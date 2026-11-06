@@ -102,3 +102,44 @@ Back bypasses native constraints; error links focus the relevant field; assistiv
 technology announces its label and descriptions; long prefixes and review text
 fit mobile widths; light/dark/reduced-motion settings remain usable. No browser
 verification is claimed inside the restricted environment.
+
+## Bounded CSV upload preview
+
+Open `/uploads` for a native file-input example connected to a Go handler. Download
+`/uploads/sample.csv`, select it, and submit **Preview CSV**. The response displays
+a semantic DataTable only after every row passes validation. Errors link back to
+the file input, set `aria-invalid`, and explain which line needs correction. The
+browser cannot repopulate a file chooser, so users must choose the corrected file
+again. A fresh GET has no previous upload state.
+
+`examples/basic/uploads.templ` composes Form with `Multipart: true`, FileInput,
+ErrorSummary, Button and DataTable. `uploads.go` owns all request and CSV rules:
+
+- `http.MaxBytesReader` bounds the whole request at 72 KiB, including multipart
+  headers, additional parts and trailing bytes, even without Content-Length.
+- The bounded body is read into memory before multipart parsing. Exactly one
+  unencoded file named `projects` is accepted, with at most 64 KiB of contents.
+  No `ParseMultipartForm`, temporary files, client-derived filesystem paths or
+  persistent storage are used. Filename and MIME hints do not decide validity.
+- CSV must be UTF-8 (an optional leading BOM is accepted) with the exact header
+  `project,owner,status`, 1–50 data rows and three fields per row. Blank physical
+  lines follow Go's CSV-reader behavior and are ignored. CRLF is supported.
+- Fields are single-line text without control characters. Edge spaces are
+  trimmed; each field has 1–80 Unicode characters. Status is exactly `planned`,
+  `active` or `complete`. Quoted commas are supported. Invalid input produces no
+  partial table, and valid cell text uses templ's normal escaping.
+- Malformed multipart requests return 400, oversized requests/files return 413,
+  and invalid CSV content returns 422. Successful previews return 200. The demo's
+  existing cross-origin protection and restrictive CSP also apply here.
+
+The small in-memory preview is deliberately application code, not a general
+upload API in GothUI. It has no import, session, filesystem or database side
+effect; repeating a POST repeats the preview. A real importer must supply its
+own authorization, storage lifecycle and mutation rules. This example does not
+promise virus scanning or support arbitrary file types.
+
+HTTP tests exercise the actual multipart form and downloadable sample, escaping,
+line errors, Unicode/CSV rules, exact size/row boundaries, unknown body lengths,
+duplicate parts, truncation, cross-origin rejection, HEAD/method handling,
+concurrent isolation and absence of temporary files. Browser file-picker,
+keyboard, screen-reader and responsive checks remain pending.
