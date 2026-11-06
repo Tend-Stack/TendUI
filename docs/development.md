@@ -97,7 +97,7 @@ check executes the binary locally, so this command is not a cross-build helper.
 
 Versions use year-based tags, such as `v2026.1.0`. With an appropriate tag, the
 build embeds `git describe --tags --long --dirty`. Before the first release tag,
-it uses `2026.1.0-dev-g<commit>`. Untracked files also add `-dirty`. Malformed
+it uses `<Version>-dev-g<commit>` (for example, `2026.2.0-preview.1-dev-g<commit>`). Untracked files also add `-dirty`. Malformed
 release identifiers are rejected. The command creates no tags or commits and
 publishes nothing.
 

@@ -18,7 +18,7 @@ func main() {
 	flag.Parse()
 	demo := site.Handler()
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/__test/html/index.html" {
+		if r.URL.Path == "/__test/html/index.html" || r.URL.Path == "/__test/html/" {
 			http.ServeFile(w, r, "../../examples/html/index.html")
 			return
 		}
