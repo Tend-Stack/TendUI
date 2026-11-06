@@ -3,7 +3,7 @@
 The CSS works with static HTML and any server or template engine. No Go, templ,
 Node.js, npm or JavaScript runtime is required.
 
-From a checkout of `v2026.2.0-preview.1`, copy these two files into a new folder:
+From a checkout of `v2026.2.0-preview.2`, copy these two files into a new folder:
 
 ```sh
 mkdir my-tendui-page

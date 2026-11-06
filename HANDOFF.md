@@ -29,8 +29,8 @@ run `./tests/results/demos/tendui-demo -open` on a host with browser access.
 
 ## Release boundary
 
-The current renamed preview is `v2026.2.0-preview.1`. Install that explicit tag;
-see [release notes](docs/releases/2026.2.0-preview.1.md) and
+The current renamed preview is `v2026.2.0-preview.2`. Install that explicit tag;
+see [release notes](docs/releases/2026.2.0-preview.2.md) and
 [quickstarts](docs/quickstart.md).
 Historical pre-rename tags and evidence remain immutable and are clearly labeled.
 
