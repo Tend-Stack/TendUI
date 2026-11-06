@@ -1,6 +1,6 @@
 # Security policy
 
-Email **hello@tendstack.com** privately with suspected vulnerabilities. Include
+Email **security@tendstack.com** privately with suspected vulnerabilities. Include
 version/commit, affected component, a minimal reproduction and the likely impact.
 Do not open a public issue, attach production credentials or include real user data.
 We will coordinate disclosure and a fix with the reporter; no response-time SLA

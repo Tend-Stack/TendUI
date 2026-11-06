@@ -4,5 +4,5 @@ contact_links:
     url: https://tendui.com/docs
     about: Start with the guides and working examples.
   - name: Private security report
-    url: mailto:hello@tendstack.com
+    url: mailto:security@tendstack.com
     about: Do not disclose vulnerabilities in public issues.
