@@ -1,5 +1,48 @@
 # GothUI implementation handoff
 
+## Official security snapshot and native minimum compiler (2026-11-06)
+
+The complete official vuln.go.dev/vulndb.zip downloaded through the available
+HTTPS path. All 4,789 indexed reports were present. govulncheck v1.9.0 scanned
+all seven packages, templ v0.3.1100 and Go 1.27.3/Linux amd64 using the supported
+file database protocol and reported no known vulnerabilities. The database is
+dated 2026-11-05T23:49:57Z; its archive hash, scanner hash, source and scope are
+recorded under tests/results/security. Retain one 3.6 MB compressed snapshot
+and concise results; the extracted database is removed. Superseded incomplete
+scan output was removed. This is a dated source scan, not remote CI execution or
+an assurance about unknown vulnerabilities/other build configurations.
+
+Downloaded Go 1.26.0 temporarily from its official distribution and verified the
+published SHA-256 and exact archive size before execution. All seven packages
+pass native race tests and vet. The versioned consumer without replace, native
+CGO-disabled demo build and version smoke pass. The retained review executable
+continues to use patched Go 1.27.3; the minimum compiler is only a compatibility
+test. Minimum-version evidence lives under tests/results/compatibility-go126.
+
+The minimum compiler exposed a developer helper bug: successful go list emitted
+a read-only stat-cache warning on stderr, which CombinedOutput treated as a
+package path ("unreviewed public package go:"). runner.output now returns only
+stdout to parsers, forwards successful diagnostics and preserves both streams
+on failures. A portable subprocess regression covers success and failure.
+The full developer check passes on 1.26.0, including the matching 242-entry API;
+developer-tool race tests and vet also pass on 1.27.3. No public API, module
+dependency or demo runtime change was needed.
+
+Gitea accepted the previously empty repository's history at b066be9. GitHub is
+empty/private/unarchived and rejected the push with GH007 for the private author
+email. A metadata-only correction for 26 existing commits awaits approval;
+tests/results/delivery records the current proposal. New development commits use
+the account's no-reply identity; existing history and privacy settings remain
+untouched. Do not push GitHub just because a newer commit would evade its check
+of the tip email. The pending correction preserves original history on Gitea
+before a lease-protected main replacement and matching GitHub publication.
+
+Remove the owned temporary Go 1.26 distribution, its disposable binary and
+/tmp/gothui-snapshot-cache after verification. Keep only compact provenance,
+current results, the official compressed database and the existing review binary.
+Native macOS/Windows CI, browser/assistive-technology review, optional HTMX browser
+execution and published-release installation remain open.
+
 ## HTMX theme navigation correction (2026-11-06)
 
 The release-gate audit found a server contract bug: HX-Refresh reloaded a URL
