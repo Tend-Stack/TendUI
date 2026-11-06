@@ -1,4 +1,4 @@
-// Package site provides the runnable GothUI catalog and application examples.
+// Package site provides the runnable TendUI catalog and application examples.
 // Its routes and demo workflows are examples, not a stable component API.
 package site
 
@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/Tend-Stack/GothUI/v2026"
-	"github.com/Tend-Stack/GothUI/v2026/components"
-	"github.com/Tend-Stack/GothUI/v2026/render"
+	"github.com/Tend-Stack/TendUI/v2026"
+	"github.com/Tend-Stack/TendUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/render"
 	"github.com/a-h/templ"
 )
 
-const version = gothui.Version
+const version = tendui.Version
 
 // Handler returns an independent HTTP handler for the catalog and native demos.
 // Mount at the origin root; demo links and form actions use absolute paths.
@@ -28,19 +28,25 @@ func theme(r *http.Request) components.Theme {
 	case "system":
 		return components.ThemeSystem
 	}
-	cookie, err := r.Cookie("gothui_theme")
+	cookie, err := r.Cookie("tendui_theme")
 	if err == nil && cookie.Value == "system" {
 		return components.ThemeSystem
 	}
 	if err == nil && cookie.Value == string(components.ThemeDark) {
 		return components.ThemeDark
 	}
+	if err == nil && cookie.Value == string(components.ThemeLight) {
+		return components.ThemeLight
+	}
+	if fallback := siteOptions(r.Context()).DefaultTheme; fallback != "" {
+		return fallback
+	}
 	return components.ThemeLight
 }
 
 func newHandler() http.Handler {
 	mux := http.NewServeMux()
-	mux.Handle(gothui.AssetPath, gothui.AssetHandler())
+	mux.Handle(tendui.AssetPath, tendui.AssetHandler())
 	mux.HandleFunc("/appearance.css", exportAppearance)
 	mux.HandleFunc("/appearance.go", exportAppearance)
 	mux.HandleFunc("/interactions/confirm", confirmDemo)
@@ -75,7 +81,7 @@ func newHandler() http.Handler {
 			next = components.ThemeLight
 		}
 		http.SetCookie(w, &http.Cookie{
-			Name: "gothui_theme", Value: string(next), Path: "/",
+			Name: "tendui_theme", Value: string(next), Path: "/",
 			MaxAge: 60 * 60 * 24 * 365, HttpOnly: true,
 			Secure: r.TLS != nil, SameSite: http.SameSiteStrictMode,
 		})
@@ -114,33 +120,33 @@ func newHandler() http.Handler {
 			return
 		}
 		var body templ.Component
-		title := "GothUI · HTML, beautifully enough"
+		title := "TendUI · HTML, beautifully enough"
 		switch r.URL.Path {
 		case "/playground":
-			title = "Component playground · GothUI"
+			title = "Component playground · TendUI"
 			options := readPlayground(r.URL.Query())
 			options.Appearance = appearance(r)
 			body = playground(options)
 		case "/patterns":
-			title = "Application patterns · GothUI"
+			title = "Application patterns · TendUI"
 			body = patterns(readPatterns(r.URL.Query()))
 		case "/motion":
-			title = "Motion & surfaces · GothUI"
+			title = "Motion & surfaces · TendUI"
 			body = motionStudio(appearance(r), themeName(theme(r)))
 		case "/interactions":
-			title = "Native interactions · GothUI"
+			title = "Native interactions · TendUI"
 			body = interactions(r.URL.Query().Get("confirmed") == "1", r.URL.Query().Get("view"))
 		case "/settings":
-			title = "Appearance · GothUI"
+			title = "Appearance · TendUI"
 			body = appearancePage(appearance(r), themeName(theme(r)), r.URL.Query().Get("saved") == "1")
 		case "/workspace":
-			title = "Workspace · GothUI"
+			title = "Workspace · TendUI"
 			body = workspace()
 		case "/forms":
-			title = "Form lab · GothUI"
+			title = "Form lab · TendUI"
 			body = formLab(formData{Errors: map[string]string{}})
 		case "/dashboard":
-			title = "Project dashboard · GothUI"
+			title = "Project dashboard · TendUI"
 			body = dashboard(readDashboard(r.URL.Query()))
 		default:
 			body = showcase(r.URL.Query().Get("name"), version)
@@ -150,6 +156,14 @@ func newHandler() http.Handler {
 
 	// Reject browser cross-origin unsafe requests. The strict cookie is additional protection.
 	return http.NewCrossOriginProtection().Handler(mux)
+}
+
+func returnPath(r *http.Request, path string) bool {
+	if demoPath(path) {
+		return true
+	}
+	host := siteOptions(r.Context()).HostPage
+	return host != nil && host(path)
 }
 
 func demoPath(path string) bool {
@@ -189,7 +203,7 @@ func sameOriginDemoURL(r *http.Request, value string) *url.URL {
 	if r.TLS != nil {
 		scheme = "https"
 	}
-	if err != nil || u.User != nil || u.Host != r.Host || u.Scheme != scheme || !demoPath(u.Path) {
+	if err != nil || u.User != nil || u.Host != r.Host || u.Scheme != scheme || !returnPath(r, u.Path) {
 		return nil
 	}
 	return u
@@ -202,7 +216,7 @@ func renderPage(w http.ResponseWriter, r *http.Request, title string, body templ
 func renderResponse(w http.ResponseWriter, r *http.Request, title string, body, fragment templ.Component, status int) {
 	page := components.Layout(components.LayoutProps{
 		Title: title, Language: "en", Theme: theme(r), Appearance: appearance(r),
-		Description: "Interactive GothUI demos: semantic components, native forms, and layouts.",
+		Description: "Interactive TendUI demos: semantic components, native forms, and layouts.",
 		Head:        demoHead(),
 	}, body)
 	htmlHeaders(w)

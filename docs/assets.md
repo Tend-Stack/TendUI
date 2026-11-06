@@ -1,16 +1,16 @@
 # Embedded stylesheet delivery
 
-GothUI reads `static/gothui.css` from its embedded filesystem when an AssetHandler
+TendUI reads `static/tendui.css` from its embedded filesystem when an AssetHandler
 is created. The returned handler serves that immutable byte slice with a new
 reader for each request. Consumers need no runtime file, CDN, npm package or
 stylesheet build.
 
 ```go
-mux.Handle(gothui.AssetPath, gothui.AssetHandler())
+mux.Handle(tendui.AssetPath, tendui.AssetHandler())
 ```
 
-Mount it directly at `/gothui/static/`. Do not add `http.StripPrefix`; the handler
-expects `/gothui/static/gothui.css`, the URL used by Layout. It serves only that
+Mount it directly at `/tendui/static/`. Do not add `http.StripPrefix`; the handler
+expects `/tendui/static/tendui.css`, the URL used by Layout. It serves only that
 file, rejects methods other than GET/HEAD with 405 and an Allow header, and does
 not expose directory listings or the rest of the embedded filesystem.
 
@@ -57,7 +57,7 @@ so simultaneous range requests cannot change each other's returned section.
 `asset_http_test.go` checks the actual exported handler, including the served-byte
 hash, revalidation headers, HEAD lengths, empty conditional responses, stale
 validators, If-Range/precondition precedence, single/multipart ranges and 32
-parallel readers. `gothui_test.go` covers mounting, method restrictions, unknown
+parallel readers. `tendui_test.go` covers mounting, method restrictions, unknown
 assets and directories. These tests use in-process HTTP recorders and the race
 detector; they do not claim a live browser, proxy or network test.
 

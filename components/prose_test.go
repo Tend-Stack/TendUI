@@ -23,7 +23,7 @@ func TestProseDefaultsAndMeasureContract(t *testing.T) {
 		if html != `<div class="prose" data-measure="`+tc.want+`"></div>` {
 			t.Errorf("unsafe or unexpected measure wrapper: %s", html)
 		}
-		if !strings.Contains(css, `.prose[data-measure="`+tc.want+`"]`) || !strings.Contains(css, "--gothui-prose-"+tc.want+":") {
+		if !strings.Contains(css, `.prose[data-measure="`+tc.want+`"]`) || !strings.Contains(css, "--tendui-prose-"+tc.want+":") {
 			t.Errorf("measure %s has no shipped style", tc.want)
 		}
 	}

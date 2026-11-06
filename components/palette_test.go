@@ -24,7 +24,7 @@ func paletteBody(t *testing.T, css, selector string) string {
 func literalPalette(t *testing.T, body string) map[string]string {
 	t.Helper()
 	result := map[string]string{}
-	for _, match := range regexp.MustCompile(`--gothui-([a-z-]+):\s*(#[0-9a-f]{6})(?:\s*!important)?\s*;`).FindAllStringSubmatch(body, -1) {
+	for _, match := range regexp.MustCompile(`--tendui-([a-z-]+):\s*(#[0-9a-f]{6})(?:\s*!important)?\s*;`).FindAllStringSubmatch(body, -1) {
 		result[match[1]] = match[2]
 	}
 	return result
@@ -74,7 +74,7 @@ func TestSystemDarkPaletteMatchesExplicitDark(t *testing.T) {
 	explicit := paletteBody(t, css, `:root[data-theme="dark"]`)
 	system := paletteBody(t, css, `:root:not([data-theme="light"]):not([data-theme="dark"])`)
 	// Include variable references and elevation, not just literal hex values.
-	declarations := regexp.MustCompile(`(?:--gothui-[a-z-]+|color-scheme):\s*[^;]+;`)
+	declarations := regexp.MustCompile(`(?:--tendui-[a-z-]+|color-scheme):\s*[^;]+;`)
 	want, got := declarations.FindAllString(explicit, -1), declarations.FindAllString(system, -1)
 	if strings.Join(want, "\n") != strings.Join(got, "\n") {
 		t.Fatal("system dark and explicit dark theme declarations differ")
@@ -91,7 +91,7 @@ func TestPrintPaletteWinsOverScreenThemes(t *testing.T) {
 	colors := literalPalette(t, body)
 	for _, name := range []string{"background", "surface", "subtle", "text", "muted", "border", "primary", "primary-hover", "on-primary", "danger", "info", "success", "warning", "focus"} {
 		color := paletteColor(t, colors, name)
-		if !strings.Contains(body, "--gothui-"+name+": "+color+" !important;") {
+		if !strings.Contains(body, "--tendui-"+name+": "+color+" !important;") {
 			t.Errorf("print %s needs priority over explicit/system dark selectors and appearance exports", name)
 		}
 	}
@@ -113,13 +113,13 @@ func TestPrintPaletteWinsOverScreenThemes(t *testing.T) {
 	}
 	// Printing with backgrounds disabled must not leave white button labels.
 	buttons := paletteBody(t, printCSS, `button, .button, input:is([type="submit"], [type="button"], [type="reset"])`)
-	for _, declaration := range []string{"background: transparent !important;", "color: var(--gothui-text) !important;", "border-color: var(--gothui-border) !important;"} {
+	for _, declaration := range []string{"background: transparent !important;", "color: var(--tendui-text) !important;", "border-color: var(--tendui-border) !important;"} {
 		if !strings.Contains(buttons, declaration) {
 			t.Errorf("print buttons missing %s", declaration)
 		}
 	}
 	step := paletteBody(t, printCSS, `.steps [aria-current="step"] .step-number`)
-	for _, declaration := range []string{"background: transparent;", "color: var(--gothui-text);", "border-width: 2px;"} {
+	for _, declaration := range []string{"background: transparent;", "color: var(--tendui-text);", "border-width: 2px;"} {
 		if !strings.Contains(step, declaration) {
 			t.Errorf("print current-step marker missing %s", declaration)
 		}

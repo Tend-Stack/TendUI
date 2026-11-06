@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test.beforeEach(async ({ context }) => {
-  await context.addCookies([{ name: 'gothui_test_htmx', value: '1', url: 'http://127.0.0.1:8089', sameSite: 'Strict' }]);
+  await context.addCookies([{ name: 'tendui_test_htmx', value: '1', url: 'http://127.0.0.1:8089', sameSite: 'Strict' }]);
 });
 
 test('consumer-supplied HTMX swaps the edit panel and validation response', async ({ page }) => {

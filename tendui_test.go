@@ -1,4 +1,4 @@
-package gothui
+package tendui
 
 import (
 	"net/http"
@@ -30,7 +30,7 @@ func TestAssets(t *testing.T) {
 		{"POST", StylesheetURL, "", 405},
 		{"GET", AssetPath, "", 404},
 		{"GET", AssetPath + "missing.css", "", 404},
-		{"GET", AssetPath + "static/gothui.css", "", 404},
+		{"GET", AssetPath + "static/tendui.css", "", 404},
 	} {
 		t.Run(tc.method+tc.path+tc.etag, func(t *testing.T) {
 			t.Parallel()

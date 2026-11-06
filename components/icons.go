@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// IconName selects an inline drawing authored for GothUI. No URL or SVG markup
+// IconName selects an inline drawing authored for TendUI. No URL or SVG markup
 // supplied by an application is interpreted as an icon.
 type IconName string
 
@@ -97,7 +97,7 @@ func IconNames() []IconName {
 func validateIcon(name IconName) error {
 	if name != IconNone {
 		if _, ok := iconPaths[name]; !ok {
-			return fmt.Errorf("gothui: unknown icon %q", name)
+			return fmt.Errorf("tendui: unknown icon %q", name)
 		}
 	}
 	return nil
@@ -110,7 +110,7 @@ func validateActionIcons(before, after IconName, text, label string) error {
 		}
 	}
 	if (before != IconNone || after != IconNone) && strings.TrimSpace(text) == "" && strings.TrimSpace(label) == "" {
-		return fmt.Errorf("gothui: an icon-only action requires an AriaLabel")
+		return fmt.Errorf("tendui: an icon-only action requires an AriaLabel")
 	}
 	return nil
 }

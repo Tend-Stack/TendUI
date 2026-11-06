@@ -1,3 +1,5 @@
+> Historical evidence from before the TendUI rename. The immutable tag and original module path are unchanged.
+
 # GothUI 2026.1.0 verification
 
 Verified on 2026-11-06. The immutable `v2026.1.0` tag points to

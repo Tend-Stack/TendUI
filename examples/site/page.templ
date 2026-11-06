@@ -1,6 +1,6 @@
 package site
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 templ showcase(name, version string) {
 	@demoHeader("/")
@@ -20,7 +20,7 @@ templ showcase(name, version string) {
 			@components.Grid(components.GridProps{}) {
 				@components.Card(components.CardProps{Header: cardHeading("A small, solid foundation"), Footer: cardNote("One stylesheet. Served by Go.")}) {
 					<p>Semantic elements carry the design. An article becomes a card; a button feels like a button.</p>
-					<p><code>go get github.com/Tend-Stack/GothUI/v2026</code></p>
+					<p><code>go get github.com/Tend-Stack/TendUI/v2026</code></p>
 				}
 				@components.Card(components.CardProps{Header: cardHeading("The browser does the work")}) {
 					<details>
@@ -55,7 +55,7 @@ templ showcase(name, version string) {
 			}
 		</section>
 	</main>
-	<footer><small>GothUI { version } · Built with Go, templ, and the web platform.</small></footer>
+	<footer><small>TendUI { version } · Built with Go, templ, and the web platform.</small></footer>
 }
 
 templ cardHeading(title string) {

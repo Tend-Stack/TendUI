@@ -1,7 +1,7 @@
 package site
 
 import "strconv"
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 templ catalogPage(d catalogOptions) {
 	@demoHeader("/catalog")
@@ -95,4 +95,7 @@ templ catalogPreviewPage(e catalogEntry) {
 
 templ demoHead() {
 	<link rel="stylesheet" href={ templ.URL(demoStylePath) }/>
+	if head := siteOptions(ctx).Head; head != nil {
+		@head
+	}
 }

@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Tend-Stack/GothUI/v2026/internal/apiguard"
+	"github.com/Tend-Stack/TendUI/v2026/internal/apiguard"
 )
 
 // api reads compiler export data, so aliases, inferred types and iota constants

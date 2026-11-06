@@ -82,7 +82,7 @@ templ Pagination(props PaginationProps) {
 	if props.TotalPages > 1 {
 		{{
 			if props.URLForPage == nil {
-				return fmt.Errorf("gothui: Pagination requires URLForPage when TotalPages > 1")
+				return fmt.Errorf("tendui: Pagination requires URLForPage when TotalPages > 1")
 			}
 		}}
 		{{ page := currentPage(props.Page, props.TotalPages) }}

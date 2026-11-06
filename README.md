@@ -1,15 +1,25 @@
-# GothUI
+# TendUI
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logo-dark.svg">
-  <img src="docs/brand/logo-light.svg" alt="GothUI" width="240">
+  <img src="docs/brand/logo-light.svg" alt="Tend UI" width="260">
 </picture>
 
-Semantic CSS and typed templ components, embedded in your Go binary.
-No Node.js, npm, Sass, CDN, web fonts, bundled JavaScript, or asset compilation.
+**Beautiful interfaces. No build pipeline.**
 
-GothUI pairs original semantic CSS with composable Go components. Build
+Pure CSS. Semantic HTML. No Node.js, no npm, no bundled JavaScript.
+First-class Go and templ support.
+
+Use the stylesheet with any HTML stack. In Go, `//go:embed` bundles the CSS
+inside your application: build and ship one executable, with no runtime asset
+downloads. Typed templ components and optional HTMX attributes are ready when
+you need them.
+
+TendUI pairs original semantic CSS with composable Go components. Build
 interfaces with native HTML, typed configuration, and application-owned behavior.
+
+See [migration notes](docs/tendui-migration.md) for the renamed Go module, CSS
+namespace, and use with other HTML stacks.
 
 ## Install and run
 
@@ -18,14 +28,14 @@ runtime. The asset package imports only the standard library; the components
 have one direct Go dependency, templ. It is not a literally dependency-free
 module, and this version does not support Go 1.21.
 
-After repository publication, consumers can use:
+The renamed TendUI module is currently available from the development branch:
 
 ```sh
-go get github.com/Tend-Stack/GothUI/v2026
+go get github.com/Tend-Stack/TendUI/v2026@main
 ```
 
 The GitHub repository is currently private. Until that changes, Go downloads
-require repository credentials and `GOPRIVATE=github.com/Tend-Stack/GothUI`.
+require repository credentials and `GOPRIVATE=github.com/Tend-Stack/TendUI`.
 Generated `*_templ.go` files ship with the module, so consumers do not need
 the templ CLI to use these components from Go.
 
@@ -38,14 +48,14 @@ import (
     "log"
     "net/http"
 
-    "github.com/Tend-Stack/GothUI/v2026"
-    "github.com/Tend-Stack/GothUI/v2026/components"
+    "github.com/Tend-Stack/TendUI/v2026"
+    "github.com/Tend-Stack/TendUI/v2026/components"
     "github.com/a-h/templ"
 )
 
 func main() {
     mux := http.NewServeMux()
-    mux.Handle(gothui.AssetPath, gothui.AssetHandler())
+    mux.Handle(tendui.AssetPath, tendui.AssetHandler())
     page := components.Layout(components.LayoutProps{
         Title: "My Go app",
         Language: "en",
@@ -76,8 +86,8 @@ disabled.
 ## Packages and assets
 
 ```text
-gothui.go                 embedded CSS handler
-static/gothui.css         readable semantic stylesheet
+tendui.go                 embedded CSS handler
+static/tendui.css         readable semantic stylesheet
 components/
   layout.templ            document, title, language, theme, stylesheet
   theme.templ             native POST theme form with optional HTMX hooks
@@ -100,9 +110,9 @@ render/                   buffered page/fragment HTTP responses
 examples/site/            thirteen demo pages, searchable catalog, preference cookies and downloads
 ```
 
-Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
+Mount `AssetHandler()` directly at `/tendui/static/`. Do **not** apply
 `http.StripPrefix`: the handler already recognizes the complete path. It serves
-only `gothui.css`, supports GET/HEAD, conditional ETag requests and byte ranges,
+only `tendui.css`, supports GET/HEAD, conditional ETag requests and byte ranges,
 and returns 404 for directories and unknown assets. Revalidation prevents a
 browser from keeping stale CSS across binary upgrades. See the
 [asset delivery guide](docs/assets.md) for cache/proxy behavior, range requests
@@ -189,8 +199,8 @@ No font downloads are needed. Light/dark/system mode remains an independent
 
 `Appearance.Normalize()` validates preferences and falls back to defaults.
 `Attributes()` produces native `data-*` attributes for applications that own
-their document shell. `CSS()` exports overrides referencing GothUI's canonical
-tokens, so it **requires gothui.css** and must be loaded after it. CSS exports
+their document shell. `CSS()` exports overrides referencing TendUI's canonical
+tokens, so it **requires tendui.css** and must be loaded after it. CSS exports
 configure appearance; keep light/dark/system mode on the root HTML element.
 `LayoutProps.Head` accepts trusted application components after the base
 stylesheet, for custom stylesheet links or metadata.
@@ -298,8 +308,8 @@ empty results keep their recovery link.
 
 Set `LayoutProps.Theme` to `ThemeLight` or `ThemeDark` to emit the root
 `data-theme` attribute. Leave it at `ThemeSystem` (the empty default) to follow
-`prefers-color-scheme`. Override `--gothui-*` properties in your own CSS loaded
-after GothUI. Dark tokens have no effect on explicitly light pages.
+`prefers-color-scheme`. Override `--tendui-*` properties in your own CSS loaded
+after TendUI. Dark tokens have no effect on explicitly light pages.
 
 `ThemeToggle()` renders a small native form that POSTs to `/api/theme/toggle`.
 Place it **outside other forms**. You can pass `ThemeToggleProps` for a localized
@@ -316,7 +326,7 @@ library's system theme remains available for applications that prefer it.
 
 The button preserves the requested `hx-post="/api/theme/toggle"`,
 `hx-target="html"`, and `hx-swap="outerHTML"` attributes. These are inert without
-HTMX. **HTMX itself is JavaScript** and is never included or loaded by GothUI.
+HTMX. **HTMX itself is JavaScript** and is never included or loaded by TendUI.
 Consumers that already use it can use the hooks without writing custom JS.
 
 A document root swap is not a reliable way to replace a page's root attributes
@@ -344,8 +354,8 @@ import (
     "log"
     "net/http"
 
-    "github.com/Tend-Stack/GothUI/v2026/components"
-    "github.com/Tend-Stack/GothUI/v2026/render"
+    "github.com/Tend-Stack/TendUI/v2026/components"
+    "github.com/Tend-Stack/TendUI/v2026/render"
 )
 
 func profileHandler(w http.ResponseWriter, r *http.Request) {
@@ -465,7 +475,7 @@ hidden from assistive technology. Explore `/catalog/icon` and the
 
 ## Searchable component catalog
 
-Open `/catalog` to browse all 36 public templ components by name, category or
+Open `/catalog` to browse all 37 public templ components by name, category or
 usage notes. Each entry provides a preview, guidance and a downloadable `.templ`
 recipe drawn from the same source compiled for that preview. Layouts open as
 standalone pages to preserve document landmarks. Search and pagination use Go
@@ -497,13 +507,13 @@ review executable. See [the development guide](docs/development.md) and
 [measured performance](docs/performance.md):
 
 ```sh
-go run ./cmd/gothui-dev check
-go run ./cmd/gothui-dev api
-go run ./cmd/gothui-dev generated
-go run ./cmd/gothui-dev recipes
-go run ./cmd/gothui-dev bench
-go run ./cmd/gothui-dev build
-./tests/results/demos/gothui-demo -version
+go run ./cmd/tendui-dev check
+go run ./cmd/tendui-dev api
+go run ./cmd/tendui-dev generated
+go run ./cmd/tendui-dev recipes
+go run ./cmd/tendui-dev bench
+go run ./cmd/tendui-dev build
+./tests/results/demos/tendui-demo -version
 ```
 
 `check` already includes `api`; the separate command is useful during API review.
@@ -528,8 +538,8 @@ fixes on the 2026 line keep `/v2026`. See Go's
 
 ## Project links
 
-- Source and issues: https://github.com/Tend-Stack/GothUI
-- Website source: https://github.com/Tend-Stack/GothUI-Web
+- Source and issues: https://github.com/Tend-Stack/TendUI
+- Website source: https://github.com/Tend-Stack/TendUI-web
 
 Fetch and integrate GitHub `main` before contributing. See `HANDOFF.md` for the
 current development entry points and remaining release checks.

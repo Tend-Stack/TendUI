@@ -1,6 +1,6 @@
 # Motion and expressive surfaces
 
-GothUI uses native CSS for short, optional motion. There is no animation runtime,
+TendUI uses native CSS for short, optional motion. There is no animation runtime,
 DOM observer, client state manager, or asset build step. These styles ship in the
 same embedded CSS as the rest of the library.
 
@@ -8,7 +8,7 @@ same embedded CSS as the rest of the library.
 
 ```go
 appearance := components.Appearance{Motion: components.MotionSystem}
-// Or components.MotionOff to disable GothUI's movement explicitly.
+// Or components.MotionOff to disable TendUI's movement explicitly.
 ```
 
 Pass that appearance to `LayoutProps`. System mode enables movement only inside
@@ -65,9 +65,9 @@ create an interaction or communicate state by themselves. All surfaces retain
 borders, and print and forced-color modes suppress shadows.
 
 CSS consumers can use `data-card-elevation="subtle"` on an article. The shadow
-tokens are `--gothui-elevation-flat`, `--gothui-elevation-subtle`,
-`--gothui-elevation-raised` and `--gothui-elevation-floating`; light, explicit dark
-and system dark provide consistent variants. `--gothui-shadow` is the page alias
+tokens are `--tendui-elevation-flat`, `--tendui-elevation-subtle`,
+`--tendui-elevation-raised` and `--tendui-elevation-floating`; light, explicit dark
+and system dark provide consistent variants. `--tendui-shadow` is the page alias
 used by default cards and overlays. Custom styles should preserve the print and
 forced-color overrides. Review depth, clipping and readability in a browser;
 source-level tests do not measure the rendered effect.
@@ -87,9 +87,9 @@ without CSS or when animation is disabled. Native dialogs/popovers animate on
 opening. Closing is immediate, preserving native dismissal/focus behavior and
 avoiding reliance on discrete exit-transition support.
 
-The token API is `--gothui-duration-fast`, `--gothui-duration-enter`,
-`--gothui-duration-loading`, `--gothui-stagger-step`, `--gothui-lift-distance` and
-`--gothui-ease-out`. Custom durations should remain short. Custom CSS must continue
+The token API is `--tendui-duration-fast`, `--tendui-duration-enter`,
+`--tendui-duration-loading`, `--tendui-stagger-step`, `--tendui-lift-distance` and
+`--tendui-ease-out`. Custom durations should remain short. Custom CSS must continue
 to respect reduced motion, including pseudo-elements and any new transforms.
 
 ## Loading, empty and metric states
@@ -136,7 +136,7 @@ are not claimed.
 
 The operator supplied [PureCSS-Animations](https://github.com/sera619/PureCSS-Animations)
 as a visual reference, especially its gradient-border and hover examples. This
-implementation is independently authored against GothUI's tokens and accessibility
+implementation is independently authored against TendUI's tokens and accessibility
 constraints; no source files from that collection are bundled. The repository
 also labels its image carousel as not CSS-only, so that example is outside the
 current no-JavaScript contract.

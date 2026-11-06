@@ -211,7 +211,7 @@ func Pagination(props PaginationProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 		if props.TotalPages > 1 {
 			if props.URLForPage == nil {
-				return fmt.Errorf("gothui: Pagination requires URLForPage when TotalPages > 1")
+				return fmt.Errorf("tendui: Pagination requires URLForPage when TotalPages > 1")
 			}
 			page := currentPage(props.Page, props.TotalPages)
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<nav class=\"pagination\" aria-label=\"")

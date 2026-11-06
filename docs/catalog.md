@@ -1,7 +1,7 @@
 # Component catalog
 
 The demo executable now contains a server-rendered catalog at `/catalog` with
-all 36 current public templ components. Search by name, category or usage notes;
+all 37 current public templ components. Search by name, category or usage notes;
 filter by category; use ordinary pagination links. Search text is bounded to 120
 Unicode characters, category choices are validated, and page numbers are clamped.
 No search index service, browser runtime or external request is involved.
@@ -55,8 +55,8 @@ HEAD semantics, document landmarks, script policy, escaping, safe attachments,
 search/pagination boundaries and registered theme-return paths. Source coverage
 is specifically for public templ components, not every exported Go type or helper.
 
-The developer recipe check generates and compiles all 36 downloads as separate Go
-packages using a temporary module with a local replacement of GothUI. That proves
+The developer recipe check generates and compiles all 37 downloads as separate Go
+packages using a temporary module with a local replacement of TendUI. That proves
 the copied recipes compile independently; it is not a published-module install
 check. The temporary fixture packages are removed after validation, with concise
 compile logs retained. Browser layout, keyboard and assistive-technology checks

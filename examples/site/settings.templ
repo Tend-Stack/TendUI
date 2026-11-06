@@ -1,6 +1,6 @@
 package site
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
 templ appearanceControls(a components.Appearance) {
 	@components.Grid(components.GridProps{}) {
@@ -40,7 +40,7 @@ templ appearancePage(a components.Appearance, mode string, saved bool) {
 					</div>
 				}
 				@exportLinks(a, mode)
-				<p><small>Downloads reflect the displayed preview. Apply changes first. CSS overrides load after GothUI; the Go settings also carry your light/dark/system choice.</small></p>
+				<p><small>Downloads reflect the displayed preview. Apply changes first. CSS overrides load after TendUI; the Go settings also carry your light/dark/system choice.</small></p>
 			}
 		</section>
 		<section aria-labelledby="preview-heading">
