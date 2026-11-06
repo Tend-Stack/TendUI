@@ -490,7 +490,9 @@ intentional updates and the limits of this check.
 
 The prepared [CI matrix](docs/ci.md) runs native verification on Linux, macOS and
 Windows with Go 1.26.0 and 1.27.3. Remote execution is still pending; local
-cross-compilation results do not establish a pass on those native systems.
+cross-compilation results do not establish a pass on those native systems. A
+separate pinned `govulncheck` job is prepared for known-vulnerability scanning;
+its successful execution also remains pending.
 
 Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). No release tag is
 created until publication is verified. The build command embeds the Git development

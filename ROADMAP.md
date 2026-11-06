@@ -47,6 +47,9 @@ the update and migration process.
 A six-job GitHub verification matrix is prepared for Go 1.26.0/1.27.3 on Linux,
 macOS and Windows. Local foreign-target builds pass, but the remote matrix has
 not executed; docs/ci.md distinguishes compilation evidence from native results.
+A separate pinned vulnerability job uses text-mode failure semantics; local
+synthetic exit handling is verified, while the real database-backed scan remains
+unverified because the sandbox cannot reach its database.
 Allocation profiling removed redundant table-cell wrappers and attribute
 conversion: the local 100-row benchmark uses 618 allocations instead of 1,821,
 with unchanged output across the captured parity fixtures. See docs/performance.md.

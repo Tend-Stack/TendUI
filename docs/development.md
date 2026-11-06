@@ -95,3 +95,20 @@ Keep only current validation reports, the review executable and evidence for
 unresolved failures. The continuing developer owns their replacement or removal
 after review. Temporary fixtures are owned by the invoking command; shared Go
 caches remain user-owned and are not purged by this tool.
+
+
+## Known-vulnerability scan
+
+From a network-enabled development environment, run the pinned Go tool:
+
+```sh
+go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 -show verbose ./...
+```
+
+This development command does not add a GothUI runtime dependency or alter its
+module requirements. It needs the Go module proxy and vulnerability database.
+Use text mode for a failing gate: machine-readable output modes can return zero
+with findings. Treat a database/network error as an incomplete check, never a
+clean result. The separate prepared CI security job preserves logs and exact
+source/toolchain metadata; [the CI guide](ci.md) records its scope and evidence.
+The ordinary `gothui-dev check` remains usable without a vulnerability database.
