@@ -3,9 +3,8 @@
 Semantic CSS and typed templ components, embedded in your Go binary.
 No Node.js, npm, Sass, CDN, web fonts, bundled JavaScript, or asset compilation.
 
-GothUI reimplements Pico's semantic styling principles in original, plain CSS.
-It is independently named and does not use Pico's logo. The supplied Pico
-source and conversation remain outside this project as reference material.
+GothUI pairs original semantic CSS with composable Go components. Build
+interfaces with native HTML, typed configuration, and application-owned behavior.
 
 ## Install and run
 
@@ -523,16 +522,14 @@ A new annual line such as 2027 will need `/v2027` and consumer import updates;
 fixes on the 2026 line keep `/v2026`. See Go's
 [major version rules](https://go.dev/doc/modules/major-version).
 
-Configured repositories:
+## Project links
 
-- Go import repository: https://github.com/Tend-Stack/GothUI
+- Source and issues: https://github.com/Tend-Stack/GothUI
+- Website source: https://github.com/Tend-Stack/GothUI-Web
 
-history, integrate any existing work without overwriting it, and publish the
-same verified history to GitHub. See `HANDOFF.md` for current verification and
-delivery status.
+Fetch and integrate GitHub `main` before contributing. See `HANDOFF.md` for the
+current development entry points and remaining release checks.
 
 ## License
 
-MIT. The CSS is a new implementation inspired by Pico's principles, not a
-copy of its generated stylesheet. Pico's MIT notice is preserved separately
-in `THIRD_PARTY_NOTICES.md` as attribution for the supplied reference.
+MIT. See [LICENSE](LICENSE).

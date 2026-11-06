@@ -109,40 +109,20 @@ or the Windows URL handler through `rundll32.exe`. URLs are process arguments,
 not interpolated into a shell. CI's version smoke check does not open a browser;
 desktop browser launch remains a separate manual check.
 
-## Current evidence and publication boundary
+## Publication and release checks
 
-The workflow's matrix, commit pins, read permission and retention settings were
-inspected locally. Remote results are available in
-[Verify GothUI](https://github.com/Tend-Stack/GothUI/actions/workflows/verify.yml);
-require all seven jobs to pass for the intended release SHA. Local native
-race/vet checks pass with Go 1.26.0 and Go 1.27.3. The minimum compiler was
-downloaded temporarily from Go's official distribution and its published SHA-256
-and archive size verified before execution. The API baseline, versioned local
-consumer installation, native demo build and version smoke also pass on 1.26.0.
-Its read-only cache warning exposed a developer-tool bug: parsed command output
-included stderr. The helper now forwards successful diagnostics separately from
-stdout and preserves failure diagnostics. Regression tests pass on both compilers.
-The build-helper test executes and replaces a
-native Linux executable successfully. The demo also cross-compiles for Linux
-arm64, macOS arm64 and Windows amd64, with target build metadata and ELF/Mach-O/PE
-architecture headers checked. Those disposable foreign executables were removed.
-Evidence is retained under `tests/results/validation/`, `tests/results/platform/`,
-`tests/results/compatibility-go126/` and `tests/results/security/`.
-Cross-compilation cannot prove foreign execution, race behavior or browser UI.
-Non-Linux native execution remains unverified. The temporary minimum compiler
-and its disposable demo are removed after validation; the retained review binary
-continues to use Go 1.27.3. A Firefox headless attempt
-with an isolated temporary profile also failed under the sandbox namespace
-restriction; its profile was removed. Chromium/browser results remain unverified.
+GitHub is the collaboration and publication source. Fetch and integrate `main`
+before delivery; preserve concurrent work and push without rewriting history.
+Inspect [Verify GothUI](https://github.com/Tend-Stack/GothUI/actions/workflows/verify.yml)
+at the exact release SHA and require all six native compatibility jobs and the
+security job to pass. A previous green commit does not validate a later release.
 
-history, GitHub rejected its private author email with GH007. With operator
-approval, 26 commits' author/committer emails were corrected to the GitHub no-reply
-identity. Names, dates, messages and every file tree were preserved; the descendant
-commit already using no-reply only changed its parent reference. The original
-operator and retained until an explicit cleanup decision after verified delivery.
-history was accepted by GitHub. GitHub remains private; its email-privacy setting
-was not disabled. This checkout uses no-reply for future commits. No release tag,
+The initial published matrix passed on all three operating systems and both Go
+versions, including the independent security job. Local evidence remains under
+ignored `tests/results/` directories; these are developer records, not shipped
+assets. The workflow retains its reports for seven days.
 
-After publication, inspect all six compatibility results plus the security job
-at the exact source SHA before calling the matrix verified. Release installation, optional HTMX execution and
-browser/accessibility checks remain independent acceptance gates.
+Published-tag consumer installation, optional HTMX execution, and real-browser
+keyboard/accessibility checks remain independent release gates. In-process HTTP
+tests and cross-compilation do not replace browser review. No release tag has
+been created yet.

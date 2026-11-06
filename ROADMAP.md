@@ -2,8 +2,8 @@
 
 The objective is an elegant Go-native UI library that ships in a single Go binary,
 with the breadth, polish and developer experience expected of modern UI systems.
-Pico was the baseline, not the feature ceiling. “First in class” is an aspiration,
-not a claim established by a test suite or component count.
+“First in class” is an aspiration, not a claim established by a test suite
+or component count.
 
 ## Product contract
 
@@ -67,8 +67,8 @@ Expanded asset HTTP coverage verifies content-derived ETags, stale validators,
 HEAD, single/multipart ranges and concurrent readers. docs/assets.md records the
 stable-URL cache contract and distinguishes in-process checks from live delivery.
 
-Development history is published to both intended remotes. Browser review,
-the remote release checks and tagged-version publication remain release gates.
+Development history is published to GitHub. Browser review,
+release-specific verification and tagged-version publication remain release gates.
 The broad goal remains unfinished.
 
 Versioned packaging also passes in an isolated consumer through a local file
@@ -101,8 +101,8 @@ module checksums verified. A published-version installation remains pending.
 5. **Evidence and release.** Local benchmarks, asset/binary size budgets and
    generated-source consistency checks are implemented. Next: browser matrix
    and visual regression baselines; keyboard/screen-reader/contrast checks;
-   history reconciliation; versioned
-   release documentation and installation proof. Table allocation profiling and
+   passing GitHub CI at the release SHA; versioned release documentation
+   and installation proof. Table allocation profiling and
    the first optimization are complete; profile representative application work
    before further rendering changes, retaining semantic/escaping contracts.
 
@@ -118,7 +118,8 @@ module checksums verified. A published-version installation remains pending.
   installation and a consumer build succeed from the intended published version.
 - Performance/size results are measured against recorded budgets. All assets
   are local and embedded; no runtime package installation or external fetches.
-  release, and the release uses the operator's YEAR.RELEASE.FIX versioning.
+- GitHub contains the verified release, and the release uses
+  YEAR.RELEASE.FIX versioning.
 
 Keep bounded test evidence and one review executable. Do not erase older history
 or publish claims of browser compatibility, accessibility conformance, feature
