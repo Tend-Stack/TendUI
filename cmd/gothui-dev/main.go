@@ -32,7 +32,7 @@ type runner struct{ root, results, goTool, templTool string }
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Fprintln(os.Stderr, "usage: go run ./cmd/gothui-dev check|api|generated|recipes|bench|build")
+		fmt.Fprintln(os.Stderr, "usage: go run ./cmd/gothui-dev check|api|generated|recipes|consumer|bench|build")
 		os.Exit(2)
 	}
 	root, err := os.Getwd()
@@ -51,7 +51,7 @@ func main() {
 		fatal(err)
 	}
 	// A failed rerun must not leave an older success report beside new logs.
-	reports := map[string]string{"check": "checks.json", "api": "api.json", "generated": "generated.json", "recipes": "recipes.json", "bench": "benchmarks.json", "build": "build.json"}
+	reports := map[string]string{"check": "checks.json", "api": "api.json", "generated": "generated.json", "recipes": "recipes.json", "consumer": "consumer.json", "bench": "benchmarks.json", "build": "build.json"}
 	if name := reports[os.Args[1]]; name != "" {
 		if err := os.Remove(filepath.Join(r.results, name)); err != nil && !errors.Is(err, os.ErrNotExist) {
 			fatal(err)
@@ -66,6 +66,8 @@ func main() {
 		err = r.generated()
 	case "recipes":
 		err = r.recipes()
+	case "consumer":
+		err = r.consumer()
 	case "bench":
 		err = r.run("benchmarks.log", r.root, r.goTool, "test", "-run=^$", "-bench=Benchmark", "-benchmem", "-count=3", "-benchtime=200ms", "-cpu=2", "./...")
 		if err == nil {
