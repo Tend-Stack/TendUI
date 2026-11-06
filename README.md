@@ -1,5 +1,10 @@
 # GothUI
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logo-dark.svg">
+  <img src="docs/brand/logo-light.svg" alt="GothUI" width="240">
+</picture>
+
 Semantic CSS and typed templ components, embedded in your Go binary.
 No Node.js, npm, Sass, CDN, web fonts, bundled JavaScript, or asset compilation.
 

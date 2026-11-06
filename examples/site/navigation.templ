@@ -3,24 +3,46 @@ package site
 import "github.com/Tend-Stack/GothUI/v2026/components"
 
 templ demoHeader(active string) {
-	<header>
+	<header class="demo-header">
 		<a class="skip-link" href="#main">Skip to content</a>
-		<nav aria-label="Demo pages">
-			<a href="/" aria-label="GothUI home"><strong>◈ GothUI</strong></a>
-			<ul>
-				for _, page := range []struct{ Path, Label string }{{"/", "Overview"}, {"/catalog", "Catalog"}, {"/playground", "Playground"}, {"/forms", "Form lab"}, {"/dashboard", "Dashboard"}, {"/settings", "Appearance"}, {"/workspace", "Workspace"}, {"/interactions", "Interactions"}, {"/editing", "Inline editing"}, {"/motion", "Motion & surfaces"}, {"/patterns", "Patterns"}, {"/wizard", "Form wizard"}, {"/uploads", "CSV preview"}} {
-					<li>
-						<a
-							href={ templ.URL(page.Path) }
-							if active == page.Path {
-								aria-current="page"
-							}
-						>{ page.Label }</a>
-					</li>
-				}
-				<li>@components.ThemeToggle()</li>
-			</ul>
+		<a class="demo-brand" href="/" aria-label="GothUI home"><img src="/demo-gopher.svg" alt="" width="48" height="48"/><span>GothUI</span></a>
+		<nav class="demo-primary" aria-label="Demo pages">
+			for _, page := range []struct{ Path, Label string }{{"/", "Overview"}, {"/catalog", "Catalog"}, {"/playground", "Playground"}} {
+				<a
+					href={ templ.URL(page.Path) }
+					if active == page.Path {
+						aria-current="page"
+					}
+				>{ page.Label }</a>
+			}
+			<details class="demo-menu">
+				<summary>Examples</summary>
+				<div class="demo-menu-panel">
+					for _, group := range []struct{ Title string; Pages []struct{ Path, Label string } }{
+                        {"Forms & workflows", []struct{ Path, Label string }{{"/forms", "Form lab"}, {"/editing", "Inline editing"}, {"/wizard", "Form wizard"}, {"/uploads", "CSV preview"}}},
+                        {"Application layouts", []struct{ Path, Label string }{{"/dashboard", "Dashboard"}, {"/workspace", "Workspace"}, {"/patterns", "Composition patterns"}}},
+                        {"Style & behavior", []struct{ Path, Label string }{{"/settings", "Appearance studio"}, {"/interactions", "Native interactions"}, {"/motion", "Motion & surfaces"}}},
+                    } {
+						<div>
+							<p>{ group.Title }</p>
+							<ul>
+								for _, page := range group.Pages {
+									<li>
+										<a
+											href={ templ.URL(page.Path) }
+											if active == page.Path {
+												aria-current="page"
+											}
+										>{ page.Label }</a>
+									</li>
+								}
+							</ul>
+						</div>
+					}
+				</div>
+			</details>
 		</nav>
+		<div class="demo-theme">@components.ThemeToggle()</div>
 	</header>
 }
 

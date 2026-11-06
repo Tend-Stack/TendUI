@@ -85,3 +85,24 @@ test('catalog search and downloadable source work natively', async ({ page }) =>
   await page.getByRole('link', { name: 'Download example.templ' }).click();
   expect((await downloadEvent).suggestedFilename()).toBe('datatable_example.templ');
 });
+
+
+test('grouped menu and playground scenarios work without scripts', async ({ page }) => {
+  await page.goto('/catalog');
+  const menu = page.locator('.demo-menu > summary');
+  await menu.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('link', { name: 'Form lab', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Form lab', exact: true }).click();
+  await expect(page).toHaveURL(/\/forms$/);
+  await page.getByRole('navigation', { name: 'Demo pages', exact: true }).getByRole('link', { name: 'Playground', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Try a scenario' }).getByRole('link', { name: 'Validation errors' }).click();
+  await expect(page.getByLabel('Example text field', { exact: true })).toHaveAttribute('aria-invalid', 'true');
+  await page.getByLabel('Button label', { exact: true }).fill('Send sample');
+  await page.getByLabel('Control state', { exact: true }).selectOption('readonly');
+  await page.getByRole('button', { name: 'Apply and preview' }).click();
+  await expect(page).toHaveURL(/#component-preview$/);
+  await expect(page.getByLabel('Example text field', { exact: true })).toHaveAttribute('readonly', '');
+  await page.getByRole('button', { name: 'Send sample', exact: true }).click();
+  await expect(page.getByRole('status')).toContainText('Button submitted successfully');
+});
