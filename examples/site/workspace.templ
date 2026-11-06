@@ -1,0 +1,59 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ workspace() {
+	@components.AppShell(components.AppShellProps{
+		Brand: "◈ Studio / GothUI", BrandHref: "/", Title: "Your workspace",
+		Actions: workspaceActions(), Footer: cardNote("Sample workspace · No account required"),
+		Navigation: []components.NavItem{
+			{Label: "Overview", Href: "/workspace", Current: true},
+			{Label: "Projects", Href: "/dashboard", Badge: "5"},
+			{Label: "Appearance", Href: "/settings"},
+			{Label: "Component catalog", Href: "/catalog"},
+			{Label: "Component playground", Href: "/playground"},
+			{Label: "Form lab", Href: "/forms"},
+			{Label: "Native interactions", Href: "/interactions"},
+			{Label: "Inline editing", Href: "/editing"},
+			{Label: "Motion & surfaces", Href: "/motion"},
+			{Label: "Application patterns", Href: "/patterns"},
+			{Label: "Form wizard", Href: "/wizard"},
+			{Label: "CSV preview", Href: "/uploads"},
+			{Label: "GothUI home", Href: "/"},
+		},
+	}) {
+		<section>
+			<p class="muted">A small team. A clear place to work.</p>
+			@components.Alert(components.AlertProps{Title: "Everything in one place", Message: "Explore the sidebar, change your appearance, or browse the sample projects. On small screens, navigation stacks above the content and can be collapsed.", Tone: components.ToneInfo})
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("In progress"), Footer: cardNote("Sample portfolio")}) {
+					<h2>02</h2>
+					@components.Badge(components.BadgeProps{Text: "Active", Tone: components.ToneInfo})
+					<p>Studio website and customer portal.</p>
+					<a href="/dashboard?status=active">View active projects →</a>
+				}
+				@components.Card(components.CardProps{Header: cardHeading("Ready to share"), Footer: cardNote("Sample portfolio")}) {
+					<h2>02</h2>
+					@components.Badge(components.BadgeProps{Text: "Complete", Tone: components.ToneSuccess})
+					<p>Brand guidelines and team handbook.</p>
+					<a href="/dashboard?status=complete">View completed projects →</a>
+				}
+			}
+		</section>
+		<section aria-labelledby="workspace-next">
+			<h2 id="workspace-next">Make yourself at home.</h2>
+			@components.Card(components.CardProps{}) {
+				<p>Try Forest with compact spacing, or Rose with softer corners. Your saved settings follow you from the workspace to the forms and playground.</p>
+				<div class="cluster">
+					@components.Link(components.LinkProps{Text: "Personalize appearance", Href: "/settings"})
+					@components.Link(components.LinkProps{Text: "Test all controls", Href: "/playground#new-components", Outline: true})
+				</div>
+			}
+		</section>
+	}
+}
+
+templ workspaceActions() {
+	@components.Badge(components.BadgeProps{Text: "Demo workspace"})
+	@components.ThemeToggle()
+}

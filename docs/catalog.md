@@ -21,7 +21,7 @@ ThemeToggle uses the existing demo handler, and file selection remains local.
 
 ## One recipe source
 
-`examples/basic/catalog_samples.templ` is compiled with the demo and embedded as
+`examples/site/catalog_samples.templ` is compiled with the demo and embedded as
 text. Marker-delimited blocks supply the source shown and downloaded by the
 catalog. This keeps preview markup and copied code together. Each download has
 `package examples`, imports the public components package, and contains its own

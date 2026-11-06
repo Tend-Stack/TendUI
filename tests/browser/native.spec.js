@@ -1,0 +1,80 @@
+const { test, expect } = require('@playwright/test');
+
+test.use({ javaScriptEnabled: false });
+
+test('native profile save, cancel, validation, and reset', async ({ page }) => {
+  await page.goto('/editing');
+  await page.getByRole('link', { name: 'Edit sample profile' }).click();
+  await page.getByLabel('Display name').fill('Native visitor');
+  await page.getByLabel('Introduction').fill('No scripts needed.');
+  await page.getByRole('button', { name: 'Save sample', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Native visitor' })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Native visitor' })).toBeVisible();
+  await page.getByRole('link', { name: 'Edit sample profile' }).click();
+  await page.getByLabel('Display name').fill('Discard this');
+  await page.getByRole('link', { name: 'Cancel', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Native visitor' })).toBeVisible();
+  await page.getByRole('link', { name: 'Edit sample profile' }).click();
+  await page.getByLabel('Display name').fill('');
+  await page.getByRole('button', { name: 'Test server validation' }).click();
+  await expect(page.getByLabel('Display name')).toHaveAttribute('aria-invalid', 'true');
+  await page.locator('a[href="#profile-name"]').click();
+  await expect(page.getByLabel('Display name')).toBeFocused();
+});
+
+test('appearance preferences persist and exports reflect the selection', async ({ page }) => {
+  await page.goto('/settings');
+  await page.getByLabel('Color mode', { exact: true }).selectOption('dark');
+  await page.getByRole('button', { name: 'Save preferences' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.goto('/catalog');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.getByRole('button', { name: 'Toggle theme' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(page).toHaveURL(/\/catalog$/);
+});
+
+test('keyboard opens and closes native popover with focus return', async ({ page }) => {
+  await page.goto('/interactions');
+  const opener = page.getByRole('button', { name: 'Show project details' });
+  await opener.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#project-help')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#project-help')).toBeHidden();
+  await expect(opener).toBeFocused();
+});
+
+test('native dialog traps focus, closes with Escape, and returns focus', async ({ page }) => {
+  await page.goto('/interactions');
+  const opener = page.getByRole('button', { name: 'Review demo request', exact: true });
+  await opener.focus();
+  await page.keyboard.press('Enter');
+  const dialog = page.locator('#approval-dialog');
+  await expect(dialog).toBeVisible();
+  for (let i = 0; i < 5; i++) {
+    await page.keyboard.press('Tab');
+    await expect(dialog.locator(':focus')).toHaveCount(1);
+  }
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+});
+
+test('ordinary-page confirmation remains functional without scripting', async ({ page }) => {
+  await page.goto('/interactions');
+  await page.getByRole('link', { name: 'Use the ordinary-page confirmation' }).click();
+  await page.locator('#inline-confirm').getByRole('button', { name: 'Approve demo request' }).click();
+  await expect(page).toHaveURL(/confirmed=1/);
+});
+
+test('catalog search and downloadable source work natively', async ({ page }) => {
+  await page.goto('/catalog');
+  await page.getByRole('searchbox', { name: 'Search components' }).fill('DataTable');
+  await page.getByRole('button', { name: 'Find components' }).click();
+  await page.getByRole('heading', { name: 'DataTable', exact: true }).getByRole('link').click();
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('link', { name: 'Download example.templ' }).click();
+  expect((await downloadEvent).suggestedFilename()).toBe('datatable_example.templ');
+});

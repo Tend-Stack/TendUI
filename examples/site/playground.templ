@@ -1,0 +1,123 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ playground(o playgroundOptions) {
+	@demoHeader("/playground")
+	<main id="main">
+		<section>
+			<p class="muted">THE COMPONENT PLAYGROUND</p>
+			<h1>Try every state.</h1>
+			<p>Choose your settings, apply them, and test the preview. Every control works with JavaScript disabled.</p>
+		</section>
+		<section aria-label="Component controls and preview">
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("Your test settings")}) {
+					@components.Form(components.FormProps{Action: "/playground", Method: components.MethodGet}) {
+						<input type="hidden" name="apply" value="1"/>
+						@components.Input(components.InputProps{Name: "label", Label: "Button label", Value: o.Label})
+						@components.Select(components.SelectProps{Name: "theme", Label: "Color theme", Value: o.Theme, Options: []components.Option{{Label: "Saved preference", Value: "saved"}, {Label: "Light", Value: "light"}, {Label: "Dark", Value: "dark"}, {Label: "System preference", Value: "system"}}})
+						@components.Select(components.SelectProps{Name: "variant", Label: "Button variant", Value: o.Variant, Options: []components.Option{{Label: "Primary", Value: "primary"}, {Label: "Outline", Value: "outline"}}})
+						@components.Select(components.SelectProps{Name: "state", Label: "Control state", Value: o.State, Options: []components.Option{{Label: "Normal", Value: "normal"}, {Label: "Disabled", Value: "disabled"}, {Label: "Validation error", Value: "invalid"}, {Label: "Read-only text field", Value: "readonly"}}})
+						<details>
+							<summary>Appearance settings</summary>
+							@appearanceControls(o.Appearance)
+						</details>
+						<fieldset>
+							<legend>Optional content</legend>
+							@components.Checkbox(components.CheckboxProps{Name: "header", Label: "Show card header", Checked: o.Header})
+							@components.Checkbox(components.CheckboxProps{Name: "footer", Label: "Show card footer", Checked: o.Footer})
+							@components.Checkbox(components.CheckboxProps{Name: "checked", Label: "Start checkbox checked", Checked: o.Checked})
+						</fieldset>
+						<div class="cluster">
+							@components.Button(components.ButtonProps{Text: "Apply settings", Type: components.ButtonTypeSubmit})
+							<a href="/playground">Reset settings</a>
+						</div>
+					}
+					@exportLinks(o.Appearance, o.Theme)
+				}
+				<div>
+					<h2>Component preview</h2>
+					@components.Card(previewCard(o)) {
+						<p>This is an <code>article</code> with optional header and footer slots.</p>
+						@components.Input(components.InputProps{Label: "Example text field", Name: "preview", Value: "A little less setup.", Disabled: o.State == "disabled", ReadOnly: o.State == "readonly", Invalid: o.State == "invalid", DescribedBy: "preview-hint"})
+						<p id="preview-hint">
+							<small>
+								if o.State == "invalid" {
+									This sample forces error styling. Choose Normal in the control settings to clear it.
+								} else {
+									Try typing, selecting text, and using Tab to move focus.
+								}
+							</small>
+						</p>
+						@components.Select(components.SelectProps{Label: "Example select", Name: "preview-choice", Value: "go", Disabled: o.State == "disabled", Invalid: o.State == "invalid", Options: []components.Option{{Label: "Go application", Value: "go"}, {Label: "Internal tool", Value: "tool"}, {Label: "Unavailable option", Value: "unavailable", Disabled: true}}})
+						@components.Checkbox(components.CheckboxProps{Name: "preview-check", Label: "A native checkbox", Checked: o.Checked, Disabled: o.State == "disabled"})
+						@components.Form(components.FormProps{Action: "/playground#preview-result", Method: components.MethodGet}) {
+							@playgroundHidden(o)
+							@components.Button(components.ButtonProps{Text: o.Label, Name: "clicked", Value: "yes", Type: components.ButtonTypeSubmit, Primary: o.Variant == "primary", Outline: o.Variant == "outline", Disabled: o.State == "disabled"})
+						}
+						if o.Clicked {
+							<p id="preview-result" role="status">Button submitted successfully. Your settings were preserved.</p>
+						}
+					}
+					<details>
+						<summary>What to test</summary>
+						<ul><li>Tab and Shift+Tab: focus stays visible.</li><li>Disabled controls cannot be activated.</li><li>Read-only text can be selected but not edited.</li><li>Resize the window to stack the grid.</li><li>Try a long button label and both color themes.</li></ul>
+					</details>
+				</div>
+			}
+		</section>
+		@newComponents(o)
+		<section aria-labelledby="native-title">
+			<h2 id="native-title">Native elements, styled.</h2>
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("Typography & disclosure")}) {
+					<p>A paragraph with <strong>strong emphasis</strong>, <em>italics</em>, <mark>highlighting</mark>, and <a href="/forms">a real link</a>.</p>
+					<blockquote>Let HTML carry the structure.</blockquote>
+					<details><summary>Open a native disclosure</summary><p>The browser owns this behavior. Use Enter or Space on the summary.</p></details>
+				}
+				@components.Card(components.CardProps{Header: cardHeading("Progress & button states")}) {
+					<label for="demo-progress">Determinate progress: 65%</label>
+					<progress id="demo-progress" value="65" max="100">65%</progress>
+					<p class="muted">A static progress sample, not a running task.</p>
+					<div class="cluster">
+						@components.Link(components.LinkProps{Text: "Visit form lab", Href: "/forms", Outline: true})
+						@components.Button(components.ButtonProps{Text: "Disabled", Disabled: true})
+					</div>
+				}
+			}
+		</section>
+	</main>
+	@demoFooter()
+}
+
+func previewCard(o playgroundOptions) components.CardProps {
+	p := components.CardProps{}
+	if o.Header {
+		p.Header = cardHeading("Your preview card")
+	}
+	if o.Footer {
+		p.Footer = cardNote("Optional footer · Ready for your content")
+	}
+	return p
+}
+
+templ playgroundHidden(o playgroundOptions) {
+	for _, field := range appearanceFields(o.Appearance) {
+		<input type="hidden" name={ field.Name } value={ field.Value }/>
+	}
+	<input type="hidden" name="apply" value="1"/>
+	<input type="hidden" name="label" value={ o.Label }/>
+	<input type="hidden" name="theme" value={ o.Theme }/>
+	<input type="hidden" name="variant" value={ o.Variant }/>
+	<input type="hidden" name="state" value={ o.State }/>
+	if o.Header {
+		<input type="hidden" name="header" value="on"/>
+	}
+	if o.Footer {
+		<input type="hidden" name="footer" value="on"/>
+	}
+	if o.Checked {
+		<input type="hidden" name="checked" value="on"/>
+	}
+}

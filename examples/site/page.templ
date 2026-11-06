@@ -1,0 +1,67 @@
+package site
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ showcase(name, version string) {
+	@demoHeader("/")
+	<main id="main">
+		<section aria-labelledby="intro">
+			<p class="muted">GO · TEMPL · SEMANTIC CSS</p>
+			<h1 id="intro">HTML, beautifully enough.</h1>
+			<p>Thoughtful defaults. Native controls. Everything your interface needs, already inside your Go binary.</p>
+			<div class="cluster">
+				@components.Link(components.LinkProps{Text: "Explore components", Href: "/catalog", Primary: true})
+				@components.Link(components.LinkProps{Text: "Try a form", Href: "#forms", Outline: true})
+			</div>
+		</section>
+		@demoDirectory()
+		<section id="components" aria-labelledby="components-title">
+			<h2 id="components-title">Less setup. More building.</h2>
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("A small, solid foundation"), Footer: cardNote("One stylesheet. Served by Go.")}) {
+					<p>Semantic elements carry the design. An article becomes a card; a button feels like a button.</p>
+					<p><code>go get github.com/Tend-Stack/GothUI/v2026</code></p>
+				}
+				@components.Card(components.CardProps{Header: cardHeading("The browser does the work")}) {
+					<details>
+						<summary>Does this need JavaScript?</summary>
+						<p>No. This page uses native forms and disclosure controls. Optional HTMX attributes are ready for applications that already use HTMX.</p>
+					</details>
+					<details>
+						<summary>How do themes work?</summary>
+						<p>CSS variables follow the root data-theme attribute. The toggle saves a cookie and returns a fresh page.</p>
+					</details>
+				}
+			}
+		</section>
+		<section id="forms" aria-labelledby="forms-title">
+			<h2 id="forms-title">Forms that feel familiar.</h2>
+			@components.Card(components.CardProps{}) {
+				@components.Form(components.FormProps{Action: "/#forms", Method: components.MethodGet}) {
+					@components.Grid(components.GridProps{}) {
+						@components.Input(components.InputProps{Name: "name", Label: "Your name", Value: name, Placeholder: "Alex", Autocomplete: "given-name", Required: true})
+						@components.Select(components.SelectProps{Name: "interest", Label: "What are you building?", Options: []components.Option{{Label: "A Go application", Value: "app"}, {Label: "An internal tool", Value: "tool"}, {Label: "Something new", Value: "new"}}})
+					}
+					@components.Checkbox(components.CheckboxProps{Name: "native", Label: "Keep it native", Checked: true})
+					<div class="cluster">
+						@components.Button(components.ButtonProps{Text: "Say hello", Type: components.ButtonTypeSubmit, Primary: true})
+						@components.Button(components.ButtonProps{Text: "Reset fields", Type: components.ButtonTypeReset, Outline: true})
+						@components.Button(components.ButtonProps{Text: "Unavailable", Disabled: true})
+					</div>
+				}
+				if name != "" {
+					<p role="status">Hello, { name }. Your form just worked without JavaScript.</p>
+				}
+			}
+		</section>
+	</main>
+	<footer><small>GothUI { version } · Built with Go, templ, and the web platform.</small></footer>
+}
+
+templ cardHeading(title string) {
+	<h3>{ title }</h3>
+}
+
+templ cardNote(text string) {
+	<small>{ text }</small>
+}

@@ -1,0 +1,110 @@
+package site
+
+import "strconv"
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ dashboard(d dashboardOptions) {
+	@demoHeader("/dashboard")
+	<main id="main">
+		@components.Breadcrumbs(components.BreadcrumbsProps{Items: []components.BreadcrumbItem{{Label: "Workspace", Href: "/workspace"}, {Label: "Projects"}}})
+		<section>
+			<p class="muted">A SMALL STUDIO / DEMO WORKSPACE</p>
+			<h1>A clearer view of your work.</h1>
+			<p>A sample dashboard built from the same semantic components. Search and filter the sample projects below.</p>
+		</section>
+		<section aria-label="Sample portfolio totals">
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("Active projects"), Footer: cardNote("Across the sample portfolio")}) {
+					<h2>02</h2>
+					<p>Moving forward this week.</p>
+				}
+				@components.Card(components.CardProps{Header: cardHeading("Completed"), Footer: cardNote("Across the sample portfolio")}) {
+					<h2>02</h2>
+					<p>Ready for the next chapter.</p>
+				}
+				@components.Card(components.CardProps{Header: cardHeading("On hold"), Footer: cardNote("Across the sample portfolio")}) {
+					<h2>01</h2>
+					<p>Waiting for a little attention.</p>
+				}
+			}
+		</section>
+		<section aria-labelledby="projects-heading">
+			<h2 id="projects-heading">Projects</h2>
+			@components.Tabs(components.TabsProps{Label: "Project status", Items: d.StatusTabs()})
+			@components.Form(components.FormProps{Action: "/dashboard", Method: components.MethodGet}) {
+				@components.Grid(components.GridProps{}) {
+					@components.Input(components.InputProps{Name: "q", Label: "Search projects", Type: components.InputSearch, Value: d.Search, Placeholder: "Try design or portal"})
+					@components.Select(components.SelectProps{Name: "status", Label: "Status", Value: d.Status, Options: []components.Option{{Label: "All projects", Value: "all"}, {Label: "Active", Value: "active"}, {Label: "Complete", Value: "complete"}, {Label: "On hold", Value: "paused"}}})
+				}
+				@components.Grid(components.GridProps{}) {
+					@components.Select(components.SelectProps{Name: "sort", Label: "Sort by", Value: d.Sort, Options: []components.Option{{Label: "Project name (A–Z)", Value: "name"}, {Label: "Project name (Z–A)", Value: "name-desc"}, {Label: "Progress (highest first)", Value: "progress"}, {Label: "Progress (lowest first)", Value: "progress-asc"}, {Label: "Due date (earliest first)", Value: "due"}, {Label: "Due date (latest first)", Value: "due-desc"}}})
+					@components.Select(components.SelectProps{Name: "per_page", Label: "Projects per page", Value: strconv.Itoa(d.PageSize), Options: []components.Option{{Label: "2 projects", Value: "2"}, {Label: "5 projects", Value: "5"}}})
+				}
+				<div class="cluster">@components.Button(components.ButtonProps{Text: "Filter projects", Type: components.ButtonTypeSubmit}) <a href="/dashboard">Clear filters</a></div>
+			}
+			@components.Card(components.CardProps{}) {
+				<p role="status">{ strconv.Itoa(d.Total) } projects match your filters.</p>
+				@components.Form(components.FormProps{Action: "/dashboard/selection", Method: components.MethodPost}) {
+					@components.DataTable(d.Table())
+					if len(d.Projects) > 0 {
+						<div class="cluster">
+							@components.Button(components.ButtonProps{Text: "Review selected projects", Type: components.ButtonTypeSubmit, Outline: true})
+							<small>Selection applies to this page. No records are changed.</small>
+						</div>
+					}
+				}
+				if len(d.Projects) > 0 {
+					<p class="muted">Showing { strconv.Itoa(d.Start) }–{ strconv.Itoa(d.End) } of { strconv.Itoa(d.Total) } projects.</p>
+					@components.Pagination(components.PaginationProps{Page: d.Page, TotalPages: d.TotalPages, URLForPage: d.PageURL})
+				}
+			}
+		</section>
+		<section aria-labelledby="dashboard-test-heading">
+			<h2 id="dashboard-test-heading">Explore the details.</h2>
+			@components.Grid(components.GridProps{}) {
+				@components.Card(components.CardProps{Header: cardHeading("Make room for small screens")}) {
+					<p>Narrow your browser to a phone-sized window. Cards stack and the table remains scrollable without stretching the page.</p>
+					@components.Link(components.LinkProps{Text: "Try component states", Href: "/playground", Outline: true})
+				}
+				@components.Card(components.CardProps{Header: cardHeading("Test an empty result")}) {
+					<p>Search for something that does not exist. A useful empty state should appear with a way back.</p>
+					<a href="/dashboard?q=no-matching-project">Show the empty state →</a>
+				}
+			}
+		</section>
+	</main>
+	@demoFooter()
+}
+
+templ selectProject(p project) {
+	<label class="check table-selection"><input type="checkbox" name="project" value={ p.Name }/><span class="sr-only">Select { p.Name }</span></label>
+}
+
+templ projectProgress(p project) {
+	<progress aria-label={ p.Name + " progress" } value={ p.Progress } max="100">{ p.Progress }%</progress><small>{ p.Progress }%</small>
+}
+
+templ emptyProjects() {
+	@components.EmptyState(components.EmptyStateProps{Title: "No matching projects.", Message: "Try “design,” switch the status, or clear your filters."}) {
+		<a href="/dashboard">Show all projects</a>
+	}
+}
+
+templ selectionReceipt(projects []project, message string) {
+	@demoHeader("/dashboard")
+	<main id="main">
+		<h1>Review your selection</h1>
+		if message != "" {
+			@components.Alert(components.AlertProps{Title: "Choose a project", Message: message, Tone: components.ToneWarning})
+		} else {
+			<p>{ strconv.Itoa(len(projects)) } sample projects selected. No records were changed, saved or sent.</p>
+			<ul>
+				for _, p := range projects {
+					<li>{ p.Name }</li>
+				}
+			</ul>
+		}
+		<a href="/dashboard">Back to projects</a>
+	</main>
+	@demoFooter()
+}

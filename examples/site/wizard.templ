@@ -1,0 +1,141 @@
+package site
+
+import "strconv"
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ wizardPage(d wizardData) {
+	@demoHeader("/wizard")
+	<main id="main">
+		<section>
+			<p class="muted">ONE CLEAR STEP AT A TIME</p>
+			<h1>Shape a project brief.</h1>
+			<p>A small walkthrough with editable details, choices, and a final review. It runs entirely through ordinary forms and Go validation.</p>
+		</section>
+		@components.Steps(components.StepsProps{Label: "Project brief progress", Items: d.Steps()})
+		if d.Done {
+			@components.Alert(components.AlertProps{Title: "Your preview is complete", Message: "All fields passed server validation. No project was created, published, saved or sent.", Tone: components.ToneSuccess})
+			@briefReview(d)
+			<a href="/wizard">Start a fresh brief</a>
+		} else {
+			@components.Card(components.CardProps{}) {
+				<p class="muted">Step { strconv.Itoa(d.Step) } of 3</p>
+				@components.ErrorSummary(components.ErrorSummaryProps{Errors: d.Errors})
+				@components.Form(components.FormProps{Action: "/wizard", Method: components.MethodPost}) {
+					<input type="hidden" name="stage" value={ strconv.Itoa(d.Step) }/>
+					if d.Step == 1 {
+						<h2>Start with the essentials.</h2>
+						@briefDetails(d)
+						@hiddenPreferences(d)
+					} else if d.Step == 2 {
+						<h2>Choose how it should feel.</h2>
+						@hiddenDetails(d)
+						@briefPreferences(d)
+					} else {
+						<h2>Take one last look.</h2>
+						@hiddenDetails(d)
+						@hiddenPreferences(d)
+						@briefReview(d)
+					}
+					<div class="cluster form-actions">
+						if d.Step < 3 {
+							@components.Button(components.ButtonProps{Text: "Continue", Type: components.ButtonTypeSubmit, Name: "action", Value: "next"})
+							@components.Button(components.ButtonProps{Text: "Test server validation", Type: components.ButtonTypeSubmit, Name: "action", Value: "next", FormNoValidate: true, Outline: true})
+						} else {
+							@components.Button(components.ButtonProps{Text: "Finish preview", Type: components.ButtonTypeSubmit, Name: "action", Value: "finish"})
+						}
+						if d.Step > 1 {
+							@components.Button(components.ButtonProps{Text: "Back — keep my edits", Type: components.ButtonTypeSubmit, Name: "action", Value: "back", FormNoValidate: true, Outline: true})
+						}
+					</div>
+				}
+			}
+			<p><a href="/wizard">Discard this draft and start over</a></p>
+		}
+		@components.Disclosure(components.DisclosureProps{Summary: "How this demo keeps your edits"}) {
+			<p>Draft values travel with each submitted form. Use the Back button above to keep your edits while returning to an earlier step. Your draft is not saved in an account, cookie, database or URL.</p>
+			<p>Hidden fields are still untrusted input. The server validates earlier details when you continue and checks everything again before finishing. Use fictional information; browser history may retain submitted form values.</p>
+		}
+	</main>
+	@demoFooter()
+}
+
+templ briefDetails(d wizardData) {
+	{{ name, slug, summary := d.Field("name"), d.Field("slug"), d.Field("summary") }}
+	@components.Field(name) {
+		<input type="text" name="name" value={ d.Name } autocomplete="off" { name.ControlAttributes()... }/>
+	}
+	@components.Field(slug) {
+		@components.InputGroup(components.InputGroupProps{Prefix: "/projects/"}) {
+			<input type="text" name="slug" value={ d.Slug } pattern="[a-z][a-z0-9-]{1,39}" autocomplete="off" spellcheck="false" { slug.ControlAttributes()... }/>
+		}
+	}
+	@components.Field(summary) {
+		<textarea name="summary" rows="4" { summary.ControlAttributes()... }>{ d.Summary }</textarea>
+	}
+}
+
+templ briefPreferences(d wizardData) {
+	{{ visibility, accent := d.Field("visibility"), d.Field("accent") }}
+	@components.Grid(components.GridProps{}) {
+		@components.Field(visibility) {
+			<select name="visibility" { visibility.ControlAttributes()... }>
+				<option value="" selected?={ d.Visibility != "private" && d.Visibility != "public" }>Choose visibility</option>
+				<option value="private" selected?={ d.Visibility == "private" }>Private</option>
+				<option value="public" selected?={ d.Visibility == "public" }>Public</option>
+			</select>
+		}
+		@components.Field(accent) {
+			<select name="accent" { accent.ControlAttributes()... }>
+				<option value="" selected?={ d.Accent != "indigo" && d.Accent != "forest" && d.Accent != "rose" && d.Accent != "neutral" }>Choose an accent</option>
+				for _, item := range []components.Option{{Label: "Indigo", Value: "indigo"}, {Label: "Forest", Value: "forest"}, {Label: "Rose", Value: "rose"}, {Label: "Neutral", Value: "neutral"}} {
+					<option value={ item.Value } selected?={ d.Accent == item.Value }>{ item.Label }</option>
+				}
+			</select>
+		}
+	}
+	@components.Checkbox(components.CheckboxProps{ID: "brief-updates", Name: "updates", Label: "Include an update digest in the brief", Checked: d.Updates, DescribedBy: "brief-updates-help"})
+	<small id="brief-updates-help">A preview preference only. No email address is collected or subscribed.</small>
+}
+
+templ hiddenDetails(d wizardData) {
+	<input type="hidden" name="name" value={ d.Name }/>
+	<input type="hidden" name="slug" value={ d.Slug }/>
+	<input type="hidden" name="summary" value={ d.Summary }/>
+}
+
+templ hiddenPreferences(d wizardData) {
+	<input type="hidden" name="visibility" value={ d.Visibility }/>
+	<input type="hidden" name="accent" value={ d.Accent }/>
+	if d.Updates {
+		<input type="hidden" name="updates" value="on"/>
+	}
+}
+
+templ briefReview(d wizardData) {
+	<dl class="review-list">
+		<div><dt>Project name</dt><dd>{ d.Name }</dd></div>
+		<div><dt>Proposed path</dt><dd><code>/projects/{ d.Slug }</code></dd></div>
+		<div>
+			<dt>Summary</dt>
+			<dd>
+				if d.Summary != "" {
+					{ d.Summary }
+				} else {
+					No summary supplied.
+				}
+			</dd>
+		</div>
+		<div><dt>Visibility</dt><dd>{ d.Visibility }</dd></div>
+		<div><dt>Accent</dt><dd>{ d.Accent }</dd></div>
+		<div>
+			<dt>Update digest</dt>
+			<dd>
+				if d.Updates {
+					Included in the brief
+				} else {
+					Not included
+				}
+			</dd>
+		</div>
+	</dl>
+}
