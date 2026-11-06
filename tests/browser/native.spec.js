@@ -99,7 +99,7 @@ test('grouped menu and playground scenarios work without scripts', async ({ page
   await page.getByRole('navigation', { name: 'Try a scenario' }).getByRole('link', { name: 'Validation errors' }).click();
   await expect(page.getByLabel('Example text field', { exact: true })).toHaveAttribute('aria-invalid', 'true');
   await page.getByLabel('Button label', { exact: true }).fill('Send sample');
-  await page.getByLabel('Control state', { exact: true }).selectOption('readonly');
+  await page.getByRole('combobox', { name: /^Control state/ }).selectOption('readonly');
   await page.getByRole('button', { name: 'Apply and preview' }).click();
   await expect(page).toHaveURL(/#component-preview$/);
   await expect(page.getByLabel('Example text field', { exact: true })).toHaveAttribute('readonly', '');
