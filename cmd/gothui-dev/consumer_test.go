@@ -1,6 +1,8 @@
 package main
 
 import (
+	"archive/zip"
+	"io"
 	"net/url"
 	"os"
 	"os/exec"
@@ -8,6 +10,57 @@ import (
 	"strings"
 	"testing"
 )
+
+func TestModuleArchiveOmitsDirectoriesAndPreservesFiles(t *testing.T) {
+	dir := t.TempDir()
+	source := filepath.Join(dir, "source.zip")
+	f, err := os.Create(source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	w := zip.NewWriter(f)
+	for _, name := range []string{"example@v1.0.0/", "example@v1.0.0/static/", "example@v1.0.0/static/style.css"} {
+		entry, err := w.Create(name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.HasSuffix(name, "/") {
+			if _, err := io.WriteString(entry, ":root { color: red; }\n"); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	if err := w.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatal(err)
+	}
+	destination := filepath.Join(dir, "module.zip")
+	if err := writeModuleArchive(source, destination); err != nil {
+		t.Fatal(err)
+	}
+	archive, err := zip.OpenReader(destination)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer archive.Close()
+	if len(archive.File) != 1 || archive.File[0].Name != "example@v1.0.0/static/style.css" {
+		t.Fatal("unexpected module archive entries", archive.File)
+	}
+	contents, err := archive.File[0].Open()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer contents.Close()
+	data, err := io.ReadAll(contents)
+	if err != nil || string(data) != ":root { color: red; }\n" {
+		t.Fatalf("archive content changed: %q, %v", data, err)
+	}
+	if err := writeModuleArchive(source, destination); err == nil {
+		t.Fatal("overwrote an existing archive")
+	}
+}
 
 func TestConsumerProxyLocations(t *testing.T) {
 	if got := proxyModulePath(modulePath); got != "github.com/!tend-!stack/!goth!u!i/v2026" {
