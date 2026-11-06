@@ -14,39 +14,43 @@ type Typography string
 type TextSize string
 type ContentWidth string
 type Elevation string
+type MotionPreference string
 
 const (
-	PresetIndigo       Preset       = "indigo"
-	PresetNeutral      Preset       = "neutral"
-	PresetForest       Preset       = "forest"
-	PresetRose         Preset       = "rose"
-	DensityComfortable Density      = "comfortable"
-	DensityCompact     Density      = "compact"
-	CornersRounded     Corners      = "rounded"
-	CornersSquare      Corners      = "square"
-	CornersSoft        Corners      = "soft"
-	TypographySans     Typography   = "sans"
-	TypographySerif    Typography   = "serif"
-	TypographyMono     Typography   = "mono"
-	TextStandard       TextSize     = "standard"
-	TextLarge          TextSize     = "large"
-	WidthStandard      ContentWidth = "standard"
-	WidthNarrow        ContentWidth = "narrow"
-	WidthWide          ContentWidth = "wide"
-	ElevationRaised    Elevation    = "raised"
-	ElevationFlat      Elevation    = "flat"
+	PresetIndigo       Preset           = "indigo"
+	PresetNeutral      Preset           = "neutral"
+	PresetForest       Preset           = "forest"
+	PresetRose         Preset           = "rose"
+	DensityComfortable Density          = "comfortable"
+	DensityCompact     Density          = "compact"
+	CornersRounded     Corners          = "rounded"
+	CornersSquare      Corners          = "square"
+	CornersSoft        Corners          = "soft"
+	TypographySans     Typography       = "sans"
+	TypographySerif    Typography       = "serif"
+	TypographyMono     Typography       = "mono"
+	TextStandard       TextSize         = "standard"
+	TextLarge          TextSize         = "large"
+	WidthStandard      ContentWidth     = "standard"
+	WidthNarrow        ContentWidth     = "narrow"
+	WidthWide          ContentWidth     = "wide"
+	ElevationRaised    Elevation        = "raised"
+	ElevationFlat      Elevation        = "flat"
+	MotionSystem       MotionPreference = "system"
+	MotionOff          MotionPreference = "off"
 )
 
 // Appearance configures independent CSS tokens. Its zero value preserves GothUI's defaults.
 // Normalize untrusted preferences before persistence; Layout always normalizes them too.
 type Appearance struct {
-	Preset     Preset       `json:"preset"`
-	Density    Density      `json:"density"`
-	Corners    Corners      `json:"corners"`
-	Typography Typography   `json:"typography"`
-	TextSize   TextSize     `json:"text_size"`
-	Width      ContentWidth `json:"width"`
-	Elevation  Elevation    `json:"elevation"`
+	Preset     Preset           `json:"preset"`
+	Density    Density          `json:"density"`
+	Corners    Corners          `json:"corners"`
+	Typography Typography       `json:"typography"`
+	TextSize   TextSize         `json:"text_size"`
+	Width      ContentWidth     `json:"width"`
+	Elevation  Elevation        `json:"elevation"`
+	Motion     MotionPreference `json:"motion"`
 }
 
 func allowed[T ~string](value, defaultValue T, choices ...T) T {
@@ -66,6 +70,7 @@ func (a Appearance) Normalize() Appearance {
 	a.TextSize = allowed(a.TextSize, TextStandard, TextStandard, TextLarge)
 	a.Width = allowed(a.Width, WidthStandard, WidthStandard, WidthNarrow, WidthWide)
 	a.Elevation = allowed(a.Elevation, ElevationRaised, ElevationRaised, ElevationFlat)
+	a.Motion = allowed(a.Motion, MotionSystem, MotionSystem, MotionOff)
 	return a
 }
 
@@ -77,6 +82,7 @@ func (a Appearance) Attributes() templ.Attributes {
 		"data-corners": string(a.Corners), "data-typography": string(a.Typography),
 		"data-text-size": string(a.TextSize), "data-width": string(a.Width),
 		"data-elevation": string(a.Elevation),
+		"data-motion":    string(a.Motion),
 	}
 }
 
@@ -93,5 +99,8 @@ func (a Appearance) CSS() string {
 		fmt.Fprintf(&b, "  --gothui-%s: var(--gothui-density-%s-%s);\n", part, a.Density, part)
 	}
 	fmt.Fprintf(&b, "  --gothui-radius: var(--gothui-corners-%s);\n  --gothui-font: var(--gothui-font-%s);\n  --gothui-text-size: var(--gothui-size-%s);\n  --gothui-content-width: var(--gothui-width-%s);\n  --gothui-shadow: var(--gothui-elevation-%s);\n}\n", a.Corners, a.Typography, a.TextSize, a.Width, a.Elevation)
+	if a.Motion == MotionOff {
+		b.WriteString(":root { --gothui-duration-fast: 0ms; --gothui-duration-enter: 0ms; --gothui-duration-loading: 0ms; --gothui-stagger-step: 0ms; --gothui-lift-distance: 0px; }\n")
+	}
 	return b.String()
 }

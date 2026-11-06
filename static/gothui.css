@@ -3,6 +3,12 @@
 
 /* Theme tokens. Override these in a stylesheet loaded after GothUI. */
 :root {
+  --gothui-duration-fast: 160ms;
+  --gothui-duration-enter: 320ms;
+  --gothui-duration-loading: 1200ms;
+  --gothui-stagger-step: 80ms;
+  --gothui-lift-distance: -2px;
+  --gothui-ease-out: cubic-bezier(.2, .8, .2, 1);
   color-scheme: light;
   --gothui-font: var(--gothui-font-sans);
   --gothui-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
@@ -409,4 +415,78 @@ button, .button { max-inline-size: 100%; overflow-wrap: anywhere; }
 .pagination a:hover { background: var(--gothui-subtle); }
 @media print {
   .gothui-dialog, .gothui-popover, .pagination { display: none; }
+}
+
+/* Expressive surfaces keep text on an opaque surface for predictable contrast. */
+article[data-surface="tinted"] { background: var(--gothui-subtle); }
+article[data-surface="outlined"] { border: 2px solid var(--gothui-primary); box-shadow: none; }
+article[data-surface="gradient"] {
+  border: 2px solid var(--gothui-primary);
+  border-color: transparent;
+  background: linear-gradient(var(--gothui-surface), var(--gothui-surface)) padding-box,
+    linear-gradient(135deg, var(--gothui-primary), var(--gothui-border), var(--gothui-primary)) border-box;
+}
+.empty-state { padding: clamp(1.5rem, 5vw, 3rem); text-align: center; border: 1px dashed var(--gothui-border); border-radius: var(--gothui-radius); }
+.empty-state p { max-inline-size: 48ch; margin-inline: auto; color: var(--gothui-muted); }
+.stat { margin: 0; }
+.stat dt { color: var(--gothui-muted); font-weight: 600; }
+.stat dd { margin-inline: 0; }
+.stat-value { font-size: clamp(2rem, 4vw, 3rem); font-weight: 750; line-height: 1.2; letter-spacing: -.04em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; margin-block: .5rem; }
+.stat-detail { color: var(--gothui-muted); font-size: .9rem; }
+.skeleton small { display: block; margin-block-start: .75rem; color: var(--gothui-muted); }
+.skeleton-shapes { display: grid; gap: .8rem; }
+.skeleton-line, .skeleton-avatar { display: block; background: var(--gothui-subtle); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); }
+.skeleton-line { block-size: .9rem; }
+.skeleton-line:last-child { inline-size: 65%; }
+.skeleton-avatar { inline-size: 3rem; block-size: 3rem; border-radius: 50%; }
+
+/* Motion is progressive enhancement. No content requires an animation to be seen.
+   Explicit Off and exported CSS disable both duration and hover displacement. */
+:root:where([data-motion="system"]) {
+  --gothui-duration-fast: 160ms;
+  --gothui-duration-enter: 320ms;
+  --gothui-duration-loading: 1200ms;
+  --gothui-stagger-step: 80ms;
+  --gothui-lift-distance: -2px;
+}
+:root:where([data-motion="off"]) {
+  --gothui-duration-fast: 0ms;
+  --gothui-duration-enter: 0ms;
+  --gothui-duration-loading: 0ms;
+  --gothui-stagger-step: 0ms;
+  --gothui-lift-distance: 0px;
+}
+@keyframes gothui-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gothui-rise { from { opacity: 0; transform: translateY(.5rem); } to { opacity: 1; transform: none; } }
+@keyframes gothui-scale { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes gothui-loading { 0%, 100% { opacity: 1; } 50% { opacity: .65; } }
+@media (prefers-reduced-motion: no-preference) {
+  button, .button, input, select, textarea, .pagination a {
+    transition: background-color var(--gothui-duration-fast) ease,
+      border-color var(--gothui-duration-fast) ease, box-shadow var(--gothui-duration-fast) ease;
+  }
+  [data-enter] { animation-duration: var(--gothui-duration-enter); animation-timing-function: var(--gothui-ease-out); animation-fill-mode: backwards; animation-iteration-count: 1; }
+  [data-enter="fade"] { animation-name: gothui-fade; }
+  [data-enter="rise"] { animation-name: gothui-rise; }
+  [data-enter="scale"] { animation-name: gothui-scale; }
+  [data-enter-delay="short"] { animation-delay: var(--gothui-stagger-step); }
+  [data-enter-delay="medium"] { animation-delay: calc(var(--gothui-stagger-step) * 2); }
+  [data-enter-delay="long"] { animation-delay: calc(var(--gothui-stagger-step) * 3); }
+  article[data-hover="lift"] { transition: translate var(--gothui-duration-fast) var(--gothui-ease-out), box-shadow var(--gothui-duration-fast) ease; }
+  article[data-hover="lift"]:focus-within { translate: 0 var(--gothui-lift-distance); }
+  .gothui-dialog[open] { animation: gothui-rise var(--gothui-duration-enter) var(--gothui-ease-out); }
+  .gothui-dialog[open]::backdrop { animation: gothui-fade var(--gothui-duration-fast) ease; }
+  .gothui-popover:popover-open { animation: gothui-scale var(--gothui-duration-enter) var(--gothui-ease-out); }
+  .skeleton-shapes { animation: gothui-loading var(--gothui-duration-loading) ease-in-out 3; }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  article[data-hover="lift"]:hover { translate: 0 var(--gothui-lift-distance); }
+}
+@media (forced-colors: active) {
+  article[data-surface="gradient"] { background: Canvas; border-color: CanvasText; }
+  .skeleton-line, .skeleton-avatar { background: Canvas; border-color: CanvasText; }
+}
+@media print {
+  *, *::before, *::after { animation: none !important; transition: none !important; translate: none !important; }
+  article[data-surface="gradient"] { background: none; border-color: currentColor; }
 }

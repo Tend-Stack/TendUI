@@ -1,14 +1,39 @@
 package components
 
+type CardSurface string
+
+const (
+	SurfaceDefault  CardSurface = ""
+	SurfaceTinted   CardSurface = "tinted"
+	SurfaceOutlined CardSurface = "outlined"
+	SurfaceGradient CardSurface = "gradient"
+)
+
+func cardSurface(value CardSurface) string {
+	return string(allowed(value, SurfaceDefault, SurfaceDefault, SurfaceTinted, SurfaceOutlined, SurfaceGradient))
+}
+
 type CardProps struct {
-	ID     string
-	Header templ.Component
-	Body   templ.Component
-	Footer templ.Component
+	ID      string
+	Header  templ.Component
+	Body    templ.Component
+	Footer  templ.Component
+	Surface CardSurface
+	Entry   EntryEffect
+	Delay   EntryDelay
+	// HoverLift is decorative; it does not make the card a link or button.
+	HoverLift bool
 }
 
 templ Card(props CardProps) {
 	<article
+		if cardSurface(props.Surface) != "" {
+			data-surface={ cardSurface(props.Surface) }
+		}
+		if props.HoverLift {
+			data-hover="lift"
+		}
+		{ entryAttrs(props.Entry, props.Delay)... }
 		if props.ID != "" {
 			id={ props.ID }
 		}

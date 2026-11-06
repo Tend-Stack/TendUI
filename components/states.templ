@@ -1,0 +1,66 @@
+package components
+
+type SkeletonProps struct {
+	Label  string
+	Lines  int
+	Avatar bool
+}
+
+func skeletonLines(n int) int {
+	if n < 1 {
+		return 3
+	}
+	if n > 8 {
+		return 8
+	}
+	return n
+}
+
+// Skeleton is a loading placeholder. Replace it when the application has data.
+// Decorative motion stops after three cycles; the loading label stays visible.
+templ Skeleton(props SkeletonProps) {
+	<div class="skeleton" role="status">
+		<div class="skeleton-shapes" aria-hidden="true">
+			if props.Avatar {
+				<span class="skeleton-avatar"></span>
+			}
+			for i := 0; i < skeletonLines(props.Lines); i++ {
+				<span class="skeleton-line"></span>
+			}
+		</div>
+		<small>{ fallback(props.Label, "Loading…") }</small>
+	</div>
+}
+
+type EmptyStateProps struct {
+	Title   string
+	Message string
+}
+
+// EmptyState leaves recovery actions to the application through its children.
+templ EmptyState(props EmptyStateProps) {
+	<div class="empty-state">
+		<h3>{ fallback(props.Title, "Nothing here yet") }</h3>
+		if props.Message != "" {
+			<p>{ props.Message }</p>
+		}
+		{ children... }
+	</div>
+}
+
+type StatProps struct {
+	Label  string
+	Value  string
+	Detail string
+}
+
+// Stat uses a description list so the metric retains its label without CSS.
+templ Stat(props StatProps) {
+	<dl class="stat">
+		<dt>{ props.Label }</dt>
+		<dd class="stat-value">{ props.Value }</dd>
+		if props.Detail != "" {
+			<dd class="stat-detail">{ props.Detail }</dd>
+		}
+	</dl>
+}

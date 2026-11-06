@@ -1,0 +1,42 @@
+package components
+
+// EntryEffect is an opt-in, one-shot entrance. Content stays visible without CSS.
+type EntryEffect string
+type EntryDelay string
+
+const (
+	EntryNone   EntryEffect = ""
+	EntryFade   EntryEffect = "fade"
+	EntryRise   EntryEffect = "rise"
+	EntryScale  EntryEffect = "scale"
+	DelayNone   EntryDelay  = ""
+	DelayShort  EntryDelay  = "short"
+	DelayMedium EntryDelay  = "medium"
+	DelayLong   EntryDelay  = "long"
+)
+
+func entryAttrs(effect EntryEffect, delay EntryDelay) templ.Attributes {
+	attrs := templ.Attributes{}
+	effect = allowed(effect, EntryNone, EntryNone, EntryFade, EntryRise, EntryScale)
+	if effect != EntryNone {
+		attrs["data-enter"] = string(effect)
+		delay = allowed(delay, DelayNone, DelayNone, DelayShort, DelayMedium, DelayLong)
+		if delay != DelayNone {
+			attrs["data-enter-delay"] = string(delay)
+		}
+	}
+	return attrs
+}
+
+type RevealProps struct {
+	Effect EntryEffect
+	Delay  EntryDelay
+}
+
+// Reveal animates on insertion, not on scrolling into view. It creates one div.
+// Avoid wrapping table/list children whose HTML content models require other tags.
+templ Reveal(props RevealProps) {
+	<div { entryAttrs(props.Effect, props.Delay)... }>
+		{ children... }
+	</div>
+}
