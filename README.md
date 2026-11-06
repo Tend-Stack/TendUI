@@ -93,7 +93,7 @@ components/
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
 render/                   buffered page/fragment HTTP responses
-examples/basic/           eleven demo pages, preference cookies, and downloads
+examples/basic/           twelve demo pages, searchable catalog, preference cookies and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -409,6 +409,18 @@ The `/wizard` project-brief example preserves draft values across Back/Continue,
 checks all submitted fields on completion, and shows a validated preview without
 creating or storing a project. See [the form guide](docs/forms.md) for composition,
 validation and workflow ownership rules.
+
+## Searchable component catalog
+
+Open `/catalog` to browse all 32 public templ components by name, category or
+usage notes. Each entry provides a preview, guidance and a downloadable `.templ`
+recipe drawn from the same source compiled for that preview. Layouts open as
+standalone pages to preserve document landmarks. Search and pagination use Go
+requests; no client runtime or external assets are added.
+
+Catalog-only CSS and recipe source are embedded in the example executable, not
+the library stylesheet. See [the catalog guide](docs/catalog.md) for recipe
+adaptation, coverage checks and validation boundaries.
 
 ## Maintaining the library
 

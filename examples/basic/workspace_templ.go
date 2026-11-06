@@ -177,6 +177,7 @@ func workspace() templ.Component {
 				{Label: "Overview", Href: "/workspace", Current: true},
 				{Label: "Projects", Href: "/dashboard", Badge: "5"},
 				{Label: "Appearance", Href: "/settings"},
+				{Label: "Component catalog", Href: "/catalog"},
 				{Label: "Component playground", Href: "/playground"},
 				{Label: "Form lab", Href: "/forms"},
 				{Label: "Native interactions", Href: "/interactions"},

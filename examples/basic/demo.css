@@ -1,0 +1,17 @@
+/* The example catalog uses the same tokens and native links/forms as applications. */
+.catalog-heading { max-inline-size: 54rem; }
+.catalog-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; align-items: end; gap: var(--gothui-space); margin-block-end: 1rem; }
+.catalog-filters > label { margin: 0; }
+.catalog-results-heading, .catalog-section-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: .75rem; }
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: var(--gothui-grid-gap); margin-block-end: 2rem; }
+.catalog-card { display: flex; flex-direction: column; margin: 0; min-inline-size: 0; }
+.catalog-card h2 { font-size: 1.45rem; margin-block: .4rem .75rem; overflow-wrap: anywhere; }
+.catalog-card h2 a { color: var(--gothui-text); }
+.catalog-card p { color: var(--gothui-muted); }
+.catalog-card-link { margin-block-start: auto; }
+.catalog-preview { padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); background: var(--gothui-surface); min-inline-size: 0; }
+.catalog-preview > :last-child { margin-block-end: 0; }
+.catalog-source { tab-size: 2; max-block-size: 36rem; }
+@media (max-width: 48rem) {
+ .catalog-filters { grid-template-columns: minmax(0, 1fr); }
+}

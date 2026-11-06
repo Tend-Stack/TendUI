@@ -27,8 +27,9 @@ breadcrumbs and pagination; native dialogs/popovers; full-page/fragment helpers;
 inline editing with native fallback; short CSS motion; card surfaces; loading,
 empty and metric states; reusable DataTable with native selection review; page
 tabs, step indicators and grouped disclosures; composable fields/input addons;
-and a native three-step form with final revalidation. Eleven example pages
-exercise these APIs.
+a native three-step form with final revalidation; and a searchable catalog
+covering all 32 public templ components with compiled/downloadable recipes.
+Twelve demo areas exercise these APIs.
 
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
@@ -49,8 +50,9 @@ is pending. The active broad goal remains unfinished.
 3. **Visual language.** Coherent space/type/elevation tokens, additional surface
    recipes, an icon strategy without external requests, responsive page patterns,
    and careful interaction states. Motion must remain optional and bounded.
-4. **Developer experience.** Searchable component/API catalog with native search,
-   copyable examples, recipe pages, API compatibility checks, package docs and
+4. **Developer experience.** Native catalog search, category filters, preview
+   pages, copyable/downloadable recipes and public templ coverage checks are
+   implemented. Next: API compatibility checks, package documentation and
    versioned migration guidance. Keep demos runnable from one binary.
 5. **Evidence and release.** Browser matrix and visual regression baselines;
    keyboard/screen-reader/contrast checks; benchmarks and asset/binary size

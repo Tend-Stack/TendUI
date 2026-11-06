@@ -1,6 +1,6 @@
 # GothUI demos
 
-Eleven connected pages, served by one Go executable. All pages use the embedded
+Twelve connected demo areas, including a component catalog, served by one Go executable. All pages use the embedded
 GothUI stylesheet and generated templ components. No frontend tooling or
 JavaScript is required; the response CSP blocks scripts.
 
@@ -24,6 +24,7 @@ Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
 | Page | Local address | Try it |
 | --- | --- | --- |
 | Overview | http://127.0.0.1:8080/ | Component introduction and links to each demo |
+| Catalog | http://127.0.0.1:8080/catalog | Search 32 components, filter categories, open previews and download templ recipes |
 | Playground | http://127.0.0.1:8080/playground | Themes, button labels/variants, disabled/invalid/read-only states, card header/footer, checked controls |
 | Form lab | http://127.0.0.1:8080/forms | Required fields, invalid email, server validation, reset, success receipt |
 | Dashboard | http://127.0.0.1:8080/dashboard | Search, status filters, sorting, page size, pagination, empty results and scrollable tables |
@@ -131,6 +132,14 @@ Draft values travel with the form, not in cookies or a database. A fresh GET
 starts over. Browser history may retain submissions; use fictional information.
 See [the form guide](../../docs/forms.md) for validation and state ownership.
 
+The Catalog covers all public templ components. Search is case-insensitive across
+names, categories and notes, with twelve results per page. Open an entry to try
+its preview and select or download the example source. The same source is compiled
+for the preview; adapt its package, IDs and demo destinations in another app.
+Layout and AppShell open standalone to preserve document landmarks. All recipe
+text and the example-only `/demo.css` stylesheet are embedded in this binary.
+See [the catalog guide](../../docs/catalog.md).
+
 ## Manual review
 
 1. Test at desktop width and at 375 px. Cards should stack; only the table should
@@ -185,6 +194,13 @@ See [the form guide](../../docs/forms.md) for validation and state ownership.
 19. On each wizard step, use Enter in a text control to check forward submission;
     use Back with incomplete values to confirm native constraints do not block it.
     Complete the review, inspect escaped punctuation, then start a fresh brief.
+
+20. On Catalog, search `field`, filter Forms, page through all results and try an
+    empty search result. Open a detail, test the native control, then compare its
+    source with the downloaded file. Open both layout previews separately.
+21. Test catalog search, code-block scrolling, breadcrumbs, pagination and return
+    links at phone width and by keyboard. Toggle the theme from a detail page and
+    verify the same entry remains open. Check that source is selectable without JS.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:
