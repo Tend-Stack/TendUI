@@ -28,7 +28,7 @@ See [the development guide](../../docs/development.md) for reproducible checks.
 | Page | Local address | Try it |
 | --- | --- | --- |
 | Overview | http://127.0.0.1:8080/ | Component introduction and links to each demo |
-| Catalog | http://127.0.0.1:8080/catalog | Search 32 components, filter categories, open previews and download templ recipes |
+| Catalog | http://127.0.0.1:8080/catalog | Search 33 components, filter categories, open previews and download templ recipes |
 | Playground | http://127.0.0.1:8080/playground | Themes, button labels/variants, disabled/invalid/read-only states, card header/footer, checked controls |
 | Form lab | http://127.0.0.1:8080/forms | Required fields, invalid email, server validation, reset, success receipt |
 | Dashboard | http://127.0.0.1:8080/dashboard | Search, status filters, sorting, page size, pagination, empty results and scrollable tables |
@@ -205,6 +205,11 @@ See [the catalog guide](../../docs/catalog.md).
 21. Test catalog search, code-block scrolling, breadcrumbs, pagination and return
     links at phone width and by keyboard. Toggle the theme from a detail page and
     verify the same entry remains open. Check that source is selectable without JS.
+22. Open `/catalog/icon`. Compare all 24 drawings in light/dark modes and at larger
+    text sizes. Tab through action examples: only controls should take focus,
+    and the icon-only link should announce "Browse all components". Check forced
+    colors, print, zoom and long control labels; decorative SVGs should not be
+    announced separately. The static contact sheet is not browser evidence.
 
 Automated HTTP tests cover page routes, playground states, escaping, form
 validation/body limits, filters, cross-origin rejection, and safe theme redirects:

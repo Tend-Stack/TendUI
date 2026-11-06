@@ -30,6 +30,7 @@ var catalogEntries = []catalogEntry{
 	{"Layout", "Layout", "A complete HTML document with embedded CSS and theme attributes.", "Use once per document. Pass the body component and optional trusted Head metadata. Appearance controls tokens; the application owns its preferences.", "/settings", ExampleLayout},
 	{"AppShell", "Layout", "An application header, sidebar and main landmark.", "Place inside Layout and do not nest shells or main landmarks. Navigation uses a native disclosure; Actions and Footer accept components.", "/workspace", ExampleAppShell},
 	{"Grid", "Layout", "Responsive columns that preserve document order.", "Place block-level content in its children. Columns stack as available space narrows; no JavaScript measures the viewport.", "/playground", ExampleGrid},
+	{"Icon", "Visuals", "A cohesive set of 24 inline SVG drawings with typed names.", "Icons are decorative by default. Label standalone images; name icon-only actions on the button or link. Unknown names return a render error. No fonts, sprites, remote requests or JavaScript are used.", "/catalog/icon/preview", ExampleIcon},
 	{"Card", "Layout", "A semantic article with surface and content slots.", "Header, Body and Footer accept components. Surface, Entry, Delay and HoverLift are optional; a card is not automatically interactive.", "/motion", ExampleCard},
 	{"Button", "Actions", "Typed submit, reset and native command buttons.", "Native HTMX fields are optional. Set Type explicitly for forms; FormNoValidate supports Back actions. Native overlay targets force type=button.", "/wizard", ExampleButton},
 	{"Link", "Actions", "A real link with button styling.", "Use Href for navigation. Outline and Primary affect presentation. Optional HTMX attributes do not load a runtime.", "/dashboard", ExampleLink},
@@ -61,7 +62,7 @@ var catalogEntries = []catalogEntry{
 	{"Reveal", "Motion", "A short, one-shot entrance around content.", "Use fade, rise or scale. It runs on insertion, not scrolling. Respects reduced motion and MotionOff; the div wrapper must fit its HTML parent.", "/motion", ExampleReveal},
 }
 
-var catalogCategories = []string{"Layout", "Actions", "Forms", "Feedback", "Data", "Navigation", "Overlays", "Motion"}
+var catalogCategories = []string{"Layout", "Visuals", "Actions", "Forms", "Feedback", "Data", "Navigation", "Overlays", "Motion"}
 
 func catalogSource(e catalogEntry) (string, error) {
 	return recipes.Source(catalogSamples, e.Name)

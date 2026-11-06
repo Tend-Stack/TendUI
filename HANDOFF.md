@@ -1,5 +1,58 @@
 # GothUI implementation handoff
 
+## Inline icons and action composition milestone (2026-11-05)
+
+Added Icon as the 33rd public templ component, with 24 original geometric SVG
+drawings on a consistent 24-unit grid. Typed IconName and IconSize values select
+paths and text-relative dimensions. IconNames returns a fresh sorted list.
+The paths are compiled into Go and rendered inline; no fonts, sprites, image
+requests, runtime dependencies or JavaScript were added. CSS grows by 347 bytes
+to 32,607 bytes. Icons inherit currentColor, remain non-focusable and have no
+motion of their own. Directional drawings are literal; RTL applications choose
+the appropriate counterpart.
+
+Button and Link now accept IconBefore, IconAfter and AriaLabel. Icons inside
+controls are decorative; visible control text supplies the name. Icon-only
+controls require a nonblank AriaLabel. Unknown names and missing icon-only names
+fail before component markup is emitted. IconNone emits nothing. Standalone
+Icon.Label produces an escaped aria-label and role=img; the default is hidden
+from assistive technology. Existing form types, commands, optional HX attributes
+and disabled behavior are preserved. Use keyed props literals for additive API
+changes; do not imply positional struct literals remain source-compatible.
+
+The new `/catalog/icon` entry includes the full set, sizes, decorative/meaningful
+image examples, labeled icon actions and a disabled upload example. Existing
+Button and Link recipes also demonstrate icons. The catalog category Visuals,
+downloadable recipe, README and docs/icons.md are updated. All recipes stay
+self-contained with the public components import and embedded library CSS.
+
+Validation passed: all six packages with the race detector and vet, all 31
+generated templates reproducible, and all 33 recipes independently compiled.
+Tests parse SVG namespace/dimensions/paths and naming attributes across every
+drawing; check escaped hostile labels, invalid names, empty-label rejection,
+safe size fallback, registry isolation and native action behavior. Existing
+catalog HTTP tests exercise all new detail/preview/download endpoints.
+
+A contact sheet was rendered through installed librsvg/Cairo document APIs and
+visually inspected at 24 and approximately 38 pixels on light and dark surfaces.
+That review caught and corrected a pencil end-cap alignment issue; the final
+sheet reflects the corrected paths. The initial Python GI/Cairo bridge lacked
+its foreign-context binding, and its pixbuf fallback required blocked D-Bus;
+direct native document rendering succeeded without a display service. This is
+static SVG drawing evidence, not browser layout/accessibility evidence. No
+browser-control tool is available in this session; earlier sandbox launch
+failure evidence remains retained. Browser/keyboard/forced-color/print review,
+API compatibility automation and remote publication remain open.
+
+The single demo executable is rebuilt with the final clean local Git version;
+restart it outside the sandbox to explore `/catalog/icon`. Current validation
+reports retain their actual revision and dirty-state provenance. Keep one SVG
+and PNG contact sheet plus its provenance note under tests/results/icons until
+review or replacement, owned by the continuing developer. Remove the task's
+temporary proof generator, superseded focused-test log and task-owned Go cache
+after final build. No user process, reference source, worktree, database or
+shared cache is changed. The broad goal remains active and incomplete.
+
 ## Repeatable validation and performance milestone (2026-11-05)
 
 Added Go-only `cmd/gothui-dev` commands: check, generated, recipes, bench and build.

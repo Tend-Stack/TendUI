@@ -410,9 +410,18 @@ checks all submitted fields on completion, and shows a validated preview without
 creating or storing a project. See [the form guide](docs/forms.md) for composition,
 validation and workflow ownership rules.
 
+## Inline icons
+
+The Icon component provides 24 original SVG drawings, compiled into Go and
+rendered inline. They inherit text color and use no external image or font files.
+Button and Link accept optional `IconBefore`, `IconAfter` and `AriaLabel` fields.
+Icon-only actions require an explicit accessible name; decorative icons stay
+hidden from assistive technology. Explore `/catalog/icon` and the
+[icon guide](docs/icons.md) for sizes, composition and verification limits.
+
 ## Searchable component catalog
 
-Open `/catalog` to browse all 32 public templ components by name, category or
+Open `/catalog` to browse all 33 public templ components by name, category or
 usage notes. Each entry provides a preview, guidance and a downloadable `.templ`
 recipe drawn from the same source compiled for that preview. Layouts open as
 standalone pages to preserve document landmarks. Search and pagination use Go

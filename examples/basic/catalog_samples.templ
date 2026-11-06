@@ -55,7 +55,7 @@ templ ExampleCard() {
 templ ExampleButton() {
 	<form action="/catalog" method="get">
 		<input type="hidden" name="q" value="button"/>
-		@components.Button(components.ButtonProps{Text: "Find button examples", Type: components.ButtonTypeSubmit})
+		@components.Button(components.ButtonProps{Text: "Find button examples", Type: components.ButtonTypeSubmit, IconBefore: components.IconSearch})
 	</form>
 }
 
@@ -63,7 +63,7 @@ templ ExampleButton() {
 
 // catalog:Link
 templ ExampleLink() {
-	@components.Link(components.LinkProps{Text: "Explore the dashboard", Href: "/dashboard", Outline: true})
+	@components.Link(components.LinkProps{Text: "Explore the dashboard", Href: "/dashboard", Outline: true, IconAfter: components.IconArrowRight})
 }
 
 // catalog:end
@@ -282,6 +282,37 @@ templ ExampleReveal() {
 		@components.Card(components.CardProps{}) {
 			<h3>A gentle arrival.</h3>
 			<p>Reload to replay. Reduced-motion settings are respected.</p>
+		}
+	}
+}
+
+// catalog:end
+
+// catalog:Icon
+templ ExampleIcon() {
+	<h3>Small details, clear actions.</h3>
+	<p>Icons inherit text color and stay sharp at every size. Visible words remain the clearest way to describe an action.</p>
+	<div class="cluster">
+		@components.Link(components.LinkProps{Text: "Browse components", Href: "/catalog", IconBefore: components.IconSearch})
+		@components.Link(components.LinkProps{Text: "Appearance", Href: "/settings", Outline: true, IconAfter: components.IconArrowRight})
+		@components.Link(components.LinkProps{AriaLabel: "Browse all components", Href: "/catalog", Outline: true, IconBefore: components.IconMenu})
+		@components.Button(components.ButtonProps{Text: "Upload unavailable", IconBefore: components.IconUpload, Disabled: true})
+	</div>
+	<p>
+		@components.Icon(components.IconProps{Name: components.IconInfo, Size: components.IconSizeSmall})
+		Small,
+		@components.Icon(components.IconProps{Name: components.IconInfo})
+		medium, and
+		@components.Icon(components.IconProps{Name: components.IconInfo, Size: components.IconSizeLarge})
+		large sizes follow the surrounding text scale.
+	</p>
+	<p>Standalone image with its own accessible label: @components.Icon(components.IconProps{Name: components.IconCheck, Label: "Complete"})</p>
+	@components.Grid(components.GridProps{}) {
+		for _, name := range components.IconNames() {
+			<p>
+				@components.Icon(components.IconProps{Name: name})
+				<code>{ string(name) }</code>
+			</p>
 		}
 	}
 }

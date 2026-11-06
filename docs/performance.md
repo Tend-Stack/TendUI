@@ -53,8 +53,9 @@ measured candidate for profiling, not justification for bypassing safety checks.
 
 ## Size checks
 
-The embedded library CSS is currently 32,260 bytes, below its 65,536-byte review
-ceiling. Catalog-only styles remain in the example app. The stripped demo has a
+At the initial baseline the embedded library CSS was 32,260 bytes, below its
+65,536-byte review ceiling. Current size is recorded by the `check` command.
+Catalog-only styles remain in the example app. The stripped demo has a
 16,777,216-byte ceiling; `go run ./cmd/gothui-dev build` records its exact size,
 hash, version and toolchain in `tests/results/validation/build.json`.
 The first measured Linux amd64 build was 8,949,920 bytes (8.54 MiB), with CGO
