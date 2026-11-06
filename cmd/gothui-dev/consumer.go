@@ -1,6 +1,7 @@
 package main
 
 import (
+	"archive/zip"
 	"crypto/sha256"
 	"encoding/json"
 	"errors"
@@ -32,6 +33,35 @@ func fileProxyURL(path string) string {
 		path = "/" + path // Absolute Windows drive path.
 	}
 	return (&url.URL{Scheme: "file", Path: path}).String()
+}
+
+// Git includes explicit directories; Go's module ZIP hashes must describe the
+// same files as the extracted cache. Preserve file bytes, omit directory entries.
+func writeModuleArchive(source, destination string) (resultErr error) {
+	archive, err := zip.OpenReader(source)
+	if err != nil {
+		return err
+	}
+	defer func() { resultErr = errors.Join(resultErr, archive.Close()) }()
+	file, err := os.OpenFile(destination, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer func() { resultErr = errors.Join(resultErr, file.Close()) }()
+	writer := zip.NewWriter(file)
+	defer func() { resultErr = errors.Join(resultErr, writer.Close()) }()
+	for _, entry := range archive.File {
+		if entry.FileInfo().IsDir() {
+			continue
+		}
+		if !entry.Mode().IsRegular() {
+			return fmt.Errorf("unsupported module archive entry %q: %s", entry.Name, entry.Mode())
+		}
+		if err := writer.Copy(entry); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (r runner) consumer() error {
@@ -118,7 +148,11 @@ func (r runner) consumerFixture() (proof map[string]any, resultErr error) {
 		}
 	}
 	zipPath := filepath.Join(versionDir, version+".zip")
-	if err := r.run("consumer-archive.log", r.root, "git", "archive", "--format=zip", "--prefix="+modulePath+"@"+version+"/", "--output="+zipPath, "HEAD"); err != nil {
+	sourceArchive := filepath.Join(temp, "source.zip")
+	if err := r.run("consumer-archive.log", r.root, "git", "archive", "--format=zip", "--prefix="+modulePath+"@"+version+"/", "--output="+sourceArchive, "HEAD"); err != nil {
+		return nil, err
+	}
+	if err := writeModuleArchive(sourceArchive, zipPath); err != nil {
 		return nil, err
 	}
 	log, err := os.Create(filepath.Join(r.results, "consumer.log"))
