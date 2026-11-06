@@ -1,5 +1,37 @@
 # GothUI implementation handoff
 
+## Asset HTTP delivery coverage milestone (2026-11-06)
+
+Reviewed the update/cache path before changing implementation. AssetHandler already
+hashes the exact embedded bytes into a strong ETag, requires revalidation at its
+stable URL and creates a reader per request. The example's separate stylesheet
+and HTML use no-store. No stale-cache implementation bug was found, so runtime
+code, cache policy, CSS, API and dependencies remain unchanged.
+
+Added asset_http_test.go to prove the documented HTTP contract more thoroughly:
+served-byte SHA-256 validator identity, consistent independent handlers, normal
+HEAD lengths, absent invented modification dates, GET/HEAD conditional bodies,
+weak/list/wildcard If-None-Match, stale-validator full responses, bounded/open/
+suffix/clamped ranges, unsatisfiable ranges, strong/stale/weak If-Range, conditional
+precedence, multipart headers/boundaries/exact payloads, and 32 parallel readers.
+The original mount/method/404 checks remain. The root package passes go test -race
+and go vet; formatting/diff checks pass. No implementation correction was needed.
+These are in-process handler checks, not browser/proxy or network verification.
+
+Added docs/assets.md with the stable-URL revalidation contract, reverse-proxy
+considerations, range behavior, focused checks and running-process distinction.
+The retained asset-http.json records the base commit, toolchain, test/handler/CSS
+hashes and validation scope alongside the concise root race result. Prior broader
+suite, API, generation and recipe evidence applies to unchanged runtime sources.
+
+Keep the existing single demo binary at 2026.1.0-dev-g67bc803b97b0, whose runtime
+sources are unchanged; do not relabel it as rebuilt for this tests/docs commit.
+Clean only /tmp/gothui-assets-cache after recording evidence. No new worktree,
+database, second binary, reference change or remote write was created. The
+continuing developer owns retained results until relevant replacement or review.
+Browser, live security scan, native compatibility CI, remote reconciliation and
+versioned installation remain incomplete; the broad goal stays active.
+
 ## Prose and typography milestone (2026-11-06)
 
 Added Prose for application-owned long-form HTML: a plain div with an escaped
