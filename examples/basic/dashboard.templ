@@ -50,22 +50,30 @@ templ dashboard(d dashboardOptions) {
 					<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable projects table">
 						<table>
 							<caption>Sample project portfolio</caption>
-							<thead><tr><th
-	scope="col"
-	if d.Sort == "name" {
-		aria-sort="ascending"
-	}
->Project</th><th scope="col">Discipline</th><th scope="col">Status</th><th
-	scope="col"
-	if d.Sort == "due" {
-		aria-sort="ascending"
-	}
->Due</th><th
-	scope="col"
-	if d.Sort == "progress" {
-		aria-sort="descending"
-	}
->Progress</th></tr></thead>
+							<thead>
+								<tr>
+									<th
+										scope="col"
+										if d.Sort == "name" {
+											aria-sort="ascending"
+										}
+									>Project</th>
+									<th scope="col">Discipline</th>
+									<th scope="col">Status</th>
+									<th
+										scope="col"
+										if d.Sort == "due" {
+											aria-sort="ascending"
+										}
+									>Due</th>
+									<th
+										scope="col"
+										if d.Sort == "progress" {
+											aria-sort="descending"
+										}
+									>Progress</th>
+								</tr>
+							</thead>
 							<tbody>
 								for _, p := range d.Projects {
 									<tr><th scope="row">{ p.Name }</th><td>{ p.Category }</td><td>{ p.Status }</td><td>{ p.Due }</td><td><progress aria-label={ p.Name + " progress" } value={ p.Progress } max="100">{ p.Progress }%</progress><small>{ p.Progress }%</small></td></tr>
