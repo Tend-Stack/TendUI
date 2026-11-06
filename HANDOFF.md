@@ -1,5 +1,45 @@
 # GothUI implementation handoff
 
+## Typed layout composition milestone (2026-11-06)
+
+Added Stack and Cluster with typed spacing, cross-axis alignment and cluster
+justification. They emit plain div containers, preserve source/focus order and
+normalize unknown options to documented defaults. Stack defaults to stretch;
+Cluster defaults to centered items at the start of each naturally wrapping row.
+Direct-child block margins are replaced by the chosen gap. Nested flows own
+their own gaps. Five spacing tokens derive from the existing root density base.
+The legacy .stack/.cluster utilities and all previous component declarations
+remain unchanged. Distinct data-layout-align/data-layout-justify attributes avoid
+colliding with table-cell alignment rules when layouts appear inside cells.
+
+The Patterns page now has a Composition tab with nested project-card groups and
+a working native catalog-search form. Both components have compiled/downloadable
+catalog recipes; coverage rises to 35 public templ components. docs/layout.md
+explains semantics, defaults, density, RTL direction, margins, local token
+inheritance and native forms. The API review found exactly 22 additions and no
+changed/removed entries; the reviewed baseline now contains 234 entries, with a
+development migration note in docs/api-compatibility.md. No dependency was added.
+
+Validation: all seven packages pass the race suite and vet; dependency and size
+checks pass. CSS is 34,656 bytes against a 65,536-byte budget. All 33 templates
+reproduce with the pinned generator, and all 35 catalog recipes independently
+compile. Tests cover normalization, escaped IDs, nested child rendering/order,
+error/cancellation propagation, shipped CSS mappings and the actual demo route
+and search destination. An initial assertion expected &quot; instead of templ's
+valid numeric quote entity; the assertion was corrected. Review also identified
+and removed the potential collision with existing table data-align selectors.
+These are Go/HTTP/source checks, not computed browser layout or accessibility
+conformance. Browser review, remote native CI and published installation remain
+open gates; the broad goal remains active.
+
+Retain canonical validation reports and one demo binary, rebuilding that binary
+after committing to stamp its clean revision. Remove duplicate composition
+command logs and only the task-owned /tmp/gothui-composition-cache after the build.
+The continuing developer owns retained reports until their next relevant
+replacement. No new worktree, database, backup or long-lived secondary executable
+was created. Existing user processes, shared caches and reference folders are
+untouched.
+
 ## Native CSV upload milestone (2026-11-06)
 
 Added the thirteenth demo area, `/uploads`, with a downloadable sample CSV and a

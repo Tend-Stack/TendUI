@@ -41,6 +41,30 @@ templ ExampleGrid() {
 
 // catalog:end
 
+// catalog:Stack
+templ ExampleStack() {
+	@components.Stack(components.StackProps{Gap: components.SpaceLarge}) {
+		<h3>A little breathing room.</h3>
+		<p>The stack owns spacing between these children. Its gap follows your page density.</p>
+		@components.Stack(components.StackProps{Gap: components.SpaceSmall}) {
+			<strong>A nested group</strong>
+			<p>Nested stacks choose their own gap.</p>
+		}
+	}
+}
+
+// catalog:end
+
+// catalog:Cluster
+templ ExampleCluster() {
+	@components.Cluster(components.ClusterProps{Gap: components.SpaceSmall, Justify: components.LayoutJustifyEnd}) {
+		<a href="/catalog">Back to the catalog</a>
+		@components.Link(components.LinkProps{Text: "Explore layouts", Href: "/patterns?section=composition", IconAfter: components.IconArrowRight})
+	}
+}
+
+// catalog:end
+
 // catalog:Card
 templ ExampleCard() {
 	@components.Card(components.CardProps{Surface: components.SurfaceGradient}) {

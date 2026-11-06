@@ -1,7 +1,7 @@
 # Public API review and migration
 
 GothUI's public Go surface is recorded in `api/public.json`. The initial
-development baseline contains 212 declarations and method-set entries across
+development baseline contained 212 declarations and method-set entries across
 the root asset package, `components` and `render`. This is a baseline of the
 current implementation, not a comparison with a published release or the archived
 project. No release has been declared by creating this file.
@@ -107,3 +107,21 @@ An annual module line such as `/v2027` requires explicit import updates and a
 migration guide. Do not rewrite old tags. The first published version still needs
 repository reconciliation, release documentation and a clean consumer install;
 this local baseline does not substitute for those gates.
+
+
+## Development addition: Stack and Cluster
+
+The reviewed composition change adds 22 declarations (234 baseline entries in
+total): Stack/StackProps, Cluster/ClusterProps, Space with six values,
+LayoutAlign with five values, and LayoutJustify with four values. No existing
+signature, type, struct field, constant value or method set changes. Existing
+consumers do not need a source migration.
+
+The new CSS classes are opt-in. Existing `.stack`, `.cluster`, Grid and Card
+behavior remains unchanged. Five new root spacing tokens derive from the
+existing density base. When adopting a Stack or Cluster, remove redundant
+per-child block margins: the container owns that spacing. Do not mechanically
+wrap list/table children in divs; preserve their HTML content model. See
+[the layout guide](layout.md) for defaults, nested gaps and semantics. Adding
+these names is a reviewed development change, not evidence of a published release
+or browser compatibility.

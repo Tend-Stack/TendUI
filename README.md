@@ -415,6 +415,14 @@ preview: download a sample, upload up to 64 KiB/50 rows, and inspect validated
 results or line-specific errors. Uploaded content stays in request memory;
 nothing is saved or imported. See the form guide for limits and HTTP behavior.
 
+## Layout composition
+
+`Stack` provides vertical rhythm; `Cluster` wraps actions and other related items
+into rows. Typed gap and alignment props use a density-aware spacing scale,
+preserve document order, and compose with Grid, Card and native forms. Existing
+CSS utilities retain their behavior. Try `/patterns?section=composition` or read
+[the layout guide](docs/layout.md) for spacing tokens, semantics and examples.
+
 ## Inline icons
 
 The Icon component provides 24 original SVG drawings, compiled into Go and
@@ -426,7 +434,7 @@ hidden from assistive technology. Explore `/catalog/icon` and the
 
 ## Searchable component catalog
 
-Open `/catalog` to browse all 33 public templ components by name, category or
+Open `/catalog` to browse all 35 public templ components by name, category or
 usage notes. Each entry provides a preview, guidance and a downloadable `.templ`
 recipe drawn from the same source compiled for that preview. Layouts open as
 standalone pages to preserve document landmarks. Search and pagination use Go

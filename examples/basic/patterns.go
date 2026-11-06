@@ -17,10 +17,11 @@ func readPatterns(q url.Values) patternOptions {
 	if err != nil || step < 1 || step > 3 {
 		step = 1
 	}
-	return patternOptions{Section: choice(q.Get("section"), "navigation", "navigation", "tables", "disclosures"), Step: step, Loading: q.Get("state") == "loading"}
+	return patternOptions{Section: choice(q.Get("section"), "navigation", "navigation", "tables", "disclosures", "composition"), Step: step, Loading: q.Get("state") == "loading"}
 }
 func (p patternOptions) Tabs() []components.TabItem {
 	return []components.TabItem{
+		{Label: "Composition", Href: "/patterns?section=composition", Current: p.Section == "composition"},
 		{Label: "Navigation", Href: "/patterns?section=navigation", Current: p.Section == "navigation"},
 		{Label: "Table states", Href: "/patterns?section=tables", Current: p.Section == "tables"},
 		{Label: "Disclosures", Href: "/patterns?section=disclosures", Current: p.Section == "disclosures"},
