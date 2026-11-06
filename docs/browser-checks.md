@@ -4,7 +4,7 @@
 consumer fixture. It exercises native forms with JavaScript disabled, keyboard
 popover/dialog behavior, catalog search and downloads, profile validation,
 theme persistence, mobile layouts, reduced motion, print, and forced colors
-where the browser supports emulation. Axe checks all 36 component detail pages
+where the browser supports emulation. Axe checks all 37 component detail pages
 in light and dark modes. Test failures are not retried or silently excluded.
 
 A separate test-only consumer loads pinned HTMX 2.0.11 with default
