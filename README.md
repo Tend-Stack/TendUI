@@ -100,7 +100,9 @@ Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
 `http.StripPrefix`: the handler already recognizes the complete path. It serves
 only `gothui.css`, supports GET/HEAD, conditional ETag requests and byte ranges,
 and returns 404 for directories and unknown assets. Revalidation prevents a
-browser from keeping stale CSS across binary upgrades.
+browser from keeping stale CSS across binary upgrades. See the
+[asset delivery guide](docs/assets.md) for cache/proxy behavior, range requests
+and verification scope.
 
 ## Components
 

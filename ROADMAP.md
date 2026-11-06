@@ -60,6 +60,10 @@ built-in surfaces. A consolidated print palette takes priority over dark themes
 and retains readable controls without requiring background graphics. See
 docs/accessibility.md for measured scope and the pending browser review matrix.
 
+Expanded asset HTTP coverage verifies content-derived ETags, stale validators,
+HEAD, single/multipart ranges and concurrent readers. docs/assets.md records the
+stable-URL cache contract and distinguishes in-process checks from live delivery.
+
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
 
