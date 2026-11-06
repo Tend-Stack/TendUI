@@ -142,6 +142,19 @@ func (r runner) consumerFixture() (proof map[string]any, resultErr error) {
 		filepath.Join(consumer, "go.sum"):           sums,
 		filepath.Join(consumer, "consumer_test.go"): []byte(consumerTestSource),
 	}
+	// Build the documented onboarding application outside the library module,
+	// using only the installed version and checked-in generated Go.
+	quickstart := filepath.Join(consumer, "quickstart")
+	if err := os.MkdirAll(quickstart, 0755); err != nil {
+		return nil, err
+	}
+	for _, name := range []string{"main.go", "page.templ", "page_templ.go", "main_test.go"} {
+		contents, err := os.ReadFile(filepath.Join(r.root, "examples/quickstart", name))
+		if err != nil {
+			return nil, err
+		}
+		files[filepath.Join(quickstart, name)] = contents
+	}
 	for path, contents := range files {
 		if err := os.WriteFile(path, contents, 0644); err != nil {
 			return nil, err
@@ -211,7 +224,7 @@ func (r runner) consumerFixture() (proof map[string]any, resultErr error) {
 		"module": installed.Path, "version": installed.Version, "module_sum": installed.Sum,
 		"archive_sha256": fmt.Sprintf("%x", sha256.Sum256(zip)), "archive_bytes": len(zip),
 		"source_revision": revision, "replace_used": false, "templ_generator_used": false,
-		"local_file_proxy": true, "published_install_test": false, "isolated_fixture_removed": true,
+		"quickstart_tested": true, "local_file_proxy": true, "published_install_test": false, "isolated_fixture_removed": true,
 	}, nil
 }
 

@@ -18,6 +18,14 @@ func main() {
 	flag.Parse()
 	demo := site.Handler()
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/__test/html/index.html" {
+			http.ServeFile(w, r, "../../examples/html/index.html")
+			return
+		}
+		if r.URL.Path == "/__test/html/tendui.css" {
+			http.ServeFile(w, r, "../../static/tendui.css")
+			return
+		}
 		if r.URL.Path == "/__test/htmx.js" {
 			w.Header().Set("Content-Type", "text/javascript")
 			http.ServeFile(w, r, *runtime)

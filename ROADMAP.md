@@ -28,7 +28,7 @@ inline editing with native fallback; short CSS motion; card surfaces; loading,
 empty and metric states; reusable DataTable with native selection review; page
 tabs, step indicators and grouped disclosures; composable fields/input addons;
 a native three-step form with final revalidation; and a searchable catalog
-covering all 36 public templ components with compiled/downloadable recipes.
+covering all 37 public templ components with compiled/downloadable recipes.
 The Icon component includes 24 original inline SVG drawings and optional
 button/link adornments with explicit accessible naming for icon-only actions.
 A bounded CSV upload preview exercises native multipart forms and Go validation
@@ -41,11 +41,11 @@ generated-source reproducibility and independent catalog recipe compilation. It
 records rendering/HTTP benchmarks and enforces CSS/demo size budgets, with Git
 version stamping and checked atomic replacement of the review executable.
 See docs/development.md and docs/performance.md for current evidence and limits.
-A compiler-resolved public API baseline now guards 242 declarations/method-set
+A compiler-resolved public API baseline now guards 246 declarations/method-set
 entries across the three public packages. It flags additions and changes for
 review without claiming semantic compatibility; docs/api-compatibility.md defines
 the update and migration process.
-A six-job GitHub verification matrix is prepared for Go 1.26.0/1.27.3 on Linux,
+A six-job GitHub verification matrix is configured for Go 1.26.0/1.27.3 on Linux,
 macOS and Windows. Local native Linux checks pass on both Go versions, including
 the minimum compiler's API, consumer installation and executable smoke checks.
 Foreign-target builds pass; GitHub runs the native matrix for pushed source.
@@ -67,10 +67,11 @@ Expanded asset HTTP coverage verifies content-derived ETags, stale validators,
 HEAD, single/multipart ranges and concurrent readers. docs/assets.md records the
 stable-URL cache contract and distinguishes in-process checks from live delivery.
 
-The first release baseline now has a complete documentation website, shared
+The current preview has a complete documentation website, shared
 component catalog, examples and playground, plus passing native, security and
 browser verification. See [release verification](docs/release-verification.md)
-for exact commits, runs, published-tag installation and remaining coverage limits.
+for historical pre-rename evidence. Current preview details are in
+[preview release notes](docs/releases/2026.2.0-preview.1.md).
 The development tracks below describe continuing product work beyond this baseline.
 
 ## Next development tracks
@@ -97,8 +98,8 @@ The development tracks below describe continuing product work beyond this baseli
    also in place. Next: release-specific migration guidance and broader consumer
    compatibility evidence. Keep demos runnable from one binary.
 5. **Evidence and release.** Local benchmarks, asset/binary size budgets and
-   generated-source consistency checks are implemented. Next: browser matrix
-   and visual regression baselines; keyboard/screen-reader/contrast checks;
+   generated-source consistency checks are implemented. The browser matrix is implemented. Next: stable visual regression baselines
+   and manual screen-reader/device checks;
    passing GitHub CI at the release SHA; versioned release documentation
    and installation proof. Table allocation profiling and
    the first optimization are complete; profile representative application work

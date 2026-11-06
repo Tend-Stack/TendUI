@@ -1,8 +1,13 @@
 # Moving to TendUI
 
-TendUI is the new name of this library. The renamed module is available on
-`main`; historical `v2026.1.0` tags retain their original module path and have
-not been rewritten. Pin the resolved development version for reproducible builds.
+TendUI is the new name of this library. Install the renamed preview explicitly:
+
+```sh
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.1
+```
+
+The historical `v2026.1.0` tag retains its original module path and is not a
+TendUI installation target. It has not been rewritten.
 
 Update Go imports to `github.com/Tend-Stack/TendUI/v2026` and the root package
 identifier to `tendui`. Regenerate your own templ files after changing imports.

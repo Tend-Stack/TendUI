@@ -1,0 +1,24 @@
+package main
+
+import "github.com/Tend-Stack/TendUI/v2026/components"
+
+templ page() {
+	@components.Layout(components.LayoutProps{
+		Title:    "My TendUI app",
+		Language: "en",
+		Theme:    components.ThemeSystem,
+	}, body())
+}
+
+templ body() {
+	<main>
+		<h1>Hello, TendUI.</h1>
+		@components.Card(components.CardProps{}) {
+			<p>This page and its stylesheet ship in one Go binary.</p>
+			<details>
+				<summary>What does the browser need?</summary>
+				<p>Just HTML and CSS. This disclosure works without JavaScript.</p>
+			</details>
+		}
+	</main>
+}
