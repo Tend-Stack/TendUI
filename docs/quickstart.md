@@ -11,7 +11,7 @@ Use Go 1.26 or newer.
 mkdir my-tendui-app
 cd my-tendui-app
 go mod init example.com/my-tendui-app
-go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.1
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
 go install github.com/a-h/templ/cmd/templ@v0.3.1100
 ```
 
