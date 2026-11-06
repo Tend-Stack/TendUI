@@ -65,6 +65,21 @@ templ ExampleCluster() {
 
 // catalog:end
 
+// catalog:Prose
+templ ExampleProse() {
+	@components.Prose(components.ProseProps{Measure: components.MeasureStandard}) {
+		<h3>Words deserve a clear home.</h3>
+		<p>A readable measure keeps a guide or help article comfortable within a larger application layout.</p>
+		<ul><li>Use native headings and lists.</li><li>Let your Go application own the content.</li></ul>
+		<blockquote><p>Good structure works before any decoration arrives.</p></blockquote>
+		<div data-prose="off">
+			@components.Alert(components.AlertProps{Title: "An embedded component", Message: "This alert keeps its own typography and spacing.", Tone: components.ToneInfo})
+		</div>
+	}
+}
+
+// catalog:end
+
 // catalog:Card
 templ ExampleCard() {
 	@components.Card(components.CardProps{Surface: components.SurfaceGradient}) {

@@ -1,5 +1,48 @@
 # GothUI implementation handoff
 
+## Prose and typography milestone (2026-11-06)
+
+Added Prose for application-owned long-form HTML: a plain div with an escaped
+optional ID and a typed TextMeasure. Narrow, Standard and Wide map to 55ch, 65ch
+and 80ch, with Standard as the zero/unknown fallback. Width is bounded by the
+available space; no content parser, sanitizer, Markdown dependency, script or
+font asset was added. Paragraphs, headings, nested lists, definitions, quotes,
+inline/preformatted code and captions get scoped typography. data-prose=off
+excludes an embedded widget and its subtree from descendant typography rules;
+only outer first/last margin trimming still applies at the reading boundary.
+
+Five named typography tokens replace existing global heading sizes/line heights
+with identical defaults. Six reading-specific tokens control measures, leading
+and paragraph/heading spacing. Reading rhythm stays independent of compact
+control density. Prose inherits the existing theme/print colors, while code keeps
+its monospace font and preformatted overflow. docs/prose.md describes semantics,
+trusted-content boundaries, opt-out behavior, direction, custom tokens and the
+need for actual browser review.
+
+The Patterns page has a Reading tab with a native GET measure selector and a
+complete example: headings, emphasis, nested lists, quote, definitions, labeled
+focusable code region, caption and an opted-out alert. The catalog includes the
+compiled/downloadable Prose recipe, bringing coverage to 36 public components.
+API review found six additions and no changed or removed declarations; the
+reviewed baseline now has 240 entries. Existing caller structs are unchanged.
+
+Validation: all seven packages pass the race suite and vet, plus dependency/CSS
+budget/API checks. All 35 template files regenerate identically and all 36 catalog
+recipes compile independently. New tests cover measure normalization and shipped
+style mappings, escaping, unchanged child markup, render errors/cancellation,
+widget-exclusion selector guards, actual measure queries and native form output,
+content semantics and HEAD behavior. These are Go/source/HTTP results, not visual
+line-wrap or accessibility measurements. Browser, live vulnerability scan, native
+minimum/platform CI and publication/installation gates remain outstanding.
+
+After this local commit, rebuild the single review executable with its clean
+revision. Retain canonical validation reports and one demo binary; remove
+redundant prose command wrappers and only /tmp/gothui-prose-cache after the build.
+The continuing developer owns retained evidence until relevant replacement or
+operator review. No new worktree, database, secondary long-lived executable,
+reference-source changes or remote writes were created. The broad goal stays
+active.
+
 ## Compatibility recheck and prepared security job (2026-11-06)
 
 Rechecked release gates instead of adding more UI surface. Only Go 1.27.3 was

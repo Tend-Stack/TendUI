@@ -28,19 +28,20 @@ inline editing with native fallback; short CSS motion; card surfaces; loading,
 empty and metric states; reusable DataTable with native selection review; page
 tabs, step indicators and grouped disclosures; composable fields/input addons;
 a native three-step form with final revalidation; and a searchable catalog
-covering all 35 public templ components with compiled/downloadable recipes.
+covering all 36 public templ components with compiled/downloadable recipes.
 The Icon component includes 24 original inline SVG drawings and optional
 button/link adornments with explicit accessible naming for icon-only actions.
 A bounded CSV upload preview exercises native multipart forms and Go validation
 without persisting files. Stack and Cluster provide typed layout composition
-with a shared density-aware spacing scale. Thirteen demo areas exercise these APIs.
+with a shared density-aware spacing scale. Prose adds reading measures, long-form
+HTML typography and widget exclusions. Thirteen demo areas exercise these APIs.
 
 The Go-only developer command now checks runtime dependency boundaries, race/vet,
 generated-source reproducibility and independent catalog recipe compilation. It
 records rendering/HTTP benchmarks and enforces CSS/demo size budgets, with Git
 version stamping and checked atomic replacement of the review executable.
 See docs/development.md and docs/performance.md for current evidence and limits.
-A compiler-resolved public API baseline now guards 234 declarations/method-set
+A compiler-resolved public API baseline now guards 240 declarations/method-set
 entries across the three public packages. It flags additions and changes for
 review without claiming semantic compatibility; docs/api-compatibility.md defines
 the update and migration process.
@@ -76,9 +77,9 @@ is pending. The active broad goal remains unfinished.
    useful. Validate keyboard and assistive-technology behavior. Keep validation,
    storage and request protection separate from the library.
 3. **Visual language.** Inline SVG icons with typed names and accessible action
-   composition and a shared spacing scale are implemented. Next: coherent
-   typography/elevation tokens, additional surface recipes, responsive page
-   patterns and careful interaction states. Motion must remain optional and bounded. Verify icons and control
+   composition, a shared spacing scale and Prose typography tokens are
+   implemented. Next: coherent elevation tokens, additional surface recipes,
+   responsive page patterns and careful interaction states. Motion must remain optional and bounded. Verify icons and control
    layouts in browsers as well as the retained static drawing contact sheet.
 4. **Developer experience.** Native catalog search, category filters, preview
    pages, copyable/downloadable recipes and public templ coverage checks are

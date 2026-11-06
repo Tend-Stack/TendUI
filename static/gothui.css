@@ -12,6 +12,17 @@
   color-scheme: light;
   --gothui-font: var(--gothui-font-sans);
   --gothui-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --gothui-leading-body: 1.6;
+  --gothui-leading-heading: 1.2;
+  --gothui-heading-1: clamp(2.25rem, 5vw, 4rem);
+  --gothui-heading-2: clamp(1.65rem, 3vw, 2.4rem);
+  --gothui-heading-3: 1.35rem;
+  --gothui-prose-narrow: 55ch;
+  --gothui-prose-standard: 65ch;
+  --gothui-prose-wide: 80ch;
+  --gothui-prose-leading: 1.75;
+  --gothui-prose-space: 1.25rem;
+  --gothui-prose-heading-gap: 2.25rem;
   --gothui-background: #f7f8fc;
   --gothui-surface: #ffffff;
   --gothui-subtle: #eef1f8;
@@ -37,7 +48,7 @@
   --gothui-content-width: 72rem;
   font-family: var(--gothui-font);
   font-size: var(--gothui-text-size);
-  line-height: 1.6;
+  line-height: var(--gothui-leading-body);
   text-size-adjust: 100%;
 }
 
@@ -229,10 +240,10 @@ nav { justify-content: space-between; }
 nav ul { list-style: none; margin: 0; padding: 0; }
 
 /* Typography and text semantics. */
-h1, h2, h3, h4, h5, h6 { line-height: 1.2; margin: 0 0 1rem; text-wrap: balance; }
-h1 { font-size: clamp(2.25rem, 5vw, 4rem); letter-spacing: -0.04em; }
-h2 { font-size: clamp(1.65rem, 3vw, 2.4rem); letter-spacing: -0.025em; }
-h3 { font-size: 1.35rem; }
+h1, h2, h3, h4, h5, h6 { line-height: var(--gothui-leading-heading); margin: 0 0 1rem; text-wrap: balance; }
+h1 { font-size: var(--gothui-heading-1); letter-spacing: -0.04em; }
+h2 { font-size: var(--gothui-heading-2); letter-spacing: -0.025em; }
+h3 { font-size: var(--gothui-heading-3); }
 p, ul, ol, dl, blockquote, pre, table, figure { margin: 0 0 1.25rem; }
 p, li, dd { overflow-wrap: break-word; }
 small, .muted { color: var(--gothui-muted); }
@@ -561,6 +572,39 @@ article[data-surface="gradient"] {
 .layout-cluster[data-layout-justify="center"] { justify-content: center; }
 .layout-cluster[data-layout-justify="end"] { justify-content: flex-end; }
 .layout-cluster[data-layout-justify="between"] { justify-content: space-between; }
+
+/* Reading content is opt-in. Embedded widgets can opt out of prose descendants.
+   ch measures glyph width; this is a readable bound, not an exact character count. */
+.prose { inline-size: 100%; max-inline-size: var(--gothui-prose-standard); min-inline-size: 0; }
+.prose[data-measure="narrow"] { max-inline-size: var(--gothui-prose-narrow); }
+.prose[data-measure="standard"] { max-inline-size: var(--gothui-prose-standard); }
+.prose[data-measure="wide"] { max-inline-size: var(--gothui-prose-wide); }
+.prose :where(p, li, dd, blockquote):not(:where([data-prose="off"], [data-prose="off"] *)) {
+  line-height: var(--gothui-prose-leading);
+  overflow-wrap: anywhere;
+}
+.prose :where(p, ul, ol, dl, blockquote, pre, figure, table):not(:where([data-prose="off"], [data-prose="off"] *)) {
+  margin-block: 0 var(--gothui-prose-space);
+}
+.prose :where(h1, h2, h3, h4, h5, h6):not(:where([data-prose="off"], [data-prose="off"] *)) {
+  margin-block: var(--gothui-prose-heading-gap) .75rem;
+  overflow-wrap: anywhere;
+}
+.prose :where(h4):not(:where([data-prose="off"], [data-prose="off"] *)) { font-size: 1.125rem; }
+.prose :where(h5, h6):not(:where([data-prose="off"], [data-prose="off"] *)) { font-size: 1rem; }
+.prose :where(ul, ol):not(:where([data-prose="off"], [data-prose="off"] *)) { padding-inline-start: 1.5em; }
+.prose :where(li + li):not(:where([data-prose="off"], [data-prose="off"] *)) { margin-block-start: .4rem; }
+.prose :where(li > ul, li > ol):not(:where([data-prose="off"], [data-prose="off"] *)) { margin-block: .4rem 0; }
+.prose :where(dt):not(:where([data-prose="off"], [data-prose="off"] *)) { font-weight: 650; }
+.prose :where(dd):not(:where([data-prose="off"], [data-prose="off"] *)) { margin-inline-start: 1.5em; }
+.prose :where(dd + dt):not(:where([data-prose="off"], [data-prose="off"] *)) { margin-block-start: .75rem; }
+.prose :where(figcaption):not(:where([data-prose="off"], [data-prose="off"] *)) { margin-block-start: .5rem; color: var(--gothui-muted); font-size: .9em; }
+.prose :where(code):not(:where([data-prose="off"], [data-prose="off"] *)) { overflow-wrap: anywhere; }
+.prose :where(pre):not(:where([data-prose="off"], [data-prose="off"] *)) { max-inline-size: 100%; line-height: 1.5; tab-size: 4; }
+.prose :where(pre code):not(:where([data-prose="off"], [data-prose="off"] *)) { font-size: inherit; background: transparent; overflow-wrap: normal; }
+.prose :where(blockquote > :last-child):not(:where([data-prose="off"], [data-prose="off"] *)) { margin-block-end: 0; }
+.prose > :first-child { margin-block-start: 0; }
+.prose > :last-child { margin-block-end: 0; }
 
 /* Print is a separate, opaque palette. Important tokens intentionally override
    more-specific dark selectors and ordinary exported appearance overrides.

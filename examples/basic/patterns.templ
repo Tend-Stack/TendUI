@@ -12,7 +12,9 @@ templ patterns(p patternOptions) {
 			<p>Explore navigation, data states, and disclosures that work through native HTML and Go responses.</p>
 		</section>
 		@components.Tabs(components.TabsProps{Label: "Pattern examples", Items: p.Tabs()})
-		if p.Section == "composition" {
+		if p.Section == "reading" {
+			@readingPattern(p.Measure)
+		} else if p.Section == "composition" {
 			@compositionPattern()
 		} else if p.Section == "navigation" {
 			<section aria-labelledby="walkthrough-title">

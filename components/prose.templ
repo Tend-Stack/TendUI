@@ -1,0 +1,34 @@
+package components
+
+// TextMeasure limits reading width in font-relative ch units, never a fixed page width.
+type TextMeasure string
+
+const (
+	MeasureNarrow   TextMeasure = "narrow"
+	MeasureStandard TextMeasure = "standard"
+	MeasureWide     TextMeasure = "wide"
+)
+
+type ProseProps struct {
+	ID      string
+	Measure TextMeasure
+}
+
+func proseMeasure(value TextMeasure) string {
+	return string(allowed(value, MeasureStandard, MeasureNarrow, MeasureStandard, MeasureWide))
+}
+
+// Prose styles application-owned rich HTML. It neither parses Markdown nor sanitizes
+// trusted raw HTML. Use ordinary templ interpolation for untrusted text, and put
+// data-prose="off" around embedded widgets to keep their own typography.
+templ Prose(props ProseProps) {
+	<div
+		class="prose"
+		data-measure={ proseMeasure(props.Measure) }
+		if props.ID != "" {
+			id={ props.ID }
+		}
+	>
+		{ children... }
+	</div>
+}
