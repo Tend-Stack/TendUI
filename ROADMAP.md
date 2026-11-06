@@ -28,7 +28,9 @@ inline editing with native fallback; short CSS motion; card surfaces; loading,
 empty and metric states; reusable DataTable with native selection review; page
 tabs, step indicators and grouped disclosures; composable fields/input addons;
 a native three-step form with final revalidation; and a searchable catalog
-covering all 32 public templ components with compiled/downloadable recipes.
+covering all 33 public templ components with compiled/downloadable recipes.
+The Icon component includes 24 original inline SVG drawings and optional
+button/link adornments with explicit accessible naming for icon-only actions.
 Twelve demo areas exercise these APIs.
 
 The Go-only developer command now checks runtime dependency boundaries, race/vet,
@@ -53,9 +55,11 @@ is pending. The active broad goal remains unfinished.
    handling recipes and application-owned mutation/idempotency examples where
    useful. Validate keyboard and assistive-technology behavior. Keep validation,
    storage and request protection separate from the library.
-3. **Visual language.** Coherent space/type/elevation tokens, additional surface
-   recipes, an icon strategy without external requests, responsive page patterns,
-   and careful interaction states. Motion must remain optional and bounded.
+3. **Visual language.** Inline SVG icons with typed names and accessible action
+   composition are implemented. Next: coherent space/type/elevation tokens,
+   additional surface recipes, responsive page patterns and careful interaction
+   states. Motion must remain optional and bounded. Verify icons and control
+   layouts in browsers as well as the retained static drawing contact sheet.
 4. **Developer experience.** Native catalog search, category filters, preview
    pages, copyable/downloadable recipes and public templ coverage checks are
    implemented. Next: API compatibility checks, package documentation and

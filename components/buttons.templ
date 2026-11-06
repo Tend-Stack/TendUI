@@ -1,5 +1,7 @@
 package components
 
+import "strings"
+
 type ButtonType string
 
 const (
@@ -30,6 +32,10 @@ type ButtonProps struct {
 	AutoFocus     bool
 	// FormNoValidate bypasses native constraints for submit actions such as Back.
 	FormNoValidate bool
+	// Icons are decorative; an icon-only button must provide AriaLabel.
+	IconBefore IconName
+	IconAfter  IconName
+	AriaLabel  string
 }
 
 func buttonType(t ButtonType) string {
@@ -42,6 +48,11 @@ func buttonType(t ButtonType) string {
 }
 
 templ Button(props ButtonProps) {
+	{{
+		if err := validateActionIcons(props.IconBefore, props.IconAfter, props.Text, props.AriaLabel); err != nil {
+			return err
+		}
+	}}
 	<button
 		type={ nativeButtonType(props) }
 		class={ templ.KV("primary", props.Primary), templ.KV("outline", props.Outline) }
@@ -49,6 +60,9 @@ templ Button(props ButtonProps) {
 		autofocus?={ props.AutoFocus }
 		formnovalidate?={ props.FormNoValidate && nativeButtonType(props) == "submit" }
 		{ nativeButtonAttrs(props)... }
+		if strings.TrimSpace(props.AriaLabel) != "" {
+			aria-label={ props.AriaLabel }
+		}
 		if props.ID != "" {
 			id={ props.ID }
 		}
@@ -59,7 +73,15 @@ templ Button(props ButtonProps) {
 			value={ props.Value }
 		}
 		{ htmxAttrs(props.HxGet, props.HxPost, props.HxTarget, props.HxSwap, props.HxIndicator)... }
-	>{ props.Text }</button>
+	>
+		if props.IconBefore != IconNone {
+			@Icon(IconProps{Name: props.IconBefore})
+		}
+		{ props.Text }
+		if props.IconAfter != IconNone {
+			@Icon(IconProps{Name: props.IconAfter})
+		}
+	</button>
 }
 
 type LinkProps struct {
@@ -72,12 +94,32 @@ type LinkProps struct {
 	HxTarget    string
 	HxSwap      string
 	HxIndicator string
+	// Icons are decorative; an icon-only link must provide AriaLabel.
+	IconBefore IconName
+	IconAfter  IconName
+	AriaLabel  string
 }
 
 templ Link(props LinkProps) {
+	{{
+		if err := validateActionIcons(props.IconBefore, props.IconAfter, props.Text, props.AriaLabel); err != nil {
+			return err
+		}
+	}}
 	<a
 		href={ templ.URL(props.Href) }
 		class={ "button", templ.KV("primary", props.Primary), templ.KV("outline", props.Outline) }
+		if strings.TrimSpace(props.AriaLabel) != "" {
+			aria-label={ props.AriaLabel }
+		}
 		{ htmxAttrs(props.HxGet, props.HxPost, props.HxTarget, props.HxSwap, props.HxIndicator)... }
-	>{ props.Text }</a>
+	>
+		if props.IconBefore != IconNone {
+			@Icon(IconProps{Name: props.IconBefore})
+		}
+		{ props.Text }
+		if props.IconAfter != IconNone {
+			@Icon(IconProps{Name: props.IconAfter})
+		}
+	</a>
 }

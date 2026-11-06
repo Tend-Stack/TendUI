@@ -269,6 +269,11 @@ button, .button, input:is([type="submit"], [type="button"], [type="reset"]) {
 :disabled { cursor: not-allowed; opacity: 0.6; }
 .theme-toggle { margin: 0; }
 
+/* Inline icons inherit text color, including forced-color and print palettes. */
+.gothui-icon { display: inline-block; inline-size: 1.25em; block-size: 1.25em; flex: none; vertical-align: -.2em; }
+.gothui-icon[data-size="small"] { inline-size: 1em; block-size: 1em; }
+.gothui-icon[data-size="large"] { inline-size: 1.75em; block-size: 1.75em; }
+
 /* Cards are plain articles; their header and footer are optional. */
 article {
   margin-block: 0 1.5rem;

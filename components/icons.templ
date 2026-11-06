@@ -1,0 +1,37 @@
+package components
+
+import "strings"
+
+// Icon renders no markup for IconNone, and returns an error for an unknown name.
+// Directional drawings are literal: applications choose their RTL counterpart.
+templ Icon(props IconProps) {
+	{{
+		if err := validateIcon(props.Name); err != nil {
+			return err
+		}
+	}}
+	if props.Name != IconNone {
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			width="24"
+			height="24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			focusable="false"
+			class="gothui-icon"
+			data-size={ string(allowed(props.Size, IconSizeMedium, IconSizeSmall, IconSizeMedium, IconSizeLarge)) }
+			if strings.TrimSpace(props.Label) != "" {
+				role="img"
+				aria-label={ props.Label }
+			} else {
+				aria-hidden="true"
+			}
+		>
+			<path d={ iconPaths[props.Name] }></path>
+		</svg>
+	}
+}
