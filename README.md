@@ -325,8 +325,8 @@ Only known demo pages are accepted. These headers control presentation, not acce
 HTMX does not process its response headers on 3xx responses. See the upstream
 [redirect header documentation](https://htmx.org/headers/hx-redirect/) and
 [swap reference](https://htmx.org/attributes/hx-swap/).
-Automated tests follow the returned destination with the saved cookie; actual
-navigation with a consumer-supplied HTMX runtime still requires browser testing.
+The isolated browser consumer verifies this navigation with HTMX 2.0.11 in
+Chromium, Firefox and WebKit. The runtime is a test dependency and is not bundled.
 
 ## Full pages and optional HTMX fragments
 
@@ -396,7 +396,7 @@ include the choice. Entrances run once, and loading decoration stops after three
 cycles. All styling stays in the embedded CSS, with no runtime dependency.
 
 See [the motion guide](docs/motion.md), try `/motion`, and track the broader
-[product roadmap](ROADMAP.md). Browser validation remains a release gate.
+[product roadmap](ROADMAP.md). See the [recorded browser results](docs/release-verification.md).
 
 ## Data tables and navigation patterns
 
@@ -506,18 +506,17 @@ The checked-in declaration baseline catches changed props, constants, signatures
 and method sets. See [API review and migration](docs/api-compatibility.md) for
 intentional updates and the limits of this check.
 
-The prepared [CI matrix](docs/ci.md) runs native verification on Linux, macOS and
-Windows with Go 1.26.0 and 1.27.3. Remote execution is still pending; local
-cross-compilation results do not establish a pass on those native systems. A
-separate pinned `govulncheck` job is prepared for known-vulnerability scanning;
-its successful execution also remains pending.
+The [CI matrix](docs/ci.md) passed native verification on Linux, macOS and
+Windows with Go 1.26.0 and 1.27.3, together with the vulnerability scan, at the
+v2026.1.0 release commit. Chromium, Firefox and WebKit passed 53 browser checks;
+one unsupported WebKit forced-color emulation check was skipped. See
+[release verification](docs/release-verification.md) for exact evidence and limits.
 
-Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). No release tag is
-created until publication is verified. The build command embeds the Git development
-identifier and also works before the first tag; uncommitted work is marked dirty.
+Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). Development builds
+embed the Git development identifier; uncommitted work is marked dirty.
 
 Go treats 2026 as the semantic major version, so the module path ends in
-`/v2026`. This is required for a future `v2026.1.0` tag to resolve correctly.
+`/v2026`. This is required for the `v2026.1.0` tag to resolve correctly.
 A new annual line such as 2027 will need `/v2027` and consumer import updates;
 fixes on the 2026 line keep `/v2026`. See Go's
 [major version rules](https://go.dev/doc/modules/major-version).

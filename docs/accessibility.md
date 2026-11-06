@@ -69,10 +69,10 @@ separate complete document when that is needed.
 Custom print styling can override GothUI's important print palette with matching
 important declarations in a later print stylesheet. Review the result with both
 background-graphics settings. The tests guard source rules and palette ratios;
-actual pagination, checkbox printing and background omission are not verified
-without a real browser print preview or PDF.
+the v2026.1.0 dashboard PDF was also reviewed for pagination, readable controls
+and background omission. This does not establish every page/theme combination.
 
-## Browser review matrix still required
+## Consumer review matrix
 
 Use the same built demo, record its `-version`, browser/version and operating
 system, and retain only the screenshots/PDFs needed to explain a finding.
@@ -91,5 +91,11 @@ system, and retain only the screenshots/PDFs needed to explain a finding.
 Modern native dialog, popover and grouped-details support varies by browser;
 retain the documented ordinary-page/inline fallbacks. A successful HTTP response
 or render test proves neither keyboard behavior nor screen-reader output. The
-current sandbox cannot launch the installed Chromium or bind a local TCP socket;
-those browser checks remain outstanding, along with optional HTMX consumer tests.
+local sandbox cannot launch browsers or bind a TCP socket, so the release suite
+runs real Chromium, Firefox and WebKit engines in GitHub Actions. It passed 53
+checks, including optional HTMX execution; one unsupported WebKit forced-color
+emulation check is skipped. Automated axe rules cover all 36 component pages in
+both themes. Keyboard, native overlays, narrow layouts, reduced motion and print
+have focused coverage. See [release verification](release-verification.md).
+The broader consumer matrix above, especially screen-reader output, zoom and
+physical devices, still needs review for each assembled application.
