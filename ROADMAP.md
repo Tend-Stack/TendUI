@@ -31,6 +31,12 @@ a native three-step form with final revalidation; and a searchable catalog
 covering all 32 public templ components with compiled/downloadable recipes.
 Twelve demo areas exercise these APIs.
 
+The Go-only developer command now checks runtime dependency boundaries, race/vet,
+generated-source reproducibility and independent catalog recipe compilation. It
+records rendering/HTTP benchmarks and enforces CSS/demo size budgets, with Git
+version stamping and checked atomic replacement of the review executable.
+See docs/development.md and docs/performance.md for current evidence and limits.
+
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
 
@@ -54,10 +60,12 @@ is pending. The active broad goal remains unfinished.
    pages, copyable/downloadable recipes and public templ coverage checks are
    implemented. Next: API compatibility checks, package documentation and
    versioned migration guidance. Keep demos runnable from one binary.
-5. **Evidence and release.** Browser matrix and visual regression baselines;
-   keyboard/screen-reader/contrast checks; benchmarks and asset/binary size
-   budgets; Go version/build CI; generated-source consistency; exact Gitea/GitHub
-   history reconciliation; versioned release documentation and installation proof.
+5. **Evidence and release.** Local benchmarks, asset/binary size budgets and
+   generated-source consistency checks are implemented. Next: browser matrix
+   and visual regression baselines; keyboard/screen-reader/contrast checks;
+   Go version/build CI; exact Gitea/GitHub history reconciliation; versioned
+   release documentation and installation proof. Profile table allocations
+   before considering rendering changes, and retain semantic/escaping contracts.
 
 ## Acceptance gates before calling the broad goal complete
 

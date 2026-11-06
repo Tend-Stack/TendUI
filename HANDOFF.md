@@ -1,5 +1,56 @@
 # GothUI implementation handoff
 
+## Repeatable validation and performance milestone (2026-11-05)
+
+Added Go-only `cmd/gothui-dev` commands: check, generated, recipes, bench and build.
+The checks enforce Go formatting, stdlib-only root/render dependencies, templ-only
+component runtime dependencies, a 64 KiB CSS ceiling, race tests and vet. Generated
+source is compared byte-for-byte after regeneration in a temporary directory;
+orphan output is rejected. Recipe extraction is shared between catalog downloads
+and developer checks through internal/recipes; malformed/duplicate boundaries
+are rejected. All 32 recipes compile in separate temporary packages.
+
+Reports under tests/results/validation include revision, dirty state, toolchain
+and UTC time. Each command removes its old success report before starting, so a
+failure cannot leave stale success evidence. Logs are replaced, not accumulated.
+Temporary generation/recipe directories are removed automatically on return.
+The `build` command uses Git describe (or a pre-tag development fallback), includes
+untracked work in dirty detection, rejects malformed version identifiers and
+checks CGO-disabled build metadata, size, Linux ELF interpreter absence and the
+new demo `-version` flag before replacing the one retained executable. It creates
+no tags, commits, remote writes or running servers.
+
+Validation passed: race tests for all six packages, vet, all 30 generated template
+outputs reproduced, and 32 independent recipe compilations. New tests cover
+recipe boundaries, version provenance including untracked state, malformed tags,
+report metadata and exclusion of generated evidence from source walks. The
+version smoke check executes successfully without a listener. First stripped
+Linux amd64 build: 8,949,920 bytes, below the 16 MiB review ceiling. CSS remains
+32,260 bytes. A final post-commit build records the delivered local revision in
+build.json and the binary; other reports honestly retain the dirty pre-commit
+source provenance under which checks ran.
+
+Three-sample benchmarks with Go 1.27.3, Linux amd64 and GOMAXPROCS=2 provide an
+initial baseline: median 45.2 microseconds for a preconstructed 100-row table
+render, 34.1 microseconds for the dashboard handler and 4.81 microseconds for CSS
+GET. HTTP cases include ResponseRecorder allocation; component cases discard
+output. These do not measure network, browser, concurrency or application data
+work. docs/performance.md retains measurements and variation, including the
+table's 1,821 allocations as a candidate for later profiling. No timing threshold
+or comparison with frontend frameworks is claimed.
+
+Added components package documentation, docs/development.md, performance evidence
+and README commands. Public API compatibility automation, supported Go/platform
+CI, browser/assistive-technology evidence, optional consumer HTMX validation and
+published installation remain outstanding. The broad goal stays active.
+
+Housekeeping: superseded successful catalog logs are removed after the replacement
+suite passes. Keep the bounded validation folder, one demo executable and prior
+browser/TCP failure logs. The continuing developer owns them until replacement or
+review completion. The task-owned /tmp/gothui-release-cache is cleaned after the
+final build; shared caches, user processes, source/reference folders and repository
+history are untouched. No new worktree, database or backup was created.
+
 ## Searchable component catalog milestone (2026-11-05)
 
 Added the twelfth demo area `/catalog`, covering all 32 current public templ

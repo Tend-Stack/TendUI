@@ -13,13 +13,17 @@ go run ./examples/basic -open
 To build a self-contained executable with the stylesheet embedded:
 
 ```sh
-CGO_ENABLED=0 go build -trimpath -o gothui-demo ./examples/basic
-./gothui-demo -open
+go run ./cmd/gothui-dev build
+./tests/results/demos/gothui-demo -version
+./tests/results/demos/gothui-demo -open
 ```
 
 `-open` opens the playground in the default Linux browser using `xdg-open`,
 after the listener starts. Without that flag, open the links below manually.
 Choose a different port with `-addr 127.0.0.1:8081`. Stop with Ctrl+C.
+The build command checks size and version before replacing the review binary.
+`-version` prints the embedded Git identifier and exits without listening.
+See [the development guide](../../docs/development.md) for reproducible checks.
 
 | Page | Local address | Try it |
 | --- | --- | --- |

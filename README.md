@@ -438,13 +438,23 @@ Commit generated Go alongside its source. A normal Go build consumes CSS
 directly through `go:embed`; CSS editing needs no asset build step. Test output
 belongs under `tests/results/` and is ignored except for its placeholder.
 
-Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). No release tag is
-created until publication is verified. To embed an exact development identifier
-after tagging:
+The Go-only developer tool also checks generated-source consistency, compiles
+all catalog downloads independently, records benchmarks and builds the versioned
+review executable. See [the development guide](docs/development.md) and
+[measured performance](docs/performance.md):
 
 ```sh
-go build -ldflags "-X main.version=$(git describe --tags --long --dirty)" ./examples/basic
+go run ./cmd/gothui-dev check
+go run ./cmd/gothui-dev generated
+go run ./cmd/gothui-dev recipes
+go run ./cmd/gothui-dev bench
+go run ./cmd/gothui-dev build
+./tests/results/demos/gothui-demo -version
 ```
+
+Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). No release tag is
+created until publication is verified. The build command embeds the Git development
+identifier and also works before the first tag; uncommitted work is marked dirty.
 
 Go treats 2026 as the semantic major version, so the module path ends in
 `/v2026`. This is required for a future `v2026.1.0` tag to resolve correctly.

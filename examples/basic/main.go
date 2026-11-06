@@ -3,6 +3,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -16,7 +17,7 @@ import (
 	"github.com/a-h/templ"
 )
 
-// Set with -ldflags "-X main.version=$(git describe --tags --long --dirty)".
+// Set by go run ./cmd/gothui-dev build using the current Git development version.
 var version = gothui.Version + "-dev"
 
 func theme(r *http.Request) components.Theme {
@@ -202,7 +203,12 @@ func htmlHeaders(w http.ResponseWriter) {
 func main() {
 	addr := flag.String("addr", "127.0.0.1:8080", "local listen address")
 	open := flag.Bool("open", false, "open the component playground in the default browser")
+	showVersion := flag.Bool("version", false, "print the embedded build version and exit")
 	flag.Parse()
+	if *showVersion {
+		fmt.Println(version)
+		return
+	}
 	server := &http.Server{
 		Addr: *addr, Handler: newHandler(),
 		ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second,

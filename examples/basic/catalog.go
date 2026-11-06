@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "embed"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -10,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Tend-Stack/GothUI/v2026/internal/recipes"
 	"github.com/Tend-Stack/GothUI/v2026/render"
 	"github.com/a-h/templ"
 )
@@ -64,17 +64,7 @@ var catalogEntries = []catalogEntry{
 var catalogCategories = []string{"Layout", "Actions", "Forms", "Feedback", "Data", "Navigation", "Overlays", "Motion"}
 
 func catalogSource(e catalogEntry) (string, error) {
-	marker := "// catalog:" + e.Name + "\n"
-	start := strings.Index(catalogSamples, marker)
-	if start < 0 {
-		return "", fmt.Errorf("missing catalog source for %s", e.Name)
-	}
-	source := catalogSamples[start+len(marker):]
-	end := strings.Index(source, "// catalog:end")
-	if end < 0 {
-		return "", fmt.Errorf("unterminated catalog source for %s", e.Name)
-	}
-	return "package examples\n\nimport \"github.com/Tend-Stack/GothUI/v2026/components\"\n\n" + strings.TrimSpace(source[:end]) + "\n", nil
+	return recipes.Source(catalogSamples, e.Name)
 }
 
 func catalogRoute(path string) (catalogEntry, string, bool) {
