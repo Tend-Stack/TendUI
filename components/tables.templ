@@ -4,6 +4,8 @@ import "strconv"
 
 // DataTable preserves native table semantics. The scroll region is keyboard reachable.
 // Supply only the current page of rows; filtering, sorting and pagination belong to Go handlers.
+// Keep cell bodies inline to avoid a component and cleared-child context per cell.
+// Literal alignment branches avoid attribute conversion while retaining the safe fallback.
 templ DataTable(props DataTableProps) {
 	{{
 		if err := validateTable(props); err != nil {
@@ -26,7 +28,15 @@ templ DataTable(props DataTableProps) {
 					for _, col := range props.Columns {
 						<th
 							scope="col"
-							data-align={ tableAlignment(col.Alignment) }
+							if col.Alignment == AlignEnd {
+								data-align="end"
+							}
+							if col.Alignment == AlignCenter {
+								data-align="center"
+							}
+							if col.Alignment != AlignEnd && col.Alignment != AlignCenter {
+								data-align="start"
+							}
 							if col.Sort != SortNone {
 								aria-sort={ string(col.Sort) }
 							}
@@ -73,9 +83,52 @@ templ DataTable(props DataTableProps) {
 						>
 							for i, cell := range row.Cells {
 								if props.Columns[i].RowHeader {
-									<th scope="row" data-align={ tableAlignment(props.Columns[i].Alignment) }>@tableCell(cell)</th>
+									<th
+										scope="row"
+										if props.Columns[i].Alignment == AlignEnd {
+											data-align="end"
+										}
+										if props.Columns[i].Alignment == AlignCenter {
+											data-align="center"
+										}
+										if props.Columns[i].Alignment != AlignEnd && props.Columns[i].Alignment != AlignCenter {
+											data-align="start"
+										}
+									>
+										{{
+											if err := ctx.Err(); err != nil {
+												return err
+											}
+										}}
+										if cell.Content != nil {
+											@cell.Content
+										} else {
+											{ cell.Text }
+										}
+									</th>
 								} else {
-									<td data-align={ tableAlignment(props.Columns[i].Alignment) }>@tableCell(cell)</td>
+									<td
+										if props.Columns[i].Alignment == AlignEnd {
+											data-align="end"
+										}
+										if props.Columns[i].Alignment == AlignCenter {
+											data-align="center"
+										}
+										if props.Columns[i].Alignment != AlignEnd && props.Columns[i].Alignment != AlignCenter {
+											data-align="start"
+										}
+									>
+										{{
+											if err := ctx.Err(); err != nil {
+												return err
+											}
+										}}
+										if cell.Content != nil {
+											@cell.Content
+										} else {
+											{ cell.Text }
+										}
+									</td>
 								}
 							}
 						</tr>
@@ -84,12 +137,4 @@ templ DataTable(props DataTableProps) {
 			</tbody>
 		</table>
 	</div>
-}
-
-templ tableCell(cell TableCell) {
-	if cell.Content != nil {
-		@cell.Content
-	} else {
-		{ cell.Text }
-	}
 }

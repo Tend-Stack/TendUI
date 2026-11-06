@@ -45,6 +45,9 @@ the update and migration process.
 A six-job GitHub verification matrix is prepared for Go 1.26.0/1.27.3 on Linux,
 macOS and Windows. Local foreign-target builds pass, but the remote matrix has
 not executed; docs/ci.md distinguishes compilation evidence from native results.
+Allocation profiling removed redundant table-cell wrappers and attribute
+conversion: the local 100-row benchmark uses 618 allocations instead of 1,821,
+with unchanged output across the captured parity fixtures. See docs/performance.md.
 
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
@@ -76,8 +79,9 @@ is pending. The active broad goal remains unfinished.
    generated-source consistency checks are implemented. Next: browser matrix
    and visual regression baselines; keyboard/screen-reader/contrast checks;
    history reconciliation; versioned
-   release documentation and installation proof. Profile table allocations
-   before considering rendering changes, and retain semantic/escaping contracts.
+   release documentation and installation proof. Table allocation profiling and
+   the first optimization are complete; profile representative application work
+   before further rendering changes, retaining semantic/escaping contracts.
 
 ## Acceptance gates before calling the broad goal complete
 

@@ -1,5 +1,52 @@
 # GothUI implementation handoff
 
+## Profiled table rendering milestone (2026-11-06)
+
+Profiled the existing DataTable before editing, using unchanged 10-row, 100-row
+and full-document table benchmarks. The allocation profile identified a nested
+generated component and cleared-child context per cell, plus conversion of the
+three-value alignment attribute. Cell bodies now stay inline in DataTable and
+alignment values use mutually exclusive literal attribute conditions. Text still
+uses templ's normal escaping. Custom slots and table validation remain unchanged;
+explicit per-cell context cancellation checks preserve the old helper's behavior.
+The unused private cell component and alignment helper were removed; public API,
+CSS, dependencies and benchmark inputs are unchanged.
+
+Five 300 ms samples per case, GOMAXPROCS=2, Go 1.27.3, Linux amd64 on the same
+Ryzen host: the 100-row table falls from 1,821 to 618 allocations and 46,045 to
+7,586 allocated bytes. Median time changes from 54.759 to 29.563 microseconds in
+this run (46.0% lower). Ten-row median changes from 6.139 to 3.686 microseconds;
+full-document 100-row median from 56.656 to 32.472 microseconds. These are local
+microbenchmarks, not browser/application throughput results or CI thresholds.
+docs/performance.md records both the fresh comparison and the earlier historical
+baseline. The remaining profile is dominated by templ's text conversion; no
+manual escaping shortcut or third-party runtime patch was introduced.
+
+A pre-edit fixture capture and post-edit comparison found byte-identical HTML
+and matching errors in 29 cases covering every alignment/sort combination,
+row-header/data cells, hostile values, context-aware slots, loading/empty states
+and failures. The first parity run caught the pinned generator treating chained
+attribute else-if syntax as a literal else attribute. Independent, exclusive if
+conditions corrected that; the final capture matches exactly. New permanent
+tests guard against malformed/duplicate alignment attributes, preserve context
+values/nonces and cleared children, propagate slot errors, and stop after a cell
+cancels the context. The full seven-package race suite and vet pass, all 212 API
+entries match, and all 31 template outputs reproduce in the isolated generator
+check. Standalone recipe source/signatures are unchanged, so its previous compile
+evidence is retained without an unnecessary repeat.
+
+Keep bounded before/after sample logs and allocation summaries, comparison JSON,
+29 parity hashes, fixture source and provenance in tests/results/table-profile.
+After successful comparison, remove duplicate HTML captures, raw profiles, the
+temporary test executable and /tmp proof generator. The task-owned
+/tmp/gothui-table-cache is cleaned after the final native demo build. The one
+demo executable is rebuilt with the clean local commit identifier. Existing user
+processes, shared caches, icon review evidence and reference sources are untouched.
+The continuing developer owns retained profiling evidence until its next relevant
+replacement or operator review. No worktree, database, backup or remote write was
+created. The broader goal remains active; browser, native CI, optional HTMX
+execution and publication/install evidence still require completion.
+
 ## Native platform preparation and CI milestone (2026-11-06)
 
 Added .github/workflows/verify.yml with six native jobs: Go 1.26.0 and 1.27.3 on
