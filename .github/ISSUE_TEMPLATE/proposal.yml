@@ -1,0 +1,24 @@
+name: Component or feature proposal
+description: Discuss an addition before starting a large implementation.
+title: "[Proposal]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User need
+      description: What task is difficult with the existing components?
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed behavior and alternatives
+      description: Include native HTML semantics, keyboard/mobile behavior and the no-bundled-JavaScript contract.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and scope
+      description: Identify API changes, dependencies and a bounded first implementation.

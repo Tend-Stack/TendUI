@@ -30,7 +30,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$GITHUB_REF_NAME" = v2026.1.0
+          python3 - <<'PYTAG'
+          import os, re, pathlib
+          tag = os.environ['GITHUB_REF_NAME']
+          if not re.fullmatch(r'v2026\.[1-9][0-9]*\.[0-9]+(?:-[0-9A-Za-z.-]+)?', tag):
+              raise SystemExit('Invalid release tag')
+          version = re.search(r'Version = "([^"]+)"', pathlib.Path('tendui.go').read_text())[1]
+          if tag != 'v' + version:
+              raise SystemExit('Tag must match the library version')
+          if not pathlib.Path('docs/releases/' + tag[1:] + '.md').is_file():
+              raise SystemExit('Missing version-specific release notes')
+          PYTAG
           mkdir -p tests/results/release
           gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&per_page=100" > tests/results/release/checks.json
           python3 - <<'PY'
@@ -59,6 +69,8 @@ jobs:
           export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
           export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth"
           cp tests/release/consumer_test.go.txt "$release_consumer/consumer_test.go"
+          mkdir "$release_consumer/quickstart"
+          cp examples/quickstart/*.go "$release_consumer/quickstart/"
           cd "$release_consumer"
           go mod init example.com/tendui-release-consumer
           go get "github.com/Tend-Stack/TendUI/v2026@$GITHUB_REF_NAME"
@@ -78,7 +90,9 @@ jobs:
         run: |
           set -euo pipefail
           if ! gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
-            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "TendUI $GITHUB_REF_NAME" --notes-file docs/releases/2026.1.0.md
+            flags=()
+            if [[ "$GITHUB_REF_NAME" == *-* ]]; then flags+=(--prerelease --latest=false); fi
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "TendUI $GITHUB_REF_NAME" --notes-file "docs/releases/${GITHUB_REF_NAME#v}.md" "${flags[@]}"
           fi
       - name: Retain release installation evidence
         if: always()

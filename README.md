@@ -28,14 +28,12 @@ runtime. The asset package imports only the standard library; the components
 have one direct Go dependency, templ. It is not a literally dependency-free
 module, and this version does not support Go 1.21.
 
-The renamed TendUI module is currently available from the development branch:
+Install the pinned TendUI preview (API changes remain possible before a stable release):
 
 ```sh
-go get github.com/Tend-Stack/TendUI/v2026@main
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.1
 ```
 
-The GitHub repository is currently private. Until that changes, Go downloads
-require repository credentials and `GOPRIVATE=github.com/Tend-Stack/TendUI`.
 Generated `*_templ.go` files ship with the module, so consumers do not need
 the templ CLI to use these components from Go.
 
@@ -69,6 +67,10 @@ func main() {
     log.Fatal(http.ListenAndServe("127.0.0.1:8080", mux))
 }
 ```
+
+For a complete, tested Go/templ application, see [the quickstart](docs/quickstart.md)
+and [`examples/quickstart`](examples/quickstart). To use CSS with any stack, see
+[the plain HTML example](examples/html); Go and templ are optional for that path.
 
 Run the local demos, including a component playground, form lab, dashboard,
 appearance editor, workspace, native interactions, inline editing, motion and surfaces, and theme endpoint:
@@ -521,20 +523,20 @@ The checked-in declaration baseline catches changed props, constants, signatures
 and method sets. See [API review and migration](docs/api-compatibility.md) for
 intentional updates and the limits of this check.
 
-The [CI matrix](docs/ci.md) passed native verification on Linux, macOS and
-Windows with Go 1.26.0 and 1.27.3, together with the vulnerability scan, at the
-v2026.1.0 release commit. Chromium, Firefox and WebKit passed 53 browser checks;
-one unsupported WebKit forced-color emulation check was skipped. See
-[release verification](docs/release-verification.md) for exact evidence and limits.
+The [CI matrix](docs/ci.md) checks native Linux, macOS and Windows with Go 1.26.0
+and 1.27.3, plus a vulnerability scan. Browser checks cover Chromium, Firefox and
+WebKit. These jobs must pass on the preview source; see
+[preview release notes](docs/releases/2026.2.0-preview.1.md). The older
+[release verification](docs/release-verification.md) documents the pre-rename
+release only and is not evidence for the current preview.
 
-Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). Development builds
-embed the Git development identifier; uncommitted work is marked dirty.
+Versions follow `YEAR.RELEASE.FIX`, with SemVer prerelease suffixes for previews:
+`v2026.2.0-preview.1`. Install the explicit tag; a preview is not a stable API promise.
+Development builds use `git describe --tags --long --dirty`.
 
 Go treats 2026 as the semantic major version, so the module path ends in
-`/v2026`. This is required for the `v2026.1.0` tag to resolve correctly.
-A new annual line such as 2027 will need `/v2027` and consumer import updates;
-fixes on the 2026 line keep `/v2026`. See Go's
-[major version rules](https://go.dev/doc/modules/major-version).
+`/v2026`. A new annual line such as 2027 will need `/v2027` and consumer import
+updates. Fixes and previews on the 2026 line retain `/v2026`.
 
 ## Project links
 
@@ -547,3 +549,9 @@ current development entry points and remaining release checks.
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, review and MIT + DCO sign-off.
+Report vulnerabilities privately using [SECURITY.md](SECURITY.md); community
+participation follows [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

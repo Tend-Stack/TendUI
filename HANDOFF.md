@@ -29,19 +29,16 @@ run `./tests/results/demos/tendui-demo -open` on a host with browser access.
 
 ## Release boundary
 
-The historical pre-rename v2026.1.0 candidate at `2f622c95fbf7` passed the six native Go/OS jobs,
-the vulnerability scan, and 53 browser checks in Chromium, Firefox and WebKit.
-One WebKit forced-color emulation check is explicitly unsupported/skipped.
-The documentation website passed all eight desktop/mobile browser checks and
-its native/container workflow. See [release verification](docs/release-verification.md)
-for exact runs, tag installation evidence and the scope of accessibility review.
-Manual screen-reader and physical-device testing remain application-level work;
-automated accessibility checks are not a conformance certification.
+The current renamed preview is `v2026.2.0-preview.1`. Install that explicit tag;
+see [release notes](docs/releases/2026.2.0-preview.1.md) and
+[quickstarts](docs/quickstart.md).
+Historical pre-rename tags and evidence remain immutable and are clearly labeled.
 
-Keep focused local test evidence under ignored `tests/results/`. Reuse one
-review binary, remove completed disposable build environments, and preserve
-active work. Fetch and integrate GitHub `main` before publishing changes.
+Require passing native Go/OS, security and browser CI on the preview source.
+The release workflow must also prove installation from the published Git tag,
+separately from the local file-proxy packaging check. Automated accessibility
+checks do not constitute a screen-reader or physical-device conformance review.
 
-The TendUI rename and shared SiteHeader are development changes after that tag.
-See [migration notes](docs/tendui-migration.md); historical release evidence is
-not validation of these changes.
+Keep focused evidence under ignored `tests/results/`; fetch and integrate
+GitHub `main` before publishing. Private infrastructure references remain in
+older library history, so review publication separately before changing visibility.

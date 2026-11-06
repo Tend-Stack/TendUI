@@ -94,7 +94,7 @@ or render test proves neither keyboard behavior nor screen-reader output. The
 local sandbox cannot launch browsers or bind a TCP socket, so the release suite
 runs real Chromium, Firefox and WebKit engines in GitHub Actions. It passed 53
 checks, including optional HTMX execution; one unsupported WebKit forced-color
-emulation check is skipped. Automated axe rules cover all 36 component pages in
+emulation check is skipped. Automated axe rules cover all 37 component pages in
 both themes. Keyboard, native overlays, narrow layouts, reduced motion and print
 have focused coverage. See [release verification](release-verification.md).
 The broader consumer matrix above, especially screen-reader output, zoom and
