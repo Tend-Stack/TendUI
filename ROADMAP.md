@@ -67,6 +67,10 @@ stable-URL cache contract and distinguishes in-process checks from live delivery
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
 
+Versioned packaging also passes in an isolated consumer through a local file
+proxy: no `replace`, no templ generator, embedded CSS and components tested,
+module checksums verified. A published-version installation remains pending.
+
 ## Next development tracks
 
 1. **Composition and information density.** Table contracts, bidirectional sort

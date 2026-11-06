@@ -66,6 +66,10 @@ and cache are removed on success and ordinary failures; an abrupt kill can leave
 a `gothui-consumer-*` directory. The invoking developer owns cleanup after
 confirming the process has stopped. The report records archive hash, module sum,
 source revision and cleanup status. Dirty sources are rejected without changes.
+The archive preserves committed file bytes and omits Git's explicit directory
+entries, matching [Go's module archive behavior](https://go.dev/ref/mod#zip-files).
+Go validates the resulting archive during installation; `go mod verify` checks
+both its download and extracted contents.
 
 This proves versioned packaging and consumption locally. It does **not** prove
 repository access, a published tag, public checksum-server acceptance or a live

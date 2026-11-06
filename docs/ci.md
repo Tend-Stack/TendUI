@@ -24,9 +24,13 @@ Go policy. Runner labels were checked against the official
    API comparison, race tests and vet.
 4. Installs the pinned templ generator, compares generated source, and compiles
    every catalog download independently.
-5. Builds a CGO-disabled native demo, checks its size and embedded build version,
+5. Installs the clean committed source through a local versioned module proxy
+   into an isolated consumer, tests component rendering and embedded CSS without
+   `replace` or templ generation, and verifies module checksums. This checks
+   packaging, not installation from a published repository tag.
+6. Builds a CGO-disabled native demo, checks its size and embedded build version,
    and executes `-version`. Linux also rejects an ELF interpreter.
-6. Retains logs and JSON reports for seven days, even when an earlier step fails.
+7. Retains logs and JSON reports for seven days, even when an earlier step fails.
 
 Jobs have a 20-minute timeout and independent matrix results. A newer run for the
 same workflow/ref cancels its predecessor. Triggers are pull requests, pushes to

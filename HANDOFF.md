@@ -1,5 +1,31 @@
 # GothUI implementation handoff
 
+## Versioned consumer packaging milestone (2026-11-06)
+
+Added `go run ./cmd/gothui-dev consumer`. From a clean commit it creates a
+temporary versioned file proxy and isolated module cache, installs the root,
+components and render packages with go get, renders escaped page content, serves
+embedded CSS, checks the stylesheet link/no script element and runs go mod verify.
+There is no replace directive, templ generation, publication or new dependency.
+Cached dependency archives are checked against the committed go.sum. The fixture
+version never enters the shared module cache, and task fixtures are removed.
+
+The first end-to-end run exposed Git directory entries causing a module-cache
+verification mismatch. The archive now preserves file bytes while omitting those
+entries. A regression test covers the conversion and overwrite refusal; other
+tests cover proxy path escaping and dirty-source rejection/preservation. Developer
+tool race tests and vet pass. The full isolated consumer check passed at 4dde8c6;
+canonical consumer.json/log record exact source, module sum and archive hash.
+The prepared native CI matrix now includes this check; CI has not executed.
+
+This is local packaging proof, not a published-install result. Browser review,
+live vulnerability scan, native platform/minimum-Go CI, remote reconciliation
+and published installation remain pending. The desktop review request remains
+unanswered. No demo runtime code changed; retain the existing single binary at
+2026.1.0-dev-g67bc803b97b0. Remove only the owned consumer build cache after final
+checks; retain concise validation evidence until replacement or operator review.
+No additional worktree, database, release tag or remote write was created.
+
 ## Asset HTTP delivery coverage milestone (2026-11-06)
 
 Reviewed the update/cache path before changing implementation. AssetHandler already

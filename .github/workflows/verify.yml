@@ -50,6 +50,8 @@ jobs:
         run: go run ./cmd/gothui-dev generated
       - name: Compile all standalone catalog recipes
         run: go run ./cmd/gothui-dev recipes
+      - name: Install and test the versioned module in an isolated consumer
+        run: go run ./cmd/gothui-dev consumer
       - name: Build and run native version smoke check
         run: go run ./cmd/gothui-dev build
       - name: Retain bounded verification evidence
