@@ -2,8 +2,9 @@ package components
 
 import (
 	"fmt"
-	"github.com/a-h/templ"
 	"strings"
+
+	"github.com/a-h/templ"
 )
 
 type SortDirection string
@@ -49,10 +50,6 @@ type DataTableProps struct {
 	Loading      bool
 	LoadingLabel string
 	Empty        templ.Component
-}
-
-func tableAlignment(value TableAlignment) string {
-	return string(allowed(value, AlignStart, AlignStart, AlignCenter, AlignEnd))
 }
 
 func validateTable(p DataTableProps) error {
