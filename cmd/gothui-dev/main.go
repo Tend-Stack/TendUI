@@ -32,7 +32,7 @@ type runner struct{ root, results, goTool, templTool string }
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Fprintln(os.Stderr, "usage: go run ./cmd/gothui-dev check|generated|recipes|bench|build")
+		fmt.Fprintln(os.Stderr, "usage: go run ./cmd/gothui-dev check|api|generated|recipes|bench|build")
 		os.Exit(2)
 	}
 	root, err := os.Getwd()
@@ -51,7 +51,7 @@ func main() {
 		fatal(err)
 	}
 	// A failed rerun must not leave an older success report beside new logs.
-	reports := map[string]string{"check": "checks.json", "generated": "generated.json", "recipes": "recipes.json", "bench": "benchmarks.json", "build": "build.json"}
+	reports := map[string]string{"check": "checks.json", "api": "api.json", "generated": "generated.json", "recipes": "recipes.json", "bench": "benchmarks.json", "build": "build.json"}
 	if name := reports[os.Args[1]]; name != "" {
 		if err := os.Remove(filepath.Join(r.results, name)); err != nil && !errors.Is(err, os.ErrNotExist) {
 			fatal(err)
@@ -60,6 +60,8 @@ func main() {
 	switch os.Args[1] {
 	case "check":
 		err = r.check()
+	case "api":
+		err = r.api()
 	case "generated":
 		err = r.generated()
 	case "recipes":
@@ -177,13 +179,16 @@ func (r runner) check() error {
 			}
 		}
 	}
+	if err := r.api(); err != nil {
+		return err
+	}
 	if err := r.run("tests.log", r.root, r.goTool, "test", "-race", "./..."); err != nil {
 		return err
 	}
 	if err := r.run("vet.log", r.root, r.goTool, "vet", "./..."); err != nil {
 		return err
 	}
-	return r.report("checks.json", map[string]any{"css_bytes": css.Size(), "css_budget_bytes": stylesheetBudget, "checks": []string{"gofmt", "runtime dependencies", "CSS size", "race tests", "vet"}})
+	return r.report("checks.json", map[string]any{"css_bytes": css.Size(), "css_budget_bytes": stylesheetBudget, "checks": []string{"gofmt", "runtime dependencies", "CSS size", "public API", "race tests", "vet"}})
 }
 
 func (r runner) generator() error {

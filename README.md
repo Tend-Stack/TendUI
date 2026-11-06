@@ -454,12 +454,18 @@ review executable. See [the development guide](docs/development.md) and
 
 ```sh
 go run ./cmd/gothui-dev check
+go run ./cmd/gothui-dev api
 go run ./cmd/gothui-dev generated
 go run ./cmd/gothui-dev recipes
 go run ./cmd/gothui-dev bench
 go run ./cmd/gothui-dev build
 ./tests/results/demos/gothui-demo -version
 ```
+
+`check` already includes `api`; the separate command is useful during API review.
+The checked-in declaration baseline catches changed props, constants, signatures
+and method sets. See [API review and migration](docs/api-compatibility.md) for
+intentional updates and the limits of this check.
 
 Versions follow `YEAR.RELEASE.FIX` (initial line: `2026.1.0`). No release tag is
 created until publication is verified. The build command embeds the Git development
