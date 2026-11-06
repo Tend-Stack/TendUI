@@ -93,7 +93,7 @@ components/
   appearance.go           typed settings, attributes, and CSS exports
   *_templ.go              generated Go, included for consumers
 render/                   buffered page/fragment HTTP responses
-examples/basic/           twelve demo pages, searchable catalog, preference cookies and downloads
+examples/basic/           thirteen demo pages, searchable catalog, preference cookies and downloads
 ```
 
 Mount `AssetHandler()` directly at `/gothui/static/`. Do **not** apply
@@ -409,6 +409,11 @@ The `/wizard` project-brief example preserves draft values across Back/Continue,
 checks all submitted fields on completion, and shows a validated preview without
 creating or storing a project. See [the form guide](docs/forms.md) for composition,
 validation and workflow ownership rules.
+
+The `/uploads` example connects the native file chooser to a bounded Go CSV
+preview: download a sample, upload up to 64 KiB/50 rows, and inspect validated
+results or line-specific errors. Uploaded content stays in request memory;
+nothing is saved or imported. See the form guide for limits and HTTP behavior.
 
 ## Inline icons
 

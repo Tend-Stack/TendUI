@@ -1,5 +1,44 @@
 # GothUI implementation handoff
 
+## Native CSV upload milestone (2026-11-06)
+
+Added the thirteenth demo area, `/uploads`, with a downloadable sample CSV and a
+native multipart form using FileInput, Form, ErrorSummary, Button and DataTable.
+The file chooser is now connected to an application-owned Go validation example.
+Navigation, the overview directory, workspace and FileInput catalog link expose
+it. Public library API, CSS and dependencies are unchanged.
+
+The handler bounds the complete request at 72 KiB before multipart parsing and
+accepts one unencoded file of at most 64 KiB. All bytes stay in request memory;
+there is no ParseMultipartForm, temporary file, client-derived filesystem path,
+cookie or persistent import. CSV requires UTF-8, an exact three-column header,
+1–50 rows, single-line 1–80 character fields and a known status. An optional BOM,
+CRLF, quoted commas and edge spaces are supported. Errors return 400/413/422 as
+appropriate with linked file feedback; invalid data never yields a partial
+preview. Valid text uses normal templ escaping. Request protection and CSP remain
+owned by the existing demo application. docs/forms.md describes the contract.
+
+Validation: the full seven-package race suite, vet, dependency/size checks and
+212-entry public API baseline passed. After a final count-wording refinement,
+the affected example package passed race tests and vet again. All 32 templates
+reproduce in the isolated pinned-generator check. HTTP tests cover the actual
+sample download/upload flow, CSV and Unicode errors, line feedback, escaped text,
+exact file/body/row boundaries, unknown body length and oversized epilogues,
+duplicate/extra parts, truncation, transfer encodings, method/HEAD behavior,
+cross-origin rejection, per-request isolation and absence of temporary files.
+Recipe sources are unchanged, so their prior independent compilation remains
+applicable. Browser review, remote native CI and release/install proof remain
+pending; this milestone does not close the broad product goal.
+
+Retain the usual validation reports plus upload-final.log for the final affected
+package run. The continuing developer owns these until superseded by relevant
+checks. Build the single demo executable after committing to stamp its clean
+revision, then clean only /tmp/gothui-upload-cache. No worktree, database, backup,
+reference checkout or additional long-lived binary was created. Existing user
+processes and shared caches remain untouched. The PureCSS-Animations reference
+was reviewed again; docs/motion.md already records it and the independently
+authored, bounded CSS-only approach. No third-party animation code was imported.
+
 ## Profiled table rendering milestone (2026-11-06)
 
 Profiled the existing DataTable before editing, using unchanged 10-row, 100-row

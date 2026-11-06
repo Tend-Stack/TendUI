@@ -48,6 +48,8 @@ func newHandler() http.Handler {
 	mux.HandleFunc("/interactions/confirm", confirmDemo)
 	mux.HandleFunc("/editing", editingDemo)
 	mux.HandleFunc("/wizard", projectWizard)
+	mux.HandleFunc("/uploads", uploadDemo)
+	mux.HandleFunc("/uploads/sample.csv", downloadProjectSample)
 	mux.HandleFunc("/demo.css", serveDemoCSS)
 	mux.HandleFunc("/catalog", serveCatalog)
 	mux.HandleFunc("/catalog/", serveCatalog)
@@ -150,7 +152,7 @@ func newHandler() http.Handler {
 
 func demoPath(path string) bool {
 	switch path {
-	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard", "/catalog":
+	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard", "/catalog", "/uploads":
 		return true
 	}
 	return catalogPagePath(path)

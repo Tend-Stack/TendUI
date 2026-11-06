@@ -32,7 +32,7 @@ func demoHeader(active string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, page := range []struct{ Path, Label string }{{"/", "Overview"}, {"/catalog", "Catalog"}, {"/playground", "Playground"}, {"/forms", "Form lab"}, {"/dashboard", "Dashboard"}, {"/settings", "Appearance"}, {"/workspace", "Workspace"}, {"/interactions", "Interactions"}, {"/editing", "Inline editing"}, {"/motion", "Motion & surfaces"}, {"/patterns", "Patterns"}, {"/wizard", "Form wizard"}} {
+		for _, page := range []struct{ Path, Label string }{{"/", "Overview"}, {"/catalog", "Catalog"}, {"/playground", "Playground"}, {"/forms", "Form lab"}, {"/dashboard", "Dashboard"}, {"/settings", "Appearance"}, {"/workspace", "Workspace"}, {"/interactions", "Interactions"}, {"/editing", "Inline editing"}, {"/motion", "Motion & surfaces"}, {"/patterns", "Patterns"}, {"/wizard", "Form wizard"}, {"/uploads", "CSV preview"}} {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<li><a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -217,7 +217,7 @@ func demoDirectory() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p>Exercise browser validation, server errors, reset behavior, and a successful submission.</p><a href=\"/forms\">Test a form →</a>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p>Exercise browser validation, server errors, reset behavior, and a successful submission.</p><a href=\"/forms\">Test a form →</a><p><a href=\"/uploads\">Preview a CSV upload →</a></p>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
