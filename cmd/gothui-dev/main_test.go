@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -9,6 +10,37 @@ import (
 	"strings"
 	"testing"
 )
+
+func TestRunnerOutputSeparatesDiagnostics(t *testing.T) {
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("GOTHUI_TEST_OUTPUT_HELPER", "1")
+	r := runner{root: t.TempDir(), goTool: goExecutable()}
+	output, err := r.output(executable, "-test.run=^TestRunnerOutputHelper$")
+	if err != nil || output != `{"package":"example.invalid/demo"}` {
+		t.Fatalf("successful diagnostics contaminated machine output: %q, %v", output, err)
+	}
+	t.Setenv("GOTHUI_TEST_OUTPUT_FAILURE", "1")
+	output, err = r.output(executable, "-test.run=^TestRunnerOutputHelper$")
+	if output != "" || err == nil || !strings.Contains(err.Error(), "fixture diagnostic") || !strings.Contains(err.Error(), "exit status") {
+		t.Fatalf("failed command lost diagnostics: %q, %v", output, err)
+	}
+}
+
+// A subprocess fixture is portable across native Unix and Windows tests.
+func TestRunnerOutputHelper(t *testing.T) {
+	if os.Getenv("GOTHUI_TEST_OUTPUT_HELPER") != "1" {
+		return
+	}
+	fmt.Fprintln(os.Stdout, `{"package":"example.invalid/demo"}`)
+	fmt.Fprintln(os.Stderr, "fixture diagnostic on stderr")
+	if os.Getenv("GOTHUI_TEST_OUTPUT_FAILURE") == "1" {
+		os.Exit(7)
+	}
+	os.Exit(0)
+}
 
 func TestBuildVersionUsesGitAndIncludesUntrackedWork(t *testing.T) {
 	dir := t.TempDir()

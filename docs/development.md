@@ -139,3 +139,13 @@ with findings. Treat a database/network error as an incomplete check, never a
 clean result. The separate prepared CI security job preserves logs and exact
 source/toolchain metadata; [the CI guide](ci.md) records its scope and evidence.
 The ordinary `gothui-dev check` remains usable without a vulnerability database.
+
+When the scanner cannot reach HTTPS directly, Go also publishes a
+[complete database snapshot and file-protocol instructions](https://go.dev/doc/security/vuln/database).
+Download the official archive, validate its paths before extraction, and pass the
+extracted database URL with `govulncheck -db file:///absolute/path -show verbose ./...`.
+Record the source URL, archive SHA-256, database modification time, exact project
+revision, compiler/target, scanner version and exit status. A dated snapshot scan
+does not establish later database results or other build targets. Retain one
+compressed snapshot and concise results for review; remove its extracted files
+and task build cache. The local evidence and limitations are in [the CI guide](ci.md).

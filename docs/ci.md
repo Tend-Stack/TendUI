@@ -64,12 +64,18 @@ with one symbol-level finding verified exit 3 for text and exit 0 for JSON using
 the pinned scanner. That validates exit handling only, not the absence of real
 vulnerabilities. `go run` may wrap a nonzero tool exit as exit 1; either fails CI.
 
-The actual local scan could load the project, then failed while fetching the
-vulnerability database because this sandbox denies the DNS socket. Its partial
-JSON output is **not** a clean scan. The remote security job is prepared but has
-not executed, just like the six compatibility jobs. Inspect all seven results
-at the exact published SHA. Source analysis also has limits around reflection,
-unsafe calls and other build configurations; see the
+The initial direct scan failed while fetching the database. A later download of
+the complete official `vulndb.zip` snapshot succeeded through the available HTTPS
+download path. The pinned scanner completed locally against that snapshot using
+its supported file protocol: no known vulnerabilities found in all seven root
+packages, templ v0.3.1100 and the Go 1.27.3 standard library on Linux amd64.
+The snapshot's database modification time is 2026-11-05T23:49:57Z. Its SHA-256 is
+`0a54b7eb56bf031dc214fc4f29ca6db71073ab324595c3de9485f97a334e9e22`.
+All 4,789 indexed OSV reports were present; no subset or suppressions were used.
+This is a dated snapshot result, not an evergreen security guarantee. The
+remote security job remains unexecuted, just like the six compatibility jobs.
+Inspect all seven results at the exact published SHA. Source analysis also has
+limits around reflection, unsafe calls and other build configurations; see the
 [Go vulnerability-management guide](https://go.dev/doc/security/vuln/).
 
 Go 1.26.0 remains a minimum-language/toolchain compatibility test, not a deployment
@@ -107,20 +113,31 @@ desktop browser launch remains a separate manual check.
 
 The workflow parses locally and its matrix, commit pins, read permission and
 retention settings were inspected. It has **not run on GitHub**. Local native
-race/vet checks pass with Go 1.27.3. The build-helper test executes and replaces a
+race/vet checks pass with Go 1.26.0 and Go 1.27.3. The minimum compiler was
+downloaded temporarily from Go's official distribution and its published SHA-256
+and archive size verified before execution. The API baseline, versioned local
+consumer installation, native demo build and version smoke also pass on 1.26.0.
+Its read-only cache warning exposed a developer-tool bug: parsed command output
+included stderr. The helper now forwards successful diagnostics separately from
+stdout and preserves failure diagnostics. Regression tests pass on both compilers.
+The build-helper test executes and replaces a
 native Linux executable successfully. The demo also cross-compiles for Linux
 arm64, macOS arm64 and Windows amd64, with target build metadata and ELF/Mach-O/PE
 architecture headers checked. Those disposable foreign executables were removed.
-Evidence is retained under `tests/results/validation/` and `tests/results/platform/`.
+Evidence is retained under `tests/results/validation/`, `tests/results/platform/`,
+`tests/results/compatibility-go126/` and `tests/results/security/`.
 Cross-compilation cannot prove foreign execution, race behavior or browser UI.
-No minimum-version or non-Linux runtime pass is claimed yet. No Go 1.26 compiler
-was found in the current local installations. A fresh Firefox headless attempt
+Non-Linux native execution remains unverified. The temporary minimum compiler
+and its disposable demo are removed after validation; the retained review binary
+continues to use Go 1.27.3. A Firefox headless attempt
 with an isolated temporary profile also failed under the sandbox namespace
 restriction; its profile was removed. Chromium/browser results remain unverified.
 
-Shell Git access currently fails DNS resolution for both configured remotes.
-The GitHub connector reports the import repository as private, unarchived and
-or publication automation has been configured by this workflow.
+history and its main SHA was verified. GitHub remains private, unarchived and
+empty: its push rejected the private author email with GH007. A metadata-only
+correction for 26 commits is prepared and awaits operator approval because it
+preserved if that correction is approved. No privacy setting has been disabled,
+has been configured by this workflow.
 
 After publication, inspect all six compatibility results plus the security job
 at the exact source SHA before calling the matrix verified. Release installation, optional HTMX execution and

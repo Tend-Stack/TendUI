@@ -121,9 +121,17 @@ func (r runner) run(logName, dir, program string, args ...string) error {
 }
 
 func (r runner) output(program string, args ...string) (string, error) {
-	b, err := r.command(r.root, program, args...).CombinedOutput()
+	cmd := r.command(r.root, program, args...)
+	var diagnostics bytes.Buffer
+	cmd.Stderr = &diagnostics
+	b, err := cmd.Output()
 	if err != nil {
-		return "", fmt.Errorf("%s: %w: %s", filepath.Base(program), err, strings.TrimSpace(string(b)))
+		return "", fmt.Errorf("%s: %w: %s", filepath.Base(program), err, strings.TrimSpace(string(b)+"\n"+diagnostics.String()))
+	}
+	// Go can emit warnings on a successful command. Keep those visible, but
+	// never mix them into package paths, JSON, versions or other parsed stdout.
+	if diagnostics.Len() > 0 {
+		fmt.Fprint(os.Stderr, diagnostics.String())
 	}
 	return strings.TrimSpace(string(b)), nil
 }
