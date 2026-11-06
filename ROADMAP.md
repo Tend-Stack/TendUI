@@ -51,6 +51,11 @@ Allocation profiling removed redundant table-cell wrappers and attribute
 conversion: the local 100-row benchmark uses 618 allocations instead of 1,821,
 with unchanged output across the captured parity fixtures. See docs/performance.md.
 
+Expanded source-color checks cover text, links and control borders across all
+built-in surfaces. A consolidated print palette takes priority over dark themes
+and retains readable controls without requiring background graphics. See
+docs/accessibility.md for measured scope and the pending browser review matrix.
+
 Current evidence is local. Browser review is incomplete and remote publication
 is pending. The active broad goal remains unfinished.
 

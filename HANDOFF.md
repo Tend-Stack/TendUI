@@ -1,5 +1,46 @@
 # GothUI implementation handoff
 
+## Palette and print reliability milestone (2026-11-06)
+
+Expanded the source-color audit from primary buttons/links on one background to
+all built-in page, surface and subtle backgrounds, six semantic text colors,
+all four presets with hover states, and control borders. System-dark declarations
+must also match the explicit dark theme. The retained calculation report contains
+133 comparisons, including button labels and the print palette, with source color
+values and the final CSS SHA-256. All pass their stated thresholds. Screen minima
+are 5.424696:1 for light text and 3.208971:1 for light borders; dark minima are
+6.356640:1 and 3.399663:1 respectively. Source tests do not simulate browser
+cascade, opacity, antialiasing, arbitrary overrides or forced-color rendering.
+
+Review found a real print specificity problem: the old plain :root print palette
+lost to the more-specific explicit/system dark selectors, and left several
+screen tokens unchanged. Consolidated five scattered print blocks into one final
+block, with a complete important neutral palette. Printed buttons and the current
+step number now use dark text and transparent backgrounds so readability does
+not depend on background graphics. Switches fall back to native checkboxes for
+print, matching the existing forced-colors approach. The print shell drops its
+viewport-height minimum. Existing print omissions, stopped motion, table overflow
+and gradient/shadow behavior are retained. Screen colors, disabled treatment,
+Go API, template source and dependencies are unchanged.
+
+The first focused source-guard run failed against the old incomplete print
+palette. The new palette guards and expanded color checks pass. After the final
+step-marker fix, all seven packages pass race tests and vet through the developer
+check; the 234-entry API baseline and size/dependency checks also pass. Templates
+and recipe sources are unchanged, so prior generation and compilation evidence
+remain applicable. docs/accessibility.md records thresholds, primary references,
+print customization, limitations and a concrete keyboard/zoom/RTL/forced-color/
+print/screen-reader review matrix. No browser accessibility or print conformance
+is claimed; these remain outstanding goal gates along with CI and publication.
+
+Retain tests/results/palette/contrast.json and the small before/focused logs,
+plus canonical validation reports and one demo executable. The continuing
+developer owns these until relevant replacement or operator review. Rebuild the
+single demo after this local commit to stamp the clean revision, then clean only
+/tmp/gothui-palette-cache and duplicate command wrappers. No test database,
+worktree, extra long-lived binary, reference changes or remote writes were made.
+The broad product goal remains active.
+
 ## Typed layout composition milestone (2026-11-06)
 
 Added Stack and Cluster with typed spacing, cross-axis alignment and cluster
