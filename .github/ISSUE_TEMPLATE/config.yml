@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation and examples
+    url: https://tendui.com/docs
+    about: Start with the guides and working examples.
+  - name: Private security report
+    url: mailto:security@tendstack.com
+    about: Do not disclose vulnerabilities in public issues.

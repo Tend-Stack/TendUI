@@ -106,3 +106,17 @@ test('grouped menu and playground scenarios work without scripts', async ({ page
   await page.getByRole('button', { name: 'Send sample', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Button submitted successfully');
 });
+
+
+test('plain HTML quickstart works without JavaScript', async ({ page }) => {
+  await page.goto('/__test/html/index.html');
+  await expect(page.getByRole('heading', { name: 'Hello, semantic HTML.' })).toBeVisible();
+  await expect(page.locator('script')).toHaveCount(0);
+  await page.getByLabel('Try a text field').fill('A CSS-only page');
+  await page.getByText('Does this work without JavaScript?', { exact: true }).click();
+  await expect(page.getByText('Yes. The browser opens this disclosure using native HTML.')).toBeVisible();
+  // These evaluated assertions are test instrumentation, not application scripts.
+  expect(await page.locator('html').evaluate(e => getComputedStyle(e).getPropertyValue('--tendui-primary').trim())).not.toBe('');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});

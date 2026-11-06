@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible problem in TendUI.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "For vulnerabilities, email security@tendstack.com privately. Do not include credentials or user data."
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include steps and a small code example or public reproduction repository.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Browser and environment
+      description: Browser/version, operating system, Go version, theme, viewport and reduced-motion settings when relevant.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or sanitized diagnostics
