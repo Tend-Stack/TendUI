@@ -124,5 +124,5 @@ assets. The workflow retains its reports for seven days.
 
 Published-tag consumer installation and browser checks are independent release
 gates. In-process HTTP tests and cross-compilation do not replace browser review.
-See [release verification](release-verification.md) for the v2026.1.0 exact-commit
+See [release verification](release-verification.md) for the supported preview's exact-commit
 native, security, browser and published-tag installation results.

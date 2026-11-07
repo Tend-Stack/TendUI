@@ -74,7 +74,7 @@ showcase with `go run ./examples/basic -open`.
 | Customize themes, forms and layouts | [Library guide](docs/library-guide.md) |
 | Test interactions and appearance | [Playground](https://tendui.com/playground) · [Motion and surfaces](https://tendui.com/motion) |
 | Work with Codex or Claude Code | [Agent setup](docs/agents.md) |
-| Move from the earlier module | [Migration notes](docs/tendui-migration.md) |
+| Add TendUI to an application | [Integration guide](docs/tendui-migration.md) |
 | Understand compatibility and verification | [API policy](docs/api-compatibility.md) · [Development guide](docs/development.md) |
 
 ## Preview, with clear boundaries

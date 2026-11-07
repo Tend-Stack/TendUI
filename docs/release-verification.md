@@ -1,53 +1,53 @@
-> Historical evidence from before the TendUI rename. The immutable tag and original module path are unchanged.
+# TendUI preview verification
 
-# GothUI 2026.1.0 verification
+The supported preview is `v2026.2.0-preview.2`. Install it explicitly:
 
-Verified on 2026-11-06. The immutable `v2026.1.0` tag points to
-`2f622c95fbf71df942822d6697093b15fc8270db`. Later documentation-only commits
-record these results without moving the release tag.
+```sh
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
+```
+
+## Published preview
+
+The following GitHub Actions runs passed for the published preview. These links
+identify the tested revision directly; later documentation updates do not extend
+those results to unrelated code changes.
 
 | Gate | Evidence | Result |
 | --- | --- | --- |
-| Native Go compatibility and security | [Verify GothUI](https://github.com/Tend-Stack/GothUI/actions/runs/42211995225) | Six native Linux/macOS/Windows jobs on Go 1.26.0/1.27.3, plus the vulnerability job, passed at the tagged commit. |
-| Real browser behavior | [Browser verification](https://github.com/Tend-Stack/GothUI/actions/runs/42211995320) | 53 passed, zero failed/flaky; one unsupported WebKit forced-color emulation check skipped. |
-| Installation from the actual tag | [Release GothUI](https://github.com/Tend-Stack/GothUI/actions/runs/42213916698) | Fresh consumer downloaded `v2026.1.0`, passed `TestPublishedModule` and `go mod verify`, with no replacement or templ generation. |
-| Release publication | [v2026.1.0](https://github.com/Tend-Stack/GothUI/releases/tag/v2026.1.0) | Published as a regular release after the tag-installation check passed. |
-| Documentation website | [Website browser checks](https://github.com/Tend-Stack/GothUI-Web/actions/runs/42212696656), [native/container checks](https://github.com/Tend-Stack/GothUI-Web/actions/runs/42212696776) | Eight browser checks passed on desktop Chromium and mobile WebKit at website commit `14874b6286e1d5cd77fc2b1628814c60a5212ae6`; native tests and the actual container smoke test passed. |
+| Native Go compatibility and security | [Verify TendUI](https://github.com/Tend-Stack/TendUI/actions/runs/42313429148) | Linux, macOS and Windows on Go 1.26.0 and 1.27.3; independent vulnerability check passed. |
+| Browser behavior | [Browser verification](https://github.com/Tend-Stack/TendUI/actions/runs/42313429136) | 59 checks passed; one unsupported WebKit forced-color emulation check skipped. |
+| Installation from the published tag | [Release verification](https://github.com/Tend-Stack/TendUI/actions/runs/42313876893) | Published-tag consumer and quickstart checks passed. |
+| Release notes | [TendUI preview](https://github.com/Tend-Stack/TendUI/releases/tag/v2026.2.0-preview.2) | Prerelease; APIs may change before stable release. |
 
-## Browser scope
+On 2026-11-07, anonymous GitHub source access and the Go proxy module download
+were checked again. The downloaded module checksum matched the website's pinned
+`go.sum`. Both repositories are public; installation does not require a GitHub
+token or private-module configuration.
 
-The pinned Playwright 1.65.0 suite runs Chromium, Firefox and WebKit on the
-Ubuntu CI runner. Native flows use scripts-disabled contexts. The separate
-HTMX fixture loads a local, test-only HTMX 2.0.11 runtime and verifies fragment
-editing, validation recovery and theme redirects. Neither project bundles this
-runtime into its shipped application.
+## Website and browser coverage
 
-Axe checks WCAG 2 A/AA and 2.1 AA rules on all 36 component detail pages in both
-themes. Application containment is checked at 320, 768 and 1920 pixels. Focused
-checks cover keyboard skip/focus, popovers, native modal focus and background
-inertness, reduced motion, explicit motion off, forced colors and print tokens.
-The Chromium dashboard PDF was reviewed: readable monochrome controls and table,
-no horizontal clipping, and headings stay with their following content.
+The website consumes the pinned preview. Its [publication-polish browser run](https://github.com/Tend-Stack/TendUI-web/actions/runs/42337550182)
+passed 20 checks on desktop Chromium and mobile WebKit. These include native
+navigation, theme changes, onboarding downloads, containment, and light/dark
+hover and keyboard-focus treatments. The [website build checks](https://github.com/Tend-Stack/TendUI-web/actions/runs/42337550151)
+also passed for that tested revision. CI success is separate from deployment;
+verify the served content after a website change is merged.
 
-The website suite checks nine documentation/home/example routes, native theme
-navigation, catalog discovery, keyboard skip navigation, reduced motion, mobile
-containment, and the 1920-pixel maximum at a 2560-pixel viewport. Code examples
-are keyboard-focusable for horizontal scrolling. Screenshots and PDFs are
-review evidence, not pixel-by-pixel regression baselines.
+The library suite exercises Chromium, Firefox and WebKit. Native flows use
+scripts-disabled contexts. Optional HTMX integration tests use a local,
+test-only runtime; TendUI does not bundle that runtime with the library.
+Automated checks cover accessibility rules, keyboard behavior, native overlays,
+reduced motion, motion opt-out, responsive containment and print styles.
 
 ## Limits and repeatability
 
-These results do not certify WCAG conformance, every screen reader, every
-physical device, every zoom level, or every consumer customization. WebKit
-forced-color emulation is explicitly unsupported. Assembled applications still
-need testing with their target assistive technology and supported devices.
+These checks do not certify WCAG conformance, every screen reader, every physical
+device, every zoom level, or every consumer customization. Manual assistive
+technology and physical-device reviews remain necessary. WebKit forced-color
+emulation is unsupported in the test environment and is reported as skipped.
 
-The repositories currently require GitHub authorization. Tag installation was
-verified with authorized credentials, not anonymous public access. Consumers
-need normal Git credentials and `GOPRIVATE=github.com/Tend-Stack/GothUI` while
-that visibility remains in effect.
-
-Workflows and fixtures are committed for repeatability. CI artifacts expire
-after seven days; focused local reports and representative render artifacts live
-under ignored `tests/results/`. No credentials or private infrastructure details
-are included in the repository or retained test reports.
+Workflows and fixtures are committed for repeatability. CI artifacts expire after
+seven days; maintainers retain concise release evidence separately. Screenshots
+and PDFs are review evidence, not pixel-by-pixel regression baselines. See
+[development](development.md), [CI](ci.md), and [accessibility](accessibility.md)
+for the checks to run when changing components or applications.

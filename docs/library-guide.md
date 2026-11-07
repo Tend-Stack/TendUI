@@ -443,9 +443,8 @@ intentional updates and the limits of this check.
 The [CI matrix](ci.md) checks native Linux, macOS and Windows with Go 1.26.0
 and 1.27.3, plus a vulnerability scan. Browser checks cover Chromium, Firefox and
 WebKit. These jobs must pass on the preview source; see
-[preview release notes](releases/2026.2.0-preview.2.md). The older
-[release verification](release-verification.md) documents the pre-rename
-release only and is not evidence for the current preview.
+[preview release notes](releases/2026.2.0-preview.2.md) and
+[release verification](release-verification.md) for the published preview evidence.
 
 Versions follow `YEAR.RELEASE.FIX`, with SemVer prerelease suffixes for previews:
 `v2026.2.0-preview.2`. Install the explicit tag; a preview is not a stable API promise.
