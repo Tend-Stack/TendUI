@@ -1,0 +1,16 @@
+[
+  {
+    "file": "readme-banner-dark.png",
+    "source": "03_web_and_social/illustrated-header-dark-1800x420.png",
+    "processing": "Copied unchanged from the owner-supplied Tend UI Gopher Brand Kit",
+    "sha256": "abfccb9cfa2169c767a213eb8fd57c07fe18984d95f917ec1731941c89293eea",
+    "bytes": 129454
+  },
+  {
+    "file": "readme-banner-light.png",
+    "source": "03_web_and_social/illustrated-header-light-1600x400.png",
+    "processing": "Copied unchanged from the owner-supplied Tend UI Gopher Brand Kit",
+    "sha256": "7a3e7ecc43532cb70d2127efefe2ddb4d9174c0af377d9d94f7d5a9d7f70ecd3",
+    "bytes": 123912
+  }
+]

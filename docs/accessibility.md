@@ -69,8 +69,8 @@ separate complete document when that is needed.
 Custom print styling can override TendUI's important print palette with matching
 important declarations in a later print stylesheet. Review the result with both
 background-graphics settings. The tests guard source rules and palette ratios;
-the v2026.1.0 dashboard PDF was also reviewed for pagination, readable controls
-and background omission. This does not establish every page/theme combination.
+review rendered PDFs for pagination, readable controls and background omission.
+Automated source checks do not establish every page/theme combination.
 
 ## Consumer review matrix
 
