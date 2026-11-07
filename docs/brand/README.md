@@ -13,8 +13,14 @@ settings is separate from displaying the README logo.
 
 ## README banners
 
-The light and dark README banners are copied unchanged from the owner-supplied
-Tend UI Gopher Brand Kit. Source names, byte sizes and SHA-256 hashes are recorded
-in [readme-banners.json](readme-banners.json). They are documentation assets and
-are not embedded into the runtime stylesheet or website executable. The README
-uses a `picture` element to follow the reader's preferred color scheme.
+The light and dark README banners use the owner-supplied Tend UI Gopher Brand Kit
+as their source, with an AI-assisted layout correction. The mascot and wordmark
+form a compact group; **MODERN UI FOR GO** aligns beneath the wordmark, and the
+complete mascot has padding above and below. Light and dark versions retain the
+library's illustrated identity, distinct from the website repository's
+browser-window banner.
+
+[readme-banners.json](readme-banners.json) records their origin, processing,
+dimensions, byte sizes and SHA-256 hashes. These documentation-only images are
+not embedded in the runtime stylesheet or component packages. The README's
+`picture` element selects the matching color scheme.
