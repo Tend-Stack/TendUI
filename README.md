@@ -555,3 +555,10 @@ MIT. See [LICENSE](LICENSE).
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, review and MIT + DCO sign-off.
 Report vulnerabilities privately using [SECURITY.md](SECURITY.md); community
 participation follows [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+## Coding agents
+
+Repository contributors should read [AGENTS.md](AGENTS.md); `CLAUDE.md` imports
+the same instructions for Claude Code. For applications using TendUI, see
+[the coding-agent guide](https://tendui.com/docs/agents) and merge its suggested
+section into your own project instructions.
