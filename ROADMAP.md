@@ -70,7 +70,7 @@ stable-URL cache contract and distinguishes in-process checks from live delivery
 The current preview has a complete documentation website, shared
 component catalog, examples and playground, plus passing native, security and
 browser verification. See [release verification](docs/release-verification.md)
-for historical pre-rename evidence. Current preview details are in
+for the published preview evidence. Preview details are in
 [preview release notes](docs/releases/2026.2.0-preview.2.md).
 The development tracks below describe continuing product work beyond this baseline.
 

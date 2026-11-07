@@ -1,28 +1,26 @@
-# Moving to TendUI
+# Integrating TendUI
 
-TendUI is the new name of this library. Install the renamed preview explicitly:
+Install the pinned preview:
 
 ```sh
 go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
 ```
 
-The historical `v2026.1.0` tag retains its original module path and is not a
-TendUI installation target. It has not been rewritten.
+Use `github.com/Tend-Stack/TendUI/v2026` for embedded assets and
+`github.com/Tend-Stack/TendUI/v2026/components` for typed templ components.
+The root Go package is `tendui`. Authoring your own templ files requires the
+generator version listed in `go.mod`; consuming the shipped Go components does
+not require generation.
 
-Update Go imports to `github.com/Tend-Stack/TendUI/v2026` and the root package
-identifier to `tendui`. Regenerate your own templ files after changing imports.
-The component APIs remain available, with the additive `SiteHeader` component
-and host-page options for the example handler.
-
-The asset endpoint is now `/tendui/static/tendui.css`. Prefer `tendui.AssetPath`
+The asset endpoint is `/tendui/static/tendui.css`. Prefer `tendui.AssetPath`
 and `tendui.StylesheetURL` in Go code. CSS custom properties and prefixed utility
-classes now use `tendui` rather than the previous prefix. Update application
-overrides, downloaded recipes and appearance exports together with the stylesheet.
+classes use `tendui`; keep application overrides and appearance exports aligned
+with the stylesheet version you install.
 
-The example site's preference cookies now use the `tendui_` prefix. Existing
-demo preferences are not migrated; visitors can save their choices again.
-The standalone examples retain their default appearance, while tendui.com
-defaults to dark and shares its theme toggle across Home, Docs and the demos.
+The demo site's preference cookies use the `tendui_` prefix. Consumer applications
+own their preference storage and routing. The standalone examples retain their
+default appearance; tendui.com defaults to dark and shares its theme toggle across
+Home, Docs and the demos.
 
 ## CSS with any HTML stack
 
