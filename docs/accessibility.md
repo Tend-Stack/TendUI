@@ -99,3 +99,7 @@ both themes. Keyboard, native overlays, narrow layouts, reduced motion and print
 have focused coverage. See [release verification](release-verification.md).
 The broader consumer matrix above, especially screen-reader output, zoom and
 physical devices, still needs review for each assembled application.
+
+Use the [manual session checklist and result template](manual-accessibility.md)
+to record real screen-reader and physical-device observations for the public site.
+It starts with untested results and must not be treated as evidence of a pass.
