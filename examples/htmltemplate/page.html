@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello, TendUI — Go html/template</title>
+    <link rel="stylesheet" href="{{.StylesheetURL}}">
+  </head>
+  <body>
+    <main class="container">
+      <h1>Hello, {{.Name}}.</h1>
+      <p>Semantic HTML, Go templates, and embedded CSS. One executable.</p>
+      <article>
+        <header><h2>Make yourself at home</h2></header>
+        <form action="/" method="get">
+          <label for="name">Display name</label>
+          <input id="name" name="name" value="{{.Name}}" aria-describedby="name-hint">
+          <small id="name-hint">Use a sample name. It appears in the URL and is not stored by this demo.</small>
+          <button type="submit">Update greeting</button>
+        </form>
+        <footer>Try angle brackets in your name: Go renders them as text.</footer>
+      </article>
+    </main>
+  </body>
+</html>
