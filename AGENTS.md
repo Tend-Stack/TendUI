@@ -17,7 +17,8 @@ source and existing tests before editing; preserve unrelated working-tree change
   authentication, sessions, persistence and request protection. HTMX is optional,
   requires JavaScript, and is supplied by the consuming application.
 - `examples/quickstart/` is the tested Go/templ starting point; `examples/html/`
-  is the plain HTML alternative. `examples/site/` and `internal/recipes/` power
+  is the plain HTML alternative; `examples/htmltemplate/` uses standard-library
+  Go templates with embedded CSS and no templ imports. `examples/site/` and `internal/recipes/` power
   the demos and catalog. Keep downloadable recipes and compiled previews aligned.
 - `api/public.json` is a reviewed API baseline. Do not overwrite it just to make
   a failing check pass; explain intentional API changes and migration impact.

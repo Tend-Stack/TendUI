@@ -11,6 +11,7 @@ templ. HTMX is an optional enhancement, not a requirement. Share your installed
 TendUI version, relevant route and component, and the behavior you want to test.
 Use the [quickstart](quickstart.md) and inspect the component source at the
 installed version; the online catalog may describe a newer version.
+For standard-library Go templates, use the [html/template example](../examples/htmltemplate).
 
 Installing a Go module does not install project instructions into your app.
 Merge the following section into your own root `AGENTS.md`; preserve your existing

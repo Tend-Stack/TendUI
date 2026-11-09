@@ -62,8 +62,9 @@ func main() {
 }
 ```
 
-Follow the [tested Go/templ quickstart](docs/quickstart.md), or start with
-[plain HTML and CSS](examples/html) with no Go dependency. Run the full local
+Follow the [tested Go/templ quickstart](docs/quickstart.md), use
+[Go html/template](examples/htmltemplate) with embedded CSS and no templ components,
+or start with [plain HTML and CSS](examples/html) with no Go dependency. Run the full local
 showcase with `go run ./examples/basic -open`.
 
 ## Explore your next step

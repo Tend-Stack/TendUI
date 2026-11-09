@@ -36,8 +36,7 @@ Identify significant generated material or reused sources in the PR description.
 ## Workflow
 
 Maintainers track both repositories in the shared [TendUI project](https://github.com/orgs/Tend-Stack/projects/2).
-The board is currently private while publication review is completed; use this
-repository's issues to propose work or report bugs.
+Use this repository's issues to propose library work or report library bugs.
 
 1. Fork the repository and create a focused branch from current `main`.
 2. Make the smallest complete change; keep unrelated cleanup separate.
