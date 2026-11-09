@@ -29,6 +29,13 @@ not add missing contributor certifications on someone else's behalf.
 Coding agents should read [AGENTS.md](AGENTS.md) for repository structure and
 validation guidance; `CLAUDE.md` imports that same file.
 
+### Recipe: standard-library `html/template`
+
+Use the embedded CSS helper and `AssetHandler` route with Go's `html/template`,
+without importing templ components. Provide one runnable example with semantic
+HTML, a focused HTTP test asserting escaped data, the stylesheet link and CSS
+delivery, and no Node.js, npm, browser JavaScript or new runtime dependencies.
+
 AI-assisted contributions follow exactly the same rules: a human contributor
 must understand, review and test the result and certify the right to submit it.
 Identify significant generated material or reused sources in the PR description.
